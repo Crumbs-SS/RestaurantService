@@ -1,6 +1,8 @@
 package com.crumbs.fss.entity;
 
 
+import com.sun.istack.NotNull;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +20,18 @@ public class Restaurant {
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     private List<RestaurantCategory> categories = new ArrayList<>();
 
+    @NotNull
     private String name;
+
+    @NotNull
     private String address;
+
+    public Restaurant(){
+    }
+    public Restaurant(String name, String address) {
+        this.name = name;
+        this.address = address;
+    }
 
     public Long getId() {
         return id;
