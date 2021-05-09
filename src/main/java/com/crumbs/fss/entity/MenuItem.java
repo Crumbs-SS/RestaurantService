@@ -1,8 +1,7 @@
 package com.crumbs.fss.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.istack.NotNull;
-
 import javax.persistence.*;
 
 @Entity(name = "menu_item")
@@ -13,13 +12,22 @@ public class MenuItem {
     public Long id;
 
     @ManyToOne
-    @JsonIgnore
+    @JsonBackReference
     private Restaurant restaurant;
 
     private String name;
     private Float price;
     private Integer quantity;
     private String description;
+
+    public MenuItem(){
+    }
+    public MenuItem(String name, Float price, Integer quantity, String description) {
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+        this.description = description;
+    }
 
     public Long getId() {
         return id;

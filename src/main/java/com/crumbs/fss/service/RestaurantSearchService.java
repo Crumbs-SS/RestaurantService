@@ -1,7 +1,9 @@
 package com.crumbs.fss.service;
 
 import com.crumbs.fss.ServiceUtil;
+import com.crumbs.fss.entity.MenuItem;
 import com.crumbs.fss.entity.Restaurant;
+import com.crumbs.fss.repository.MenuItemRepository;
 import com.crumbs.fss.repository.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,10 +15,15 @@ import java.util.List;
 @Transactional(rollbackFor = { Exception.class })
 public class RestaurantSearchService {
     @Autowired RestaurantRepository restaurantRepository;
+    @Autowired MenuItemRepository menuItemRepository;
     @Autowired ServiceUtil serviceUtil;
 
     public List<Restaurant> getRestaurants(){
         serviceUtil.makeRestaurants();
         return restaurantRepository.findAll();
+    }
+
+    public List<MenuItem> getMenuItems(){
+        return menuItemRepository.findAll();
     }
 }

@@ -1,6 +1,7 @@
 package com.crumbs.fss.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
@@ -14,9 +15,11 @@ public class Restaurant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     private List<MenuItem> menuItems = new ArrayList<>();
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     private List<RestaurantCategory> categories = new ArrayList<>();
 
@@ -63,6 +66,14 @@ public class Restaurant {
 
     public List<RestaurantCategory> getCategories() {
         return categories;
+    }
+
+    public void setMenuItems(List<MenuItem> menuItems) {
+        this.menuItems = menuItems;
+    }
+
+    public void setCategories(List<RestaurantCategory> categories) {
+        this.categories = categories;
     }
 }
 

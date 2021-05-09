@@ -1,4 +1,5 @@
 package com.crumbs.fss.entity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.CascadeType;
@@ -13,7 +14,7 @@ public class Category {
     private String name;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    @JsonIgnore
+    @JsonBackReference
     private List<RestaurantCategory> restaurants;
 
     public List<RestaurantCategory> getRestaurants() {
