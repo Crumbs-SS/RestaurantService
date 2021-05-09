@@ -21,10 +21,4 @@ public class MainController {
     public List<Restaurant> getRestaurants(){
         return restaurantSearchService.getRestaurants();
     }
-
-    @GetMapping("/menuItems")
-    public List<MenuItem> getMenuItems(){
-        return restaurantSearchService.getMenuItems();
-    }
-
 }
