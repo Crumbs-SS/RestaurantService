@@ -1,7 +1,10 @@
 package com.crumbs.fss.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 
 @Entity(name = "menu_item")
@@ -12,7 +15,7 @@ public class MenuItem {
     public Long id;
 
     @ManyToOne
-    @JsonBackReference
+    @JsonIgnoreProperties("menuItems")
     private Restaurant restaurant;
 
     private String name;
