@@ -19,7 +19,6 @@ public class RestaurantSearchService {
     @Autowired ServiceUtil serviceUtil;
 
     public List<Restaurant> getRestaurants(){
-        serviceUtil.makeRestaurants(); // Temporary because of in-mem DB.
         return restaurantRepository.findAll();
     }
 

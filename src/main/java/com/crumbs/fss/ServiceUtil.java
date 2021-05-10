@@ -7,6 +7,9 @@ import com.crumbs.fss.repository.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 @Service
 public class ServiceUtil {
     @Autowired
@@ -24,9 +27,13 @@ public class ServiceUtil {
 
     private void makeMenuItems(Restaurant restaurant){
         for (int i = 0; i < 30; i++){
+            BigDecimal bd = new BigDecimal((i+1F) * (float)Math.random() + 3)
+                    .setScale(2, RoundingMode.HALF_UP);
+            Float price = bd.floatValue();
+
             MenuItem menuItem = new MenuItem(
                     "MenuItem-"+i,
-                    i * 3.412F/i,
+                    price,
                     20,
                     "Menu Item for a restaurant"
             );

@@ -1,6 +1,5 @@
 package com.crumbs.fss.controller;
 
-import com.crumbs.fss.entity.MenuItem;
 import com.crumbs.fss.entity.Restaurant;
 import com.crumbs.fss.service.RestaurantSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
