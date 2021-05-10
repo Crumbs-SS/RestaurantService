@@ -24,7 +24,6 @@ public class RestaurantSearchService {
         return restaurantRepository.findAll();
     }
 
-
     public List<Restaurant> getRestaurantsByQuery(String query){
         ExampleMatcher customExampleMatcher = ExampleMatcher.matchingAny()
                 .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
