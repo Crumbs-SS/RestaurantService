@@ -6,6 +6,8 @@ import com.crumbs.fss.entity.Restaurant;
 import com.crumbs.fss.repository.MenuItemRepository;
 import com.crumbs.fss.repository.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +24,24 @@ public class RestaurantSearchService {
         return restaurantRepository.findAll();
     }
 
-    public List<MenuItem> getMenuItems(){
+
+    public List<Restaurant> getRestaurantsByQuery(String query){
+        ExampleMatcher customExampleMatcher = ExampleMatcher.matchingAny()
+                .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                .withIgnorePaths("address");
+
+        Example<Restaurant> example = Example.of(new Restaurant(query, null), customExampleMatcher);
+        return restaurantRepository.findAll(example);
+    }
+
+    public List<MenuItem> getMenuItemsByQuery(String query){
+//
+
+        return null;
+    }
+
+//    Private
+    private List<MenuItem> getMenuItems(){
         return menuItemRepository.findAll();
     }
 }

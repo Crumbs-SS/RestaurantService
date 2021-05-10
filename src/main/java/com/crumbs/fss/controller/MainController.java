@@ -1,11 +1,10 @@
 package com.crumbs.fss.controller;
 
+import com.crumbs.fss.entity.MenuItem;
 import com.crumbs.fss.entity.Restaurant;
 import com.crumbs.fss.service.RestaurantSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,7 +16,13 @@ public class MainController {
     RestaurantSearchService restaurantSearchService;
 
     @GetMapping("/restaurants")
-    public List<Restaurant> getRestaurants(){
-        return restaurantSearchService.getRestaurants();
+    public List<Restaurant> getRestaurants(@RequestParam(required = false) String name){
+        return (name == null || name.isEmpty()) ? restaurantSearchService.getRestaurants()
+            : restaurantSearchService.getRestaurantsByQuery(name);
+    }
+
+    @GetMapping("/menuitems")
+    public List<MenuItem> getFoodByQuery(@PathVariable String query){
+        return restaurantSearchService.getMenuItemsByQuery(query);
     }
 }

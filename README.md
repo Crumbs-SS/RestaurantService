@@ -1,6 +1,7 @@
-## Restaurant Search Service
+## Restaurant Service
     - Food Search
     - Fetch All Restaurants
+    - CRUD Restaurants
 
 ### To Do:
     - Change from in-mem h2 to file h2 ✔
