@@ -1,6 +1,5 @@
 package com.crumbs.fss.service;
 
-import com.crumbs.fss.ServiceUtil;
 import com.crumbs.fss.entity.MenuItem;
 import com.crumbs.fss.entity.Restaurant;
 import com.crumbs.fss.repository.MenuItemRepository;
@@ -18,7 +17,6 @@ import java.util.List;
 public class RestaurantSearchService {
     @Autowired RestaurantRepository restaurantRepository;
     @Autowired MenuItemRepository menuItemRepository;
-    @Autowired ServiceUtil serviceUtil;
 
     public List<Restaurant> getRestaurants(){
         return restaurantRepository.findAll();
@@ -34,13 +32,16 @@ public class RestaurantSearchService {
     }
 
     public List<MenuItem> getMenuItemsByQuery(String query){
-//
+        ExampleMatcher customExampleMatcher = ExampleMatcher.matchingAny()
+                .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                .withIgnorePaths("price", "quantity", "description");
 
-        return null;
+        Example<MenuItem> example = Example.of(new MenuItem(query,
+                null, null, null), customExampleMatcher);
+        return menuItemRepository.findAll(example);
     }
 
-//    Private
-    private List<MenuItem> getMenuItems(){
+    public List<MenuItem> getMenuItems(){
         return menuItemRepository.findAll();
     }
 }
