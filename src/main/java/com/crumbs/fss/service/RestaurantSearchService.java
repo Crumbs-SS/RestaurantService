@@ -27,7 +27,9 @@ public class RestaurantSearchService {
                 .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
                 .withIgnorePaths("address");
 
-        Example<Restaurant> example = Example.of(new Restaurant(query, null), customExampleMatcher);
+        Restaurant restaurant = Restaurant.builder().name(query).build();
+
+        Example<Restaurant> example = Example.of(restaurant, customExampleMatcher);
         return restaurantRepository.findAll(example);
     }
 
@@ -36,8 +38,9 @@ public class RestaurantSearchService {
                 .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
                 .withIgnorePaths("price", "quantity", "description");
 
-        Example<MenuItem> example = Example.of(new MenuItem(query,
-                null, null, null), customExampleMatcher);
+        MenuItem menuItem = MenuItem.builder().name(query).build();
+
+        Example<MenuItem> example = Example.of(menuItem, customExampleMatcher);
         return menuItemRepository.findAll(example);
     }
 

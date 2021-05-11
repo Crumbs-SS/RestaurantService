@@ -7,6 +7,7 @@ import com.crumbs.fss.repository.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -19,7 +20,11 @@ public class ServiceUtil {
 
     public void makeRestaurants(){
         for (int i = 0; i < 10; i++) {
-            Restaurant restaurant = new Restaurant("Restaurant-" + i, "1321" + i + " LN");
+            Restaurant restaurant = Restaurant.builder()
+                    .name("Restaurant-" + i)
+                    .address("1321" + i + " LN")
+                    .build();
+
             makeMenuItems(restaurant);
             restaurantRepository.save(restaurant);
         }
@@ -31,12 +36,13 @@ public class ServiceUtil {
                     .setScale(2, RoundingMode.HALF_UP);
             Float price = bd.floatValue();
 
-            MenuItem menuItem = new MenuItem(
-                    "MenuItem-"+i,
-                    price,
-                    20,
-                    "Menu Item for a restaurant"
-            );
+            MenuItem menuItem = MenuItem.builder()
+                    .name("MenuItem-"+i)
+                    .price(price)
+                    .quantity(20)
+                    .description("Menu Item for a restaurant")
+                    .build();
+
             menuItem.setRestaurant(restaurant);
             menuItemRepository.save(menuItem);
         }

@@ -9,21 +9,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/restaurantSearch")
 public class MainController {
 
     @Autowired
     RestaurantSearchService restaurantSearchService;
 
     @GetMapping("/restaurants")
-    public List<Restaurant> getRestaurants(@RequestParam(required = false) String name){
-        return (name == null || name.isEmpty()) ? restaurantSearchService.getRestaurants()
-            : restaurantSearchService.getRestaurantsByQuery(name);
+    public List<Restaurant> getRestaurants(@RequestParam(required = false) String query){
+        return (query == null || query.isEmpty()) ? restaurantSearchService.getRestaurants()
+            : restaurantSearchService.getRestaurantsByQuery(query);
     }
 
     @GetMapping("/menuitems")
-    public List<MenuItem> getFoodByQuery(@RequestParam(required = false) String name){
-        return (name == null || name.isEmpty()) ? restaurantSearchService.getMenuItems()
-                : restaurantSearchService.getMenuItemsByQuery(name);
+    public List<MenuItem> getFoodByQuery(@RequestParam(required = false) String query){
+        return (query == null || query.isEmpty()) ? restaurantSearchService.getMenuItems()
+                : restaurantSearchService.getMenuItemsByQuery(query);
     }
 }
