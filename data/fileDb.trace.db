@@ -430,3 +430,23 @@ DROP TABLE CATEGORY [90107-200]
 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:630)
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
 	at java.base/java.lang.Thread.run(Thread.java:831)
+2021-05-12 07:05:09 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM LOCATION
+SELECT[*] * FROM MENU_ITEM"; SQL statement:
+select * from location
+select * from menu_item [42000-200]
+2021-05-12 09:25:58 jdbc[36]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * LOCATION[*]"; SQL statement:
+select * location [42000-200]
+2021-05-12 09:25:58 jdbc[36]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * RESTAURANT[*]"; SQL statement:
+select * restaurant [42000-200]
+2021-05-12 09:25:58 jdbc[36]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * RESTAURANT_OWNER[*]"; SQL statement:
+select * restaurant_owner [42000-200]
+2021-05-12 09:25:58 jdbc[36]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * RESTAURANT_CATEGORY[*]"; SQL statement:
+select * restaurant_category [42000-200]
+2021-05-12 09:26:21 jdbc[36]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * ROM[*] RESTAURANT"; SQL statement:
+select * rom restaurant [42000-200]

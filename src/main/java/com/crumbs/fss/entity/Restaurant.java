@@ -34,7 +34,6 @@ public class Restaurant {
     private Location location;
 
     private String name;
-    private String address;
     private Integer rating;
     private Integer priceRating;
 
