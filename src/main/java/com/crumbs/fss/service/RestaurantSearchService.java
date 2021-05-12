@@ -22,14 +22,18 @@ public class RestaurantSearchService {
         return restaurantRepository.findAll();
     }
 
+    public List<MenuItem> getMenuItems(){
+        return menuItemRepository.findAll();
+    }
+
     public List<Restaurant> getRestaurantsByQuery(String query){
         ExampleMatcher customExampleMatcher = ExampleMatcher.matchingAny()
                 .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
                 .withIgnorePaths("address");
 
-        Restaurant restaurant = Restaurant.builder().name(query).build();
+        Example<Restaurant> example = Example.of(Restaurant.builder().name(query).build(),
+                customExampleMatcher);
 
-        Example<Restaurant> example = Example.of(restaurant, customExampleMatcher);
         return restaurantRepository.findAll(example);
     }
 
@@ -38,13 +42,9 @@ public class RestaurantSearchService {
                 .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
                 .withIgnorePaths("price", "quantity", "description");
 
-        MenuItem menuItem = MenuItem.builder().name(query).build();
-
-        Example<MenuItem> example = Example.of(menuItem, customExampleMatcher);
+        Example<MenuItem> example = Example.of(MenuItem.builder().name(query).build(),
+                customExampleMatcher);
+ 
         return menuItemRepository.findAll(example);
-    }
-
-    public List<MenuItem> getMenuItems(){
-        return menuItemRepository.findAll();
     }
 }
