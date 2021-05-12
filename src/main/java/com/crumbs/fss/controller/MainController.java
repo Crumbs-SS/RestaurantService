@@ -21,7 +21,7 @@ public class MainController {
     }
 
     @GetMapping("/menuitems")
-    public List<MenuItem> getFoodByQuery(@RequestParam(required = false) String query){
+    public List<MenuItem> getMenuItems(@RequestParam(required = false) String query){
         return (query == null || query.isEmpty()) ? restaurantSearchService.getMenuItems()
                 : restaurantSearchService.getMenuItemsByQuery(query);
     }
