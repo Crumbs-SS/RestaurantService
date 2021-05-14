@@ -2,6 +2,7 @@ package com.crumbs.fss.service;
 
 import com.crumbs.fss.DTO.addRestaurantDTO;
 import com.crumbs.fss.entity.*;
+import com.crumbs.fss.entity.MenuItem;
 import com.crumbs.fss.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
@@ -9,6 +10,8 @@ import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -52,11 +55,11 @@ public class RestaurantService {
  
         return menuItemRepository.findAll(example);
     }
-    public Restaurant addRestaurant(addRestaurantDTO a) throws Exception {
-        if(a.getOwnerFirstName()==null) {
-            throw new Exception();
-        }
-        else System.out.println(a.getOwnerFirstName());
+    public Restaurant addRestaurant(addRestaurantDTO a) {
+//        if(a.getOwnerFirstName()==null) {
+//            throw new Exception();
+//        }
+//        else System.out.println(a.getOwnerFirstName());
 
         UserDetail userDetail = UserDetail.builder()
                 .firstName(a.getOwnerFirstName())
@@ -75,11 +78,38 @@ public class RestaurantService {
                 .state(a.getState())
                 .build();
 
-        Restaurant restaurant = new Restaurant();
-        restaurant.setName(a.getName());
-        restaurant.setPriceRating(a.getPriceRating());
-        restaurant.setLocation(location);
-        restaurant.setRestaurantOwner(restaurantOwner);
+        Restaurant temp = Restaurant.builder()
+                .name(a.getName())
+                .priceRating(a.getPriceRating())
+                .location(location)
+                .restaurantOwner(restaurantOwner)
+                .build();
+
+        Restaurant restaurant = restaurantRepository.save(temp);
+
+        List<Category> categories = a.getCategories();
+        List<RestaurantCategory> restaurantCategories = new ArrayList<>();
+
+        categories.forEach(category -> {
+            categoryRepository.save(category);
+
+            RestaurantCategoryID resCatID = RestaurantCategoryID.builder()
+                    .restaurantId(restaurant.getId())
+                    .categoryId(category.getName())
+                    .build();
+
+            //create restaurant category
+            RestaurantCategory resCat = RestaurantCategory.builder()
+                    .id(resCatID)
+                    .restaurant(restaurant)
+                    .category(category)
+                    .build();
+
+            restaurantCategories.add(resCat);
+
+        });
+        restaurant.setCategories(restaurantCategories);
+
 
         userDetailRepository.save(userDetail);
         restaurantOwnerRepository.save(restaurantOwner);

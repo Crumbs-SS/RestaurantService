@@ -30,7 +30,7 @@ public class MainController {
     }
 
     @PostMapping("/restaurants")
-    public Restaurant addRestaurant(@RequestBody addRestaurantDTO aRestaurantDTO) throws Exception {
+    public Restaurant addRestaurant(@RequestBody addRestaurantDTO aRestaurantDTO)  {
        return restaurantService.addRestaurant(aRestaurantDTO);
     }
 }
