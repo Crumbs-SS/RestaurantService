@@ -4,7 +4,9 @@ import com.crumbs.fss.DTO.addRestaurantDTO;
 import com.crumbs.fss.entity.MenuItem;
 import com.crumbs.fss.entity.Restaurant;
 import com.crumbs.fss.service.RestaurantService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,7 +32,7 @@ public class MainController {
     }
 
     @PostMapping("/restaurants")
-    public Restaurant addRestaurant(@RequestBody addRestaurantDTO aRestaurantDTO)  {
+    public ResponseEntity<Restaurant> addRestaurant(@RequestBody addRestaurantDTO aRestaurantDTO)  {
        return restaurantService.addRestaurant(aRestaurantDTO);
     }
 }

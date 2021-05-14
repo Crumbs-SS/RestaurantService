@@ -450,3 +450,6 @@ select * restaurant_category [42000-200]
 2021-05-12 09:26:21 jdbc[36]: exception
 org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * ROM[*] RESTAURANT"; SQL statement:
 select * rom restaurant [42000-200]
+2021-05-14 10:01:56 jdbc[14]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "DELETE *[*] FROM CATEGORY"; expected "identifier"; SQL statement:
+delete * from category [42001-200]

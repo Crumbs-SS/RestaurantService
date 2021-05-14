@@ -41,24 +41,10 @@ public class addRestaurantDTO {
     @NotBlank(message = "Restaurant Name is Mandatory")
     private String name;
 
-    @Min(value = 1, message = "Age should not be less than 1")
-    @Max(value = 3, message = "Age should not be greater than 3")
+    @Min(value = 1, message = "Price Rating is between 1 and 3")
+    @Max(value = 3, message = "Price Rating is between 1 and 3")
     private Integer priceRating;
 
     private List<Category> categories;
-
-//private String ownerFirstName;
-//private String ownerLastName;
-//private String ownerEmail;
-//private String street;
-//private String city;
-//private String zip;
-//private String state;
-//private String name;
-//    private Integer priceRating;
-//    private String categories;
-
-    //private List<MenuItem> menuItems;
-
 
 }
