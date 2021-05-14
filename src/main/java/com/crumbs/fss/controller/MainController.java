@@ -32,7 +32,7 @@ public class MainController {
     }
 
     @PostMapping("/restaurants")
-    public ResponseEntity<Restaurant> addRestaurant(@RequestBody addRestaurantDTO aRestaurantDTO)  {
+    public Restaurant addRestaurant(@RequestBody addRestaurantDTO aRestaurantDTO)  {
        return restaurantService.addRestaurant(aRestaurantDTO);
     }
 }
