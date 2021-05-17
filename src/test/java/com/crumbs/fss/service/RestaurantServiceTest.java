@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class RestaurantServiceTest {
 
     @Autowired
-    RestaurantService restaurantService;
+    RestaurantSearchService restaurantSearchService;
 
     @MockBean RestaurantRepository restaurantRepository;
     @MockBean MenuItemRepository menuItemRepository;
@@ -23,12 +23,12 @@ class RestaurantServiceTest {
     @Test
     void getRestaurants() {
         Mockito.when(restaurantRepository.findAll()).thenReturn(MockUtil.getRestaurants());
-        assertEquals(restaurantService.getRestaurants().size(), MockUtil.getRestaurants().size());
+        assertEquals(restaurantSearchService.getRestaurants().size(), MockUtil.getRestaurants().size());
     }
 
     @Test
     void getMenuItems() {
         Mockito.when(menuItemRepository.findAll()).thenReturn(MockUtil.getMenuItems());
-        assertEquals(restaurantService.getMenuItems().size(), MockUtil.getMenuItems().size());
+        assertEquals(restaurantSearchService.getMenuItems().size(), MockUtil.getMenuItems().size());
     }
 }

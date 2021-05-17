@@ -1,6 +1,7 @@
 package com.crumbs.fss.controller;
 
 import com.crumbs.fss.MockUtil;
+import com.crumbs.fss.service.RestaurantSearchService;
 import com.crumbs.fss.service.RestaurantService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -26,11 +27,11 @@ class MainControllerTest {
     private MockMvc mockMvc;
 
     @MockBean
-    RestaurantService restaurantService;
+    RestaurantSearchService restaurantSearchService;
 
     @Test
     void getRestaurants() throws Exception {
-        Mockito.when(restaurantService.getRestaurants())
+        Mockito.when(restaurantSearchService.getRestaurants())
                 .thenReturn(MockUtil.getRestaurants());
 
         mockMvc.perform(get("/restaurants")
@@ -41,7 +42,7 @@ class MainControllerTest {
 
     @Test
     void getMenuItems() throws Exception {
-        Mockito.when(restaurantService.getMenuItems())
+        Mockito.when(restaurantSearchService.getMenuItems())
                 .thenReturn(MockUtil.getMenuItems());
 
         mockMvc.perform(get("/menuitems")
