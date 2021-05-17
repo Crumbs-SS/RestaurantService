@@ -22,7 +22,6 @@ public class ServiceUtil {
         for (int i = 0; i < 10; i++) {
             Restaurant restaurant = Restaurant.builder()
                     .name("Restaurant-" + i)
-                    .address("1321" + i + " LN")
                     .build();
 
             makeMenuItems(restaurant);

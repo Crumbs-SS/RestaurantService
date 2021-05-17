@@ -20,6 +20,7 @@ public class RestaurantCategory {
 
     @MapsId("categoryId")
     @ManyToOne
+    @JsonIgnore
     private Category category;
 
     @MapsId("restaurantId")
