@@ -17,7 +17,7 @@ public class Location {
     private Long id;
 
     private String city;
-    private String zipCode;
+    private Integer zipCode;
     private String state;
     private String street;
 

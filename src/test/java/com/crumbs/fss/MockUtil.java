@@ -1,7 +1,7 @@
 package com.crumbs.fss;
 
-import com.crumbs.fss.entity.MenuItem;
-import com.crumbs.fss.entity.Restaurant;
+import com.crumbs.fss.DTO.addRestaurantDTO;
+import com.crumbs.fss.entity.*;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 
@@ -42,8 +42,62 @@ public class MockUtil {
         return menuItem;
     }
 
+
     public static Example<MenuItem> getMenuItemExample(){
         return Example.of(getMenuItem(1));
     }
 
+    public static addRestaurantDTO getAddRestaurantDTO(){
+        Category cat = new Category();
+        List<Category> categories = new ArrayList<>();
+        categories.add(cat);
+
+        addRestaurantDTO temp = addRestaurantDTO.builder()
+                .ownerFirstName("test")
+                .ownerLastName("test")
+                .ownerEmail("test@gmail.com")
+                .street("test")
+                .city("test")
+                .zip(00000)
+                .state("AA")
+                .name("test")
+                .priceRating(1)
+                .categories(categories)
+                .build();
+
+        return temp;
+    }
+    public static addRestaurantDTO getInvalidAddRestaurantDTO(){
+        addRestaurantDTO temp = addRestaurantDTO.builder()
+                .ownerFirstName(null)
+                .ownerLastName("test")
+                .ownerEmail("test@gmail.com")
+                .street("test")
+                .city("test")
+                .zip(1111111)
+                .state("AA")
+                .name("test")
+                .priceRating(1)
+                .categories(null)
+                .build();
+
+        return temp;
+    }
+    public static Restaurant getRestaurant(){
+        Restaurant temp = new Restaurant();
+        temp.setId(1L);
+        return temp;
+    }
+    public static UserDetail getUserDetail() {
+        return null;
+    }
+    public static RestaurantOwner getRestaurantOwner(){
+        return null;
+    }
+    public static Category getCategory(){
+        return null;
+    }
+    public static RestaurantCategory getRestaurantCategory(){
+        return null;
+    }
 }

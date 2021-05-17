@@ -6,14 +6,17 @@ import com.crumbs.fss.entity.Restaurant;
 import com.crumbs.fss.service.RestaurantService;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @CrossOrigin
+@Validated
 public class MainController {
 
     @Autowired
@@ -32,7 +35,8 @@ public class MainController {
     }
 
     @PostMapping("/restaurants")
-    public ResponseEntity<Restaurant> addRestaurant(@RequestBody addRestaurantDTO aRestaurantDTO)  {
-       return restaurantService.addRestaurant(aRestaurantDTO);
+    public ResponseEntity<Restaurant> addRestaurant(@Valid @RequestBody addRestaurantDTO aRestaurantDTO)  {
+        Restaurant restaurant = restaurantService.addRestaurant(aRestaurantDTO);
+        return new ResponseEntity<Restaurant>(restaurant, HttpStatus.OK);
     }
 }

@@ -56,7 +56,7 @@ public class RestaurantService {
  
         return menuItemRepository.findAll(example);
     }
-    public ResponseEntity<Restaurant> addRestaurant(addRestaurantDTO a) {
+    public Restaurant addRestaurant(addRestaurantDTO a) {
 
         UserDetail userDetail = UserDetail.builder()
                 .firstName(a.getOwnerFirstName())

@@ -21,7 +21,7 @@ public class addRestaurantDTO {
     @NotBlank(message = "First Name is Mandatory")
     private String ownerLastName;
 
-    @NotBlank(message = "Email is Mandatory")
+    @Email(message = "Email should be valid")
     private String ownerEmail;
 
     @NotBlank(message = "Street is Mandatory")
@@ -30,9 +30,8 @@ public class addRestaurantDTO {
     @NotBlank(message = "City is Mandatory")
     private String city;
 
-    @NotBlank(message = "Zip Code is Mandatory")
     @Digits(integer=5, fraction=0)
-    private String zip;
+    private Integer zip;
 
     @NotBlank(message = "State is Mandatory")
     @Size(min =2, max =2, message= "State must consist of only 2 characters.")
