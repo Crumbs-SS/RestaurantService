@@ -62,7 +62,7 @@ public class MockUtil {
                 .state("AA")
                 .name("test")
                 .priceRating(1)
-                .categories(categories)
+                .categories(null)
                 .build();
 
         return temp;

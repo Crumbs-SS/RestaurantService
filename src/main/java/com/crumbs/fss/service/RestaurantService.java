@@ -87,24 +87,26 @@ public class RestaurantService {
         List<Category> categories = a.getCategories();
         List<RestaurantCategory> restaurantCategories = new ArrayList<>();
 
-        categories.forEach(category -> {
-            categoryRepository.save(category);
+        if(categories!= null) {
+            categories.forEach(category -> {
+                categoryRepository.save(category);
 
-            RestaurantCategoryID resCatID = RestaurantCategoryID.builder()
-                    .restaurantId(restaurant.getId())
-                    .categoryId(category.getName())
-                    .build();
+                RestaurantCategoryID resCatID = RestaurantCategoryID.builder()
+                        .restaurantId(restaurant.getId())
+                        .categoryId(category.getName())
+                        .build();
 
-            //create restaurant category
-            RestaurantCategory resCat = RestaurantCategory.builder()
-                    .id(resCatID)
-                    .restaurant(restaurant)
-                    .category(category)
-                    .build();
+                //create restaurant category
+                RestaurantCategory resCat = RestaurantCategory.builder()
+                        .id(resCatID)
+                        .restaurant(restaurant)
+                        .category(category)
+                        .build();
 
-            restaurantCategories.add(resCat);
+                restaurantCategories.add(resCat);
 
-        });
+            });
+        }
         restaurant.setCategories(restaurantCategories);
 
 
