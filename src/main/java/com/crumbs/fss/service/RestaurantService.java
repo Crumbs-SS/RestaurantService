@@ -7,6 +7,7 @@ import com.crumbs.fss.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,7 +50,7 @@ public class RestaurantService {
     public List<MenuItem> getMenuItemsByQuery(String query){
         ExampleMatcher customExampleMatcher = ExampleMatcher.matchingAny()
                 .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
-                .withIgnorePaths("price", "quantity", "description");
+                .withIgnorePaths("price", "description");
 
         Example<MenuItem> example = Example.of(MenuItem.builder().name(query).build(),
                 customExampleMatcher);
@@ -117,4 +118,13 @@ public class RestaurantService {
         return restaurantRepository.save(restaurant);
 
     }
+    public ResponseEntity deleteRestaurant(Long id){
+        restaurantRepository.deleteById(id);
+        return new ResponseEntity("Delete Successfull", HttpStatus.OK);
+    }
+    public ResponseEntity updateRestaurant(Restaurant restaurant){
+        return new ResponseEntity("Delete Successfull", HttpStatus.OK);
+    }
+
+
 }

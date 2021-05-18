@@ -35,7 +35,6 @@ public class MockUtil {
         MenuItem menuItem = MenuItem.builder()
                 .name("MenuItem-"+i)
                 .price(bd.floatValue())
-                .quantity(20)
                 .description("Menu Item for a restaurant")
                 .build();
 

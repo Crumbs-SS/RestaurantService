@@ -39,4 +39,9 @@ public class MainController {
         Restaurant restaurant = restaurantService.addRestaurant(aRestaurantDTO);
         return new ResponseEntity<Restaurant>(restaurant, HttpStatus.OK);
     }
+
+    @DeleteMapping("/restaurants/{id}")
+    public ResponseEntity deleteRestaurant(@PathVariable Long id){
+        return restaurantService.deleteRestaurant(id);
+    }
 }
