@@ -130,16 +130,14 @@ public class RestaurantService {
         locationRepository.deleteById(temp.getLocation().getId());
         restaurantOwnerRepository.deleteById(temp.getRestaurantOwner().getId());
         userDetailRepository.deleteById(temp.getRestaurantOwner().getUserDetail().getId());
+
         if(menuItemRepository.findById(id).isPresent())
             menuItemRepository.deleteById(id);
     }
-    public Restaurant updateRestaurant(Long id, RestaurantDTO restaurantDTO){
-        //throw exception if null
-        Restaurant temp = restaurantRepository.findById(id).get();
-        
-
-
-       return restaurantRepository.save(temp);
+    public Restaurant updateRestaurant(Restaurant restaurant){
+        userDetailRepository.save(restaurant.getRestaurantOwner().getUserDetail());
+        locationRepository.save(restaurant.getLocation());
+       return restaurantRepository.save(restaurant);
     }
 
 

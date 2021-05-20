@@ -35,9 +35,9 @@ public class MainController {
     public Restaurant addRestaurant(@Valid @RequestBody RestaurantDTO aRestaurantDTO)  {
         return restaurantService.addRestaurant(aRestaurantDTO);
     }
-    @PutMapping("/restaurants/{id}")
-    public Restaurant updateRestaurant(@PathVariable Long id, @Valid @RequestBody RestaurantDTO restaurantDTO){
-        return restaurantService.updateRestaurant(id,restaurantDTO);
+    @PutMapping("/restaurants")
+    public Restaurant updateRestaurant(@Valid @RequestBody Restaurant restaurant){
+        return restaurantService.updateRestaurant(restaurant);
     }
 
     @DeleteMapping("/restaurants/{id}")
