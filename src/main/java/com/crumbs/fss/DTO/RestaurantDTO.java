@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.UniqueElements;
 
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.*;
 import java.util.List;
 
@@ -13,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class addRestaurantDTO {
+public class RestaurantDTO {
 
     @NotBlank(message = "First Name is Mandatory")
     private String ownerFirstName;

@@ -1,9 +1,8 @@
 package com.crumbs.fss;
 
-import com.crumbs.fss.DTO.addRestaurantDTO;
+import com.crumbs.fss.DTO.RestaurantDTO;
 import com.crumbs.fss.entity.*;
 import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -46,12 +45,12 @@ public class MockUtil {
         return Example.of(getMenuItem(1));
     }
 
-    public static addRestaurantDTO getAddRestaurantDTO(){
+    public static RestaurantDTO getAddRestaurantDTO(){
         Category cat = new Category();
         List<Category> categories = new ArrayList<>();
         categories.add(cat);
 
-        addRestaurantDTO temp = addRestaurantDTO.builder()
+        RestaurantDTO temp = RestaurantDTO.builder()
                 .ownerFirstName("test")
                 .ownerLastName("test")
                 .ownerEmail("test@gmail.com")
@@ -66,8 +65,8 @@ public class MockUtil {
 
         return temp;
     }
-    public static addRestaurantDTO getInvalidAddRestaurantDTO(){
-        addRestaurantDTO temp = addRestaurantDTO.builder()
+    public static RestaurantDTO getInvalidAddRestaurantDTO(){
+        RestaurantDTO temp = RestaurantDTO.builder()
                 .ownerFirstName(null)
                 .ownerLastName("test")
                 .ownerEmail("test@gmail.com")

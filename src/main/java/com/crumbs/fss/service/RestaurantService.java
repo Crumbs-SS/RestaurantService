@@ -1,18 +1,17 @@
 package com.crumbs.fss.service;
 
-import com.crumbs.fss.DTO.addRestaurantDTO;
+import com.crumbs.fss.DTO.RestaurantDTO;
+import com.crumbs.fss.ExceptionHandling.DuplicateEmailException;
+import com.crumbs.fss.ExceptionHandling.DuplicateLocationException;
 import com.crumbs.fss.entity.*;
 import com.crumbs.fss.entity.MenuItem;
 import com.crumbs.fss.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +56,10 @@ public class RestaurantService {
  
         return menuItemRepository.findAll(example);
     }
-    public Restaurant addRestaurant(addRestaurantDTO a) {
+    public Restaurant addRestaurant(RestaurantDTO a) {
+
+        if(userDetailRepository.findUserByEmail(a.getOwnerEmail())!=null)
+            throw new DuplicateEmailException();
 
         UserDetail userDetail = UserDetail.builder()
                 .firstName(a.getOwnerFirstName())
@@ -68,6 +70,9 @@ public class RestaurantService {
         RestaurantOwner restaurantOwner = RestaurantOwner.builder()
                 .userDetail(userDetail)
                 .build();
+
+        if(locationRepository.findLocationByStreet(a.getStreet())!=null)
+            throw new DuplicateLocationException();
 
         Location location = Location.builder()
                 .street(a.getStreet())
@@ -118,12 +123,23 @@ public class RestaurantService {
         return restaurantRepository.save(restaurant);
 
     }
-    public ResponseEntity deleteRestaurant(Long id){
+    public void deleteRestaurant(Long id){
+
+        Restaurant temp = restaurantRepository.findById(id).get();
         restaurantRepository.deleteById(id);
-        return new ResponseEntity("Delete Successfull", HttpStatus.OK);
+        locationRepository.deleteById(temp.getLocation().getId());
+        restaurantOwnerRepository.deleteById(temp.getRestaurantOwner().getId());
+        userDetailRepository.deleteById(temp.getRestaurantOwner().getUserDetail().getId());
+        if(menuItemRepository.findById(id).isPresent())
+            menuItemRepository.deleteById(id);
     }
-    public ResponseEntity updateRestaurant(Restaurant restaurant){
-        return new ResponseEntity("Delete Successfull", HttpStatus.OK);
+    public Restaurant updateRestaurant(Long id, RestaurantDTO restaurantDTO){
+        //throw exception if null
+        Restaurant temp = restaurantRepository.findById(id).get();
+        
+
+
+       return restaurantRepository.save(temp);
     }
 
 
