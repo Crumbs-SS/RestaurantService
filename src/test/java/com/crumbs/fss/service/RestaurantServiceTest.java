@@ -8,6 +8,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageRequest;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,20 +16,22 @@ import static org.junit.jupiter.api.Assertions.*;
 class RestaurantServiceTest {
 
     @Autowired
-    RestaurantService restaurantService;
+    RestaurantSearchService restaurantSearchService;
 
     @MockBean RestaurantRepository restaurantRepository;
     @MockBean MenuItemRepository menuItemRepository;
 
     @Test
     void getRestaurants() {
-        Mockito.when(restaurantRepository.findAll()).thenReturn(MockUtil.getRestaurants());
-        assertEquals(restaurantService.getRestaurants().size(), MockUtil.getRestaurants().size());
+        PageRequest pageRequest = PageRequest.of(0, 5);
+        Mockito.when(restaurantRepository.findAll(pageRequest)).thenReturn(MockUtil.getPageRestaurants());
+        assertEquals(restaurantSearchService.getRestaurants(pageRequest).get().getNumberOfElements(), MockUtil.getRestaurants().size());
     }
 
     @Test
     void getMenuItems() {
-        Mockito.when(menuItemRepository.findAll()).thenReturn(MockUtil.getMenuItems());
-        assertEquals(restaurantService.getMenuItems().size(), MockUtil.getMenuItems().size());
+        PageRequest pageRequest = PageRequest.of(0, 20);
+        Mockito.when(menuItemRepository.findAll(pageRequest)).thenReturn(MockUtil.getMenuItemsPage());
+        assertEquals(restaurantSearchService.getMenuItems(pageRequest).get().getNumberOfElements(), MockUtil.getMenuItems().size());
     }
 }
