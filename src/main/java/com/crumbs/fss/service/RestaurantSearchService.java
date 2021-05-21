@@ -7,10 +7,12 @@ import com.crumbs.fss.repository.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(rollbackFor = { Exception.class })
@@ -20,33 +22,57 @@ public class RestaurantSearchService {
     @Autowired
     MenuItemRepository menuItemRepository;
 
-    public List<Restaurant> getRestaurants(){
-        return restaurantRepository.findAll();
+    public Optional<Page<Restaurant>> getRestaurants(PageRequest pageRequest){
+        try{
+            return Optional.of(restaurantRepository.findAll(pageRequest));
+        }catch(Exception e){
+            e.printStackTrace();
+            return Optional.empty();
+        }
     }
 
-    public List<MenuItem> getMenuItems(){
-        return menuItemRepository.findAll();
+    public Optional<Page<MenuItem>> getMenuItems(PageRequest pageRequest){
+        try{
+            return Optional.of(menuItemRepository.findAll(pageRequest));
+        } catch(Exception e){
+            e.printStackTrace();
+            return Optional.empty();
+        }
     }
 
-    public List<Restaurant> getRestaurants(String query){
-        ExampleMatcher customExampleMatcher = ExampleMatcher.matchingAny()
-                .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
-                .withIgnorePaths("address");
+    public Optional<Page<Restaurant>> getRestaurants(String query, PageRequest pageRequest) {
+        try {
+            ExampleMatcher customExampleMatcher = ExampleMatcher.matchingAny()
+                    .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                    .withIgnorePaths("address");
 
-        Example<Restaurant> example = Example.of(Restaurant.builder().name(query).build(),
-                customExampleMatcher);
+            Example<Restaurant> example = Example.of(Restaurant.builder().name(query).build(),
+                    customExampleMatcher);
 
-        return restaurantRepository.findAll(example);
+            return Optional.of(restaurantRepository.findAll(example, pageRequest));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Optional.empty();
+        }
     }
 
-    public List<MenuItem> getMenuItems(String query){
-        ExampleMatcher customExampleMatcher = ExampleMatcher.matchingAny()
-                .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
-                .withIgnorePaths("price", "quantity", "description");
+    public Optional<Page<MenuItem>> getMenuItems(String query, PageRequest pageRequest){
+        try{
+            ExampleMatcher customExampleMatcher = ExampleMatcher.matchingAny()
+                    .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
+                    .withIgnorePaths("price", "quantity", "description");
 
-        Example<MenuItem> example = Example.of(MenuItem.builder().name(query).build(),
-                customExampleMatcher);
+            Example<MenuItem> example = Example.of(MenuItem.builder().name(query).build(),
+                    customExampleMatcher);
 
-        return menuItemRepository.findAll(example);
+            return Optional.of(menuItemRepository.findAll(example, pageRequest));
+        } catch (Exception e){
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
+    public PageRequest getPageRequest(Integer pageNumber, Integer elements){
+        return PageRequest.of(pageNumber, elements);
     }
 }

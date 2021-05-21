@@ -4,11 +4,14 @@ import com.crumbs.fss.entity.MenuItem;
 import com.crumbs.fss.entity.Restaurant;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class MockUtil {
 
@@ -21,12 +24,28 @@ public class MockUtil {
         return restaurants;
     }
 
+    public static Page<Restaurant> getPageRestaurants(){
+        return new PageImpl<>(getRestaurants());
+    }
+
+    public static Optional<Page<Restaurant>> getPageRestaurantsOptional(){
+        return Optional.of(getPageRestaurants());
+    }
+
     public static List<MenuItem> getMenuItems(){
         List<MenuItem> menuItems = new ArrayList<>();
         for (int i = 0; i < 20; i++)
             menuItems.add(getMenuItem(i));
 
         return menuItems;
+    }
+
+    public static Page<MenuItem> getMenuItemsPage(){
+        return new PageImpl<>(getMenuItems());
+    }
+
+    public static Optional<Page<MenuItem>> getMenuItemsPageOptional(){
+        return Optional.of(getMenuItemsPage());
     }
 
     public static MenuItem getMenuItem(int i){

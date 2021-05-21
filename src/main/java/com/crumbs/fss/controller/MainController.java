@@ -6,9 +6,11 @@ import com.crumbs.fss.entity.Restaurant;
 import com.crumbs.fss.service.RestaurantSearchService;
 import com.crumbs.fss.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -21,27 +23,51 @@ public class MainController {
     RestaurantSearchService restaurantSearchService;
 
     @GetMapping("/restaurants")
-    public List<Restaurant> getRestaurants(){
-        return restaurantSearchService.getRestaurants();
+    public ResponseEntity<Page<Restaurant>> getRestaurants(@RequestParam(required = false) Integer page) {
+        page = (page!=null) ? page : 0;
+        PageRequest pageRequest = restaurantSearchService.getPageRequest(page, 5);
+        Page<Restaurant> restaurants = restaurantSearchService.getRestaurants(pageRequest)
+                .orElseThrow();
+
+        return new ResponseEntity<>(restaurants, HttpStatus.OK);
     }
 
     @GetMapping("/restaurants/search")
-    public List<Restaurant> getRestaurants(@RequestParam(required = false) String query){
-        return restaurantSearchService.getRestaurants(query);
+    public ResponseEntity<Page<Restaurant>> getRestaurants(
+            @RequestParam(required = false) String query,
+            @RequestParam(required = false) Integer page
+            ){
+        page = (page!=null) ? page : 0;
+        PageRequest pageRequest = restaurantSearchService.getPageRequest(page, 5);
+        Page<Restaurant> restaurants = restaurantSearchService.getRestaurants(query, pageRequest)
+                .orElseThrow();
+
+        return new ResponseEntity<>(restaurants, HttpStatus.OK);
     }
 
     @GetMapping("/menuitems")
-    public List<MenuItem> getMenuItems(){
-        return restaurantSearchService.getMenuItems();
+    public ResponseEntity<Page<MenuItem>> getMenuItems(@RequestParam(required = false) Integer page) {
+        page = (page!=null) ? page : 0;
+        PageRequest pageRequest = restaurantSearchService.getPageRequest(page, 10);
+        Page<MenuItem> menuItems = restaurantSearchService.getMenuItems(pageRequest)
+                .orElseThrow();
+
+        return new ResponseEntity<>(menuItems, HttpStatus.OK);
     }
 
     @GetMapping("/menuitems/search")
-    public List<MenuItem> getMenuItems(@RequestParam(required = false) String query){
-        return restaurantSearchService.getMenuItems(query);
+    public ResponseEntity<Page<MenuItem>> getMenuItems(
+            @RequestParam(required = false) String query,
+            @RequestParam(required = false) Integer page){
+        page = (page!=null) ? page : 0;
+        PageRequest pageRequest = restaurantSearchService.getPageRequest(page, 10);
+        Page<MenuItem> menuItems = restaurantSearchService.getMenuItems(query, pageRequest)
+                .orElseThrow();
+        return new ResponseEntity<>(menuItems, HttpStatus.OK);
     }
 
     @PostMapping("/restaurants")
-    public Restaurant addRestaurant(@RequestBody addRestaurantDTO aRestaurantDTO)  {
+    public Restaurant addRestaurant(@RequestBody addRestaurantDTO aRestaurantDTO){
        return restaurantService.addRestaurant(aRestaurantDTO);
     }
 }
