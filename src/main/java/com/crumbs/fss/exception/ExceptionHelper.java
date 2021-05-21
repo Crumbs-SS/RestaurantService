@@ -11,7 +11,6 @@ public class ExceptionHelper {
 
     @ExceptionHandler(value = { MethodArgumentTypeMismatchException.class })
     public ResponseEntity<Object> handleException(MethodArgumentTypeMismatchException ex){
-        System.out.println(ex.getMessage());
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
