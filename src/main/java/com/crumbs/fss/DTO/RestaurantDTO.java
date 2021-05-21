@@ -18,13 +18,14 @@ import java.util.List;
 public class RestaurantDTO {
 
     @NotBlank(message = "First Name is Mandatory")
-    private String ownerFirstName;
+    private String firstName;
 
-    @NotBlank(message = "First Name is Mandatory")
-    private String ownerLastName;
+    @NotBlank(message = "Last Name is Mandatory")
+    private String lastName;
 
     @Email(message = "Email should be valid")
-    private String ownerEmail;
+    @NotBlank(message = "Email is Mandatory")
+    private String email;
 
     @NotBlank(message = "Street is Mandatory")
     private String street;

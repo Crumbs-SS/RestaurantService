@@ -58,13 +58,13 @@ public class RestaurantService {
     }
     public Restaurant addRestaurant(RestaurantDTO a) {
 
-        if(userDetailRepository.findUserByEmail(a.getOwnerEmail())!=null)
+        if(userDetailRepository.findUserByEmail(a.getEmail())!=null)
             throw new DuplicateEmailException();
 
         UserDetail userDetail = UserDetail.builder()
-                .firstName(a.getOwnerFirstName())
-                .lastName(a.getOwnerLastName())
-                .email(a.getOwnerEmail())
+                .firstName(a.getFirstName())
+                .lastName(a.getLastName())
+                .email(a.getEmail())
                 .build();
 
         RestaurantOwner restaurantOwner = RestaurantOwner.builder()
@@ -130,6 +130,11 @@ public class RestaurantService {
         locationRepository.deleteById(temp.getLocation().getId());
         restaurantOwnerRepository.deleteById(temp.getRestaurantOwner().getId());
         userDetailRepository.deleteById(temp.getRestaurantOwner().getUserDetail().getId());
+
+//        List<MenuItem> menu = temp.getMenuItems();
+//        menu.forEach(item -> {
+//
+//        });
 
         if(menuItemRepository.findById(id).isPresent())
             menuItemRepository.deleteById(id);

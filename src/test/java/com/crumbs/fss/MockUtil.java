@@ -51,9 +51,9 @@ public class MockUtil {
         categories.add(cat);
 
         RestaurantDTO temp = RestaurantDTO.builder()
-                .ownerFirstName("test")
-                .ownerLastName("test")
-                .ownerEmail("test@gmail.com")
+                .firstName("test")
+                .lastName("test")
+                .email("test@gmail.com")
                 .street("test")
                 .city("test")
                 .zip(00000)
@@ -67,9 +67,9 @@ public class MockUtil {
     }
     public static RestaurantDTO getInvalidAddRestaurantDTO(){
         RestaurantDTO temp = RestaurantDTO.builder()
-                .ownerFirstName(null)
-                .ownerLastName("test")
-                .ownerEmail("test@gmail.com")
+                .firstName(null)
+                .lastName("test")
+                .email("test@gmail.com")
                 .street("test")
                 .city("test")
                 .zip(1111111)
