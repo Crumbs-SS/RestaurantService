@@ -23,9 +23,11 @@ public class MainController {
     RestaurantSearchService restaurantSearchService;
 
     @GetMapping("/restaurants")
-    public ResponseEntity<Page<Restaurant>> getRestaurants(@RequestParam(required = false) Integer page) {
-        page = (page!=null) ? page : 0;
-        PageRequest pageRequest = restaurantSearchService.getPageRequest(page, 5);
+    public ResponseEntity<Page<Restaurant>> getRestaurants(
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "id") String sortBy
+    ) {
+        PageRequest pageRequest = restaurantSearchService.getPageRequest(page, 5, sortBy);
         Page<Restaurant> restaurants = restaurantSearchService.getRestaurants(pageRequest)
                 .orElseThrow();
 
@@ -35,10 +37,10 @@ public class MainController {
     @GetMapping("/restaurants/search")
     public ResponseEntity<Page<Restaurant>> getRestaurants(
             @RequestParam(required = false) String query,
-            @RequestParam(required = false) Integer page
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "id") String sortBy
             ){
-        page = (page!=null) ? page : 0;
-        PageRequest pageRequest = restaurantSearchService.getPageRequest(page, 5);
+        PageRequest pageRequest = restaurantSearchService.getPageRequest(page, 5, sortBy);
         Page<Restaurant> restaurants = restaurantSearchService.getRestaurants(query, pageRequest)
                 .orElseThrow();
 
@@ -46,9 +48,11 @@ public class MainController {
     }
 
     @GetMapping("/menuitems")
-    public ResponseEntity<Page<MenuItem>> getMenuItems(@RequestParam(required = false) Integer page) {
-        page = (page!=null) ? page : 0;
-        PageRequest pageRequest = restaurantSearchService.getPageRequest(page, 10);
+    public ResponseEntity<Page<MenuItem>> getMenuItems(
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "id") String sortBy
+    ) {
+        PageRequest pageRequest = restaurantSearchService.getPageRequest(page, 10, sortBy);
         Page<MenuItem> menuItems = restaurantSearchService.getMenuItems(pageRequest)
                 .orElseThrow();
 
@@ -58,9 +62,10 @@ public class MainController {
     @GetMapping("/menuitems/search")
     public ResponseEntity<Page<MenuItem>> getMenuItems(
             @RequestParam(required = false) String query,
-            @RequestParam(required = false) Integer page){
-        page = (page!=null) ? page : 0;
-        PageRequest pageRequest = restaurantSearchService.getPageRequest(page, 10);
+            @RequestParam(defaultValue = "0") Integer page,
+            @RequestParam(defaultValue = "id") String sortBy
+    ){
+        PageRequest pageRequest = restaurantSearchService.getPageRequest(page, 10, sortBy);
         Page<MenuItem> menuItems = restaurantSearchService.getMenuItems(query, pageRequest)
                 .orElseThrow();
         return new ResponseEntity<>(menuItems, HttpStatus.OK);

@@ -5,10 +5,7 @@ import com.crumbs.fss.entity.Restaurant;
 import com.crumbs.fss.repository.MenuItemRepository;
 import com.crumbs.fss.repository.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,7 +69,7 @@ public class RestaurantSearchService {
         }
     }
 
-    public PageRequest getPageRequest(Integer pageNumber, Integer elements){
-        return PageRequest.of(pageNumber, elements);
+    public PageRequest getPageRequest(Integer pageNumber, Integer elements, String sortBy){
+        return PageRequest.of(pageNumber, elements, Sort.by(sortBy));
     }
 }
