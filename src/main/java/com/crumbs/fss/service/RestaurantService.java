@@ -31,38 +31,9 @@ public class RestaurantService {
     @Autowired RestaurantOwnerRepository restaurantOwnerRepository;
     @Autowired UserDetailRepository userDetailRepository;
 
-    public List<Restaurant> getRestaurants(){
-        return restaurantRepository.findAll();
-    }
-
-    public List<MenuItem> getMenuItems(){
-        return menuItemRepository.findAll();
-    }
-
-    public List<Restaurant> getRestaurantsByQuery(String query){
-        ExampleMatcher customExampleMatcher = ExampleMatcher.matchingAny()
-                .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
-                .withIgnorePaths("address");
-
-        Example<Restaurant> example = Example.of(Restaurant.builder().name(query).build(),
-                customExampleMatcher);
-
-        return restaurantRepository.findAll(example);
-    }
-
-    public List<MenuItem> getMenuItemsByQuery(String query){
-        ExampleMatcher customExampleMatcher = ExampleMatcher.matchingAny()
-                .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
-                .withIgnorePaths("price", "description");
-
-        Example<MenuItem> example = Example.of(MenuItem.builder().name(query).build(),
-                customExampleMatcher);
- 
-        return menuItemRepository.findAll(example);
-    }
     public Restaurant addRestaurant(addRestaurantDTO a) {
 
-        if(userDetailRepository.findUserByEmail(a.getEmail())!=null)
+         if(userDetailRepository.findUserByEmail(a.getEmail())!=null)
             throw new DuplicateEmailException();
 
         if(locationRepository.findLocationByStreet(a.getStreet())!=null)

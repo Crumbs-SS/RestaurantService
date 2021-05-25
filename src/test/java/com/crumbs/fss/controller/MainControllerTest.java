@@ -2,14 +2,20 @@ package com.crumbs.fss.controller;
 
 import com.crumbs.fss.DTO.addRestaurantDTO;
 import com.crumbs.fss.MockUtil;
+import com.crumbs.fss.entity.MenuItem;
+import com.crumbs.fss.entity.Restaurant;
+import com.crumbs.fss.service.RestaurantSearchService;
 import com.crumbs.fss.service.RestaurantService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -34,28 +40,36 @@ class MainControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
+    RestaurantSearchService restaurantSearchService;
+
+    @MockBean
     RestaurantService restaurantService;
 
     @Test
     void getRestaurants() throws Exception {
-        Mockito.when(restaurantService.getRestaurants())
-                .thenReturn(MockUtil.getRestaurants());
+
+        PageRequest pageRequest = PageRequest.of(0, 5);
+
+        Mockito.when(restaurantSearchService.getPageRequest(0, 5)).thenReturn(pageRequest);
+        Mockito.when(restaurantSearchService.getRestaurants(pageRequest))
+                .thenReturn(MockUtil.getPageRestaurantsOptional());
 
         mockMvc.perform(get("/restaurants")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(MockUtil.getRestaurants().size())));
+                .andExpect(status().isOk());
     }
 
     @Test
     void getMenuItems() throws Exception {
-        Mockito.when(restaurantService.getMenuItems())
-                .thenReturn(MockUtil.getMenuItems());
+        PageRequest pageRequest = PageRequest.of(0, 20);
+
+        Mockito.when(restaurantSearchService.getPageRequest(0, 10)).thenReturn(pageRequest);
+        Mockito.when(restaurantSearchService.getMenuItems(pageRequest))
+                .thenReturn(MockUtil.getMenuItemsPageOptional());
 
         mockMvc.perform(get("/menuItems")
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(MockUtil.getMenuItems().size())));
+                .andExpect(status().isOk());
     }
 
     @Test
