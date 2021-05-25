@@ -1,6 +1,7 @@
 package com.crumbs.fss;
 
 import com.crumbs.fss.DTO.addRestaurantDTO;
+import com.crumbs.fss.DTO.updateRestaurantDTO;
 import com.crumbs.fss.entity.*;
 import org.springframework.data.domain.Example;
 
@@ -65,6 +66,26 @@ public class MockUtil {
 
         return temp;
     }
+    public static updateRestaurantDTO getUpdateRestaurantDTO(){
+//        Category cat = new Category();
+//        List<Category> categories = new ArrayList<>();
+//        categories.add(cat);
+
+        updateRestaurantDTO temp = updateRestaurantDTO.builder()
+                .firstName("test")
+                .lastName("test")
+                .email("test@gmail.com")
+                .street("test")
+                .city("test")
+                .zip(00000)
+                .state("AA")
+                .name("test")
+                .priceRating(1)
+                .categories(null)
+                .build();
+
+        return temp;
+    }
     public static addRestaurantDTO getInvalidAddRestaurantDTO(){
         addRestaurantDTO temp = addRestaurantDTO.builder()
                 .firstName(null)
@@ -84,6 +105,12 @@ public class MockUtil {
     public static Restaurant getRestaurant(){
         Restaurant temp = new Restaurant();
         temp.setId(1L);
+        temp.setLocation(new Location());
+        temp.getLocation().setId(1l);
+        temp.setRestaurantOwner(new RestaurantOwner());
+        temp.getRestaurantOwner().setId(1l);
+        temp.getRestaurantOwner().setUserDetail(new UserDetail());
+        temp.getRestaurantOwner().getUserDetail().setId(1l);
         return temp;
     }
     public static UserDetail getUserDetail() {

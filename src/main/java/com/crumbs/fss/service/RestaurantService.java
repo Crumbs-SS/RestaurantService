@@ -60,10 +60,13 @@ public class RestaurantService {
  
         return menuItemRepository.findAll(example);
     }
-    public ResponseEntity addRestaurant(addRestaurantDTO a) {
+    public Restaurant addRestaurant(addRestaurantDTO a) {
 
         if(userDetailRepository.findUserByEmail(a.getEmail())!=null)
             throw new DuplicateEmailException();
+
+        if(locationRepository.findLocationByStreet(a.getStreet())!=null)
+            throw new DuplicateLocationException();
 
         UserDetail userDetail = UserDetail.builder()
                 .firstName(a.getFirstName())
@@ -74,9 +77,6 @@ public class RestaurantService {
         RestaurantOwner restaurantOwner = RestaurantOwner.builder()
                 .userDetail(userDetail)
                 .build();
-
-        if(locationRepository.findLocationByStreet(a.getStreet())!=null)
-            throw new DuplicateLocationException();
 
         Location location = Location.builder()
                 .street(a.getStreet())
@@ -123,9 +123,9 @@ public class RestaurantService {
         restaurantOwnerRepository.save(restaurantOwner);
         locationRepository.save(location);
 
-        return new ResponseEntity<>("Add Successful", HttpStatus.OK);
+        return restaurantRepository.save(restaurant);
     }
-    public ResponseEntity deleteRestaurant(Long id){
+    public Restaurant deleteRestaurant(Long id){
 
         if(restaurantRepository.findById(id).isEmpty())
             throw new EntityNotFoundException();
@@ -138,9 +138,9 @@ public class RestaurantService {
         if(menuItemRepository.findById(id).isPresent())
             menuItemRepository.deleteById(id);
 
-        return new ResponseEntity("Delete Successful", HttpStatus.OK);
+        return temp;
     }
-    public ResponseEntity updateRestaurant(Long id, updateRestaurantDTO updateRestaurantDTO){
+    public Restaurant updateRestaurant(Long id, updateRestaurantDTO updateRestaurantDTO){
 
         if(restaurantRepository.findById(id).isEmpty())
             throw new EntityNotFoundException();
@@ -221,9 +221,7 @@ public class RestaurantService {
         }
         temp.setCategories(restaurantCategories);
 
-        restaurantRepository.save(temp);
-
-        return new ResponseEntity("Update Successful", HttpStatus.OK);
+        return restaurantRepository.save(temp);
     }
 
 

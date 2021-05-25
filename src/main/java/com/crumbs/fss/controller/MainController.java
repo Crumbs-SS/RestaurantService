@@ -34,15 +34,15 @@ public class MainController {
     }
 
     @PostMapping("/restaurants")
-    public ResponseEntity addRestaurant(@Valid @RequestBody addRestaurantDTO aAddRestaurantDTO)  {
+    public Restaurant addRestaurant(@Valid @RequestBody addRestaurantDTO aAddRestaurantDTO)  {
         return restaurantService.addRestaurant(aAddRestaurantDTO);
     }
     @PutMapping("/restaurants/{id}")
-    public ResponseEntity updateRestaurant(@PathVariable Long id, @Valid @RequestBody updateRestaurantDTO restaurantDTO){
+    public Restaurant updateRestaurant(@PathVariable Long id, @Valid @RequestBody updateRestaurantDTO restaurantDTO){
         return restaurantService.updateRestaurant(id, restaurantDTO);
     }
     @DeleteMapping("/restaurants/{id}")
-    public ResponseEntity deleteRestaurant(@PathVariable Long id){
-       return restaurantService.deleteRestaurant(id);
+    public Restaurant deleteRestaurant(@PathVariable Long id){
+        return restaurantService.deleteRestaurant(id);
     }
 }
