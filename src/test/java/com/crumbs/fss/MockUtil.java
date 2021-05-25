@@ -1,7 +1,8 @@
 package com.crumbs.fss;
 
-import com.crumbs.fss.entity.MenuItem;
-import com.crumbs.fss.entity.Restaurant;
+import com.crumbs.fss.DTO.addRestaurantDTO;
+import com.crumbs.fss.DTO.updateRestaurantDTO;
+import com.crumbs.fss.entity.*;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
@@ -54,15 +55,94 @@ public class MockUtil {
         MenuItem menuItem = MenuItem.builder()
                 .name("MenuItem-"+i)
                 .price(bd.floatValue())
-                .quantity(20)
                 .description("Menu Item for a restaurant")
                 .build();
 
         return menuItem;
     }
 
+
     public static Example<MenuItem> getMenuItemExample(){
         return Example.of(getMenuItem(1));
     }
 
+    public static addRestaurantDTO getAddRestaurantDTO(){
+        Category cat = new Category();
+        List<Category> categories = new ArrayList<>();
+        categories.add(cat);
+
+        addRestaurantDTO temp = addRestaurantDTO.builder()
+                .firstName("test")
+                .lastName("test")
+                .email("test@gmail.com")
+                .street("test")
+                .city("test")
+                .zip(00000)
+                .state("AA")
+                .name("test")
+                .priceRating(1)
+                .categories(null)
+                .build();
+
+        return temp;
+    }
+    public static updateRestaurantDTO getUpdateRestaurantDTO(){
+//        Category cat = new Category();
+//        List<Category> categories = new ArrayList<>();
+//        categories.add(cat);
+
+        updateRestaurantDTO temp = updateRestaurantDTO.builder()
+                .firstName("test")
+                .lastName("test")
+                .email("test@gmail.com")
+                .street("test")
+                .city("test")
+                .zip(00000)
+                .state("AA")
+                .name("test")
+                .priceRating(1)
+                .categories(null)
+                .build();
+
+        return temp;
+    }
+    public static addRestaurantDTO getInvalidAddRestaurantDTO(){
+        addRestaurantDTO temp = addRestaurantDTO.builder()
+                .firstName(null)
+                .lastName("test")
+                .email("test@gmail.com")
+                .street("test")
+                .city("test")
+                .zip(1111111)
+                .state("AA")
+                .name("test")
+                .priceRating(1)
+                .categories(null)
+                .build();
+
+        return temp;
+    }
+    public static Restaurant getRestaurant(){
+        Restaurant temp = new Restaurant();
+        temp.setId(1L);
+        temp.setLocation(new Location());
+        temp.getLocation().setId(1l);
+        temp.setRestaurantOwner(new RestaurantOwner());
+        temp.getRestaurantOwner().setId(1l);
+        temp.getRestaurantOwner().setUserDetail(new UserDetail());
+        temp.getRestaurantOwner().getUserDetail().setId(1l);
+        return temp;
+    }
+    public static UserDetail getUserDetail() {
+        return null;
+    }
+    public static RestaurantOwner getRestaurantOwner(){
+        return null;
+    }
+    public static Category getCategory(){
+        return null;
+    }
+    public static RestaurantCategory getRestaurantCategory(){
+        return null;
+    }
 }

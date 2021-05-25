@@ -21,6 +21,7 @@ public class UserDetail {
 
     private String firstName;
     private String lastName;
+    @Column(unique = true)
     private String email;
 
     @JsonIgnore

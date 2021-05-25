@@ -1,6 +1,7 @@
 package com.crumbs.fss.controller;
 
 import com.crumbs.fss.DTO.addRestaurantDTO;
+import com.crumbs.fss.DTO.updateRestaurantDTO;
 import com.crumbs.fss.entity.MenuItem;
 import com.crumbs.fss.entity.Restaurant;
 import com.crumbs.fss.service.RestaurantSearchService;
@@ -10,10 +11,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @CrossOrigin
+@Validated
 public class MainController {
 
     @Autowired
@@ -67,7 +73,15 @@ public class MainController {
     }
 
     @PostMapping("/restaurants")
-    public Restaurant addRestaurant(@RequestBody addRestaurantDTO aRestaurantDTO){
-       return restaurantService.addRestaurant(aRestaurantDTO);
+    public Restaurant addRestaurant(@Valid @RequestBody addRestaurantDTO aAddRestaurantDTO)  {
+        return restaurantService.addRestaurant(aAddRestaurantDTO);
+    }
+    @PutMapping("/restaurants/{id}")
+    public Restaurant updateRestaurant(@PathVariable Long id, @Valid @RequestBody updateRestaurantDTO restaurantDTO){
+        return restaurantService.updateRestaurant(id, restaurantDTO);
+    }
+    @DeleteMapping("/restaurants/{id}")
+    public Restaurant deleteRestaurant(@PathVariable Long id){
+        return restaurantService.deleteRestaurant(id);
     }
 }
