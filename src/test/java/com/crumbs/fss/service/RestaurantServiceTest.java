@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.ResponseEntity;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -56,7 +57,7 @@ class RestaurantServiceTest {
         Mockito.when(restaurantCategoryRepository.save(MockUtil.getRestaurantCategory())).
                 thenReturn(MockUtil.getRestaurantCategory());
 
-        Restaurant temp = restaurantService.addRestaurant(MockUtil.getAddRestaurantDTO());
+        ResponseEntity temp = restaurantService.addRestaurant(MockUtil.getAddRestaurantDTO());
         assertThat(temp).isNotNull();
         verify(restaurantRepository).save(any(Restaurant.class));
 

@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RestaurantDTO {
+public class addRestaurantDTO {
 
     @NotBlank(message = "First Name is Mandatory")
     private String firstName;

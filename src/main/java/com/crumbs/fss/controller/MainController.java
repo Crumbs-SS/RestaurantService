@@ -1,10 +1,12 @@
 package com.crumbs.fss.controller;
 
-import com.crumbs.fss.DTO.RestaurantDTO;
+import com.crumbs.fss.DTO.addRestaurantDTO;
+import com.crumbs.fss.DTO.updateRestaurantDTO;
 import com.crumbs.fss.entity.MenuItem;
 import com.crumbs.fss.entity.Restaurant;
 import com.crumbs.fss.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,16 +34,15 @@ public class MainController {
     }
 
     @PostMapping("/restaurants")
-    public Restaurant addRestaurant(@Valid @RequestBody RestaurantDTO aRestaurantDTO)  {
-        return restaurantService.addRestaurant(aRestaurantDTO);
+    public ResponseEntity addRestaurant(@Valid @RequestBody addRestaurantDTO aAddRestaurantDTO)  {
+        return restaurantService.addRestaurant(aAddRestaurantDTO);
     }
-    @PutMapping("/restaurants")
-    public Restaurant updateRestaurant(@Valid @RequestBody Restaurant restaurant){
-        return restaurantService.updateRestaurant(restaurant);
+    @PutMapping("/restaurants/{id}")
+    public ResponseEntity updateRestaurant(@PathVariable Long id, @Valid @RequestBody updateRestaurantDTO restaurantDTO){
+        return restaurantService.updateRestaurant(id, restaurantDTO);
     }
-
     @DeleteMapping("/restaurants/{id}")
-    public void deleteRestaurant(@PathVariable Long id){
-        restaurantService.deleteRestaurant(id);
+    public ResponseEntity deleteRestaurant(@PathVariable Long id){
+       return restaurantService.deleteRestaurant(id);
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
@@ -41,6 +42,18 @@ public class ExceptionHelper extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
+    @ExceptionHandler(EntityNotFoundException.class)
+    protected ResponseEntity<Object> handleEntityNotFound(
+            EntityNotFoundException ex, HttpHeaders headers,
+            HttpStatus status, WebRequest request) {
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDate.now());
+        body.put("status", status.value());
+        body.put("message", ex.getCause());
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
+
 
     @ExceptionHandler(DuplicateEmailException.class)
     public ResponseEntity<Object> handleDuplicateEmail(){
