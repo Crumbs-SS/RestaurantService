@@ -71,6 +71,10 @@ public class MainController {
                 .orElseThrow();
         return new ResponseEntity<>(menuItems, HttpStatus.OK);
     }
+    @GetMapping("/restaurantss")
+    public List<Restaurant> getAllRestaurants(){
+        return restaurantService.getAllRestaurants();
+    }
 
     @PostMapping("/restaurants")
     public Restaurant addRestaurant(@Valid @RequestBody addRestaurantDTO aAddRestaurantDTO)  {

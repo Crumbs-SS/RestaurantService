@@ -31,6 +31,10 @@ public class RestaurantService {
     @Autowired RestaurantOwnerRepository restaurantOwnerRepository;
     @Autowired UserDetailRepository userDetailRepository;
 
+    public List<Restaurant> getAllRestaurants(){
+        return restaurantRepository.findAll();
+    }
+
     public Restaurant addRestaurant(addRestaurantDTO a) {
 
          if(userDetailRepository.findUserByEmail(a.getEmail())!=null)
