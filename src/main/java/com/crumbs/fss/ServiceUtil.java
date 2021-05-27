@@ -53,7 +53,6 @@ public class ServiceUtil {
             MenuItem menuItem = MenuItem.builder()
                     .name("MenuItem-"+i)
                     .price(price)
-                    .quantity(20)
                     .description("Menu Item for a restaurant")
                     .build();
 

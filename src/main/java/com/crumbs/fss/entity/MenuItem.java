@@ -25,6 +25,5 @@ public class MenuItem {
 
     private String name;
     private Float price;
-    private Integer quantity;
     private String description;
 }

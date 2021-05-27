@@ -17,8 +17,9 @@ public class Location {
     private Long id;
 
     private String city;
-    private String zipCode;
+    private Integer zipCode;
     private String state;
+    @Column(unique = true)
     private String street;
 
     @OneToMany(mappedBy = "location", cascade = CascadeType.ALL)
