@@ -63,30 +63,37 @@ public class MainController {
         return new ResponseEntity<>(restaurants, HttpStatus.OK);
     }
 
-    @GetMapping("/menuitems")
+    @GetMapping("/restaurants/{restaurantId}/menuitems")
     public ResponseEntity<Page<MenuItem>> getMenuItems(
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "id") String sortBy,
-            @RequestParam(defaultValue = "asc") String order
+            @RequestParam(defaultValue = "asc") String order,
+            @PathVariable Long restaurantId
     ) {
         PageRequest pageRequest = restaurantSearchService.getPageRequest(page, 10, sortBy, order);
-        Page<MenuItem> menuItems = restaurantSearchService.getMenuItems(pageRequest)
+        Page<MenuItem> menuItems = restaurantSearchService.getMenuItems(pageRequest, restaurantId)
                 .orElseThrow();
 
         return new ResponseEntity<>(menuItems, HttpStatus.OK);
     }
 
-    @GetMapping("/menuitems/search")
-    public ResponseEntity<Page<MenuItem>> getMenuItems(
+    @GetMapping("/restaurants/menuitems")
+    public ResponseEntity<Page<Restaurant>> getMenuItems(
             @RequestParam(required = false) String query,
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "id") String sortBy,
-            @RequestParam(defaultValue = "asc") String order
+            @RequestParam(defaultValue = "asc") String order,
+            @RequestParam(required = false) String[] filter
+
     ){
-        PageRequest pageRequest = restaurantSearchService.getPageRequest(page, 10, sortBy, order);
-        Page<MenuItem> menuItems = restaurantSearchService.getMenuItems(query, pageRequest)
+        PageRequest pageRequest = restaurantSearchService.getPageRequest(page, 5, sortBy, order);
+        Page<Restaurant> restaurants = restaurantSearchService.getMenuItems(query, pageRequest)
                 .orElseThrow();
-        return new ResponseEntity<>(menuItems, HttpStatus.OK);
+
+        if (filter != null && filter.length > 0)
+            restaurants = restaurantSearchService.filterResults(filter, pageRequest);
+
+        return new ResponseEntity<>(restaurants, HttpStatus.OK);
     }
     @GetMapping("/restaurantss")
     public List<Restaurant> getAllRestaurants(){

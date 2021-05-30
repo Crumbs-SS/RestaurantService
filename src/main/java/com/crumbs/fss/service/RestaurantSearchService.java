@@ -26,19 +26,39 @@ public class RestaurantSearchService {
     @Autowired
     CategoryRepository categoryRepository;
 
-    public Optional<Page<Restaurant>> getRestaurants(PageRequest pageRequest){
-        try{
-            return Optional.of(restaurantRepository.findAll(pageRequest));
-        }catch(Exception e){
-            e.printStackTrace();
-            return Optional.empty();
-        }
-    }
+
 
     public Optional<Page<MenuItem>> getMenuItems(PageRequest pageRequest){
         try{
             return Optional.of(menuItemRepository.findAll(pageRequest));
         } catch(Exception e){
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
+    public Optional<Page<MenuItem>> getMenuItems(PageRequest pageRequest, Long restaurantId){
+        try{
+            return Optional.of(menuItemRepository.findAllByRestaurantId(restaurantId, pageRequest));
+        } catch(Exception e){
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
+    public Optional<Page<Restaurant>> getMenuItems(String query, PageRequest pageRequest){
+        try{
+            return Optional.of(restaurantRepository.findRestaurantsByMenuItem(query, pageRequest));
+        } catch (Exception e){
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
+    public Optional<Page<Restaurant>> getRestaurants(PageRequest pageRequest){
+        try{
+            return Optional.of(restaurantRepository.findAll(pageRequest));
+        }catch(Exception e){
             e.printStackTrace();
             return Optional.empty();
         }
@@ -60,17 +80,10 @@ public class RestaurantSearchService {
         }
     }
 
-    public Optional<Page<MenuItem>> getMenuItems(String query, PageRequest pageRequest){
+    public Optional<List<Category>> getCategories(){
         try{
-            ExampleMatcher customExampleMatcher = ExampleMatcher.matchingAny()
-                    .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
-                    .withIgnorePaths("price", "quantity", "description");
-
-            Example<MenuItem> example = Example.of(MenuItem.builder().name(query).build(),
-                    customExampleMatcher);
-
-            return Optional.of(menuItemRepository.findAll(example, pageRequest));
-        } catch (Exception e){
+            return Optional.of(categoryRepository.findAll());
+        }catch(Exception e){
             e.printStackTrace();
             return Optional.empty();
         }
@@ -79,15 +92,6 @@ public class RestaurantSearchService {
     public PageRequest getPageRequest(Integer pageNumber, Integer elements, String sortBy, String order){
         Sort by = (order.equals("asc")) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         return sortBy!=null ? PageRequest.of(pageNumber, elements, by) : PageRequest.of(pageNumber, elements);
-    }
-
-    public Optional<List<Category>> getCategories(){
-        try{
-            return Optional.of(categoryRepository.findAll());
-        }catch(Exception e){
-            e.printStackTrace();
-            return Optional.empty();
-        }
     }
 
     public Page<Restaurant> filterResults(String[] filter, PageRequest pageRequest) {
