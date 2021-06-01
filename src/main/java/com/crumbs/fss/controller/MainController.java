@@ -92,7 +92,10 @@ public class MainController {
     public List<Restaurant> getAllRestaurants(){
         return restaurantService.getAllRestaurants();
     }
-
+    @GetMapping("/restaurants/{id}")
+    public List<Restaurant> getRestaurantOwnerRestaurants(@PathVariable Long id){
+        return restaurantService.getRestaurantOwnerRestaurants(id);
+    }
     @GetMapping("/categories")
     public ResponseEntity<List<Category>> getCategories(){
         List<Category> categories = restaurantSearchService.getCategories().orElseThrow();

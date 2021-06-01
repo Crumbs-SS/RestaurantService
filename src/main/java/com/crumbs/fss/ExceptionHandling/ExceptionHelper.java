@@ -64,14 +64,21 @@ public class ExceptionHelper extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleDuplicateEmail(){
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
-        body.put("message", " Restaurant owner with this email was already found in database. Please enter new e-mail address.");
+        body.put("message", "email");
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
     @ExceptionHandler(DuplicateLocationException.class)
     public ResponseEntity<Object> handleDuplicateLocation(){
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
-        body.put("message", " This location already exists in database. Please enter new location.");
+        body.put("message", "location");
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+    }
+    @ExceptionHandler(DuplicateFieldException.class)
+    public ResponseEntity<Object> handleDuplicateField(DuplicateFieldException ex){
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("message", ex.duplicates);
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 

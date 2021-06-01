@@ -3,6 +3,7 @@ package com.crumbs.fss.service;
 import com.crumbs.fss.DTO.addRestaurantDTO;
 import com.crumbs.fss.DTO.updateRestaurantDTO;
 import com.crumbs.fss.ExceptionHandling.DuplicateEmailException;
+import com.crumbs.fss.ExceptionHandling.DuplicateFieldException;
 import com.crumbs.fss.ExceptionHandling.DuplicateLocationException;
 import com.crumbs.fss.entity.*;
 import com.crumbs.fss.entity.MenuItem;
@@ -36,13 +37,20 @@ public class RestaurantService {
         return restaurantRepository.findAll();
     }
 
+    public List<Restaurant> getRestaurantOwnerRestaurants(Long id){
+        return restaurantRepository.findRestaurantByOwnerID(id);
+    }
+
     public Restaurant addRestaurant(addRestaurantDTO a) {
 
+        String duplicates="";
          if(userDetailRepository.findUserByEmail(a.getEmail())!=null)
-            throw new DuplicateEmailException();
+            duplicates+="email";
 
         if(locationRepository.findLocationByStreet(a.getStreet())!=null)
-            throw new DuplicateLocationException();
+            duplicates+="location";
+        if(duplicates!="")
+            throw new DuplicateFieldException(duplicates);
 
         UserDetail userDetail = UserDetail.builder()
                 .firstName(a.getFirstName())
@@ -50,9 +58,13 @@ public class RestaurantService {
                 .email(a.getEmail())
                 .build();
 
+        userDetailRepository.save(userDetail);
+
         RestaurantOwner restaurantOwner = RestaurantOwner.builder()
                 .userDetail(userDetail)
                 .build();
+
+        restaurantOwnerRepository.save(restaurantOwner);
 
         Location location = Location.builder()
                 .street(a.getStreet())
@@ -60,6 +72,8 @@ public class RestaurantService {
                 .zipCode(a.getZip())
                 .state(a.getState())
                 .build();
+
+        locationRepository.save(location);
 
         Restaurant temp = Restaurant.builder()
                 .name(a.getName())
@@ -71,12 +85,13 @@ public class RestaurantService {
         Restaurant restaurant = restaurantRepository.save(temp);
         Long restaurantID = restaurant.getId();
 
+        restaurantCategoryRepository.deleteByRestaurantID(restaurantID);
+
         List<Category> categories = a.getCategories();
         List<RestaurantCategory> restaurantCategories = new ArrayList<>();
 
-        if(categories!= null) {
+        if(categories!= null && !categories.isEmpty()) {
             categories.forEach(category -> {
-                categoryRepository.save(category);
 
                 RestaurantCategoryID resCatID = RestaurantCategoryID.builder()
                         .restaurantId(restaurantID)
@@ -91,16 +106,10 @@ public class RestaurantService {
                         .build();
 
                 restaurantCategories.add(resCat);
-
             });
+            restaurant.setCategories(restaurantCategories);
         }
-        restaurant.setCategories(restaurantCategories);
-
-        userDetailRepository.save(userDetail);
-        restaurantOwnerRepository.save(restaurantOwner);
-        locationRepository.save(location);
-
-        return restaurantRepository.save(restaurant);
+        return restaurantRepository.save(temp);
     }
     public Restaurant deleteRestaurant(Long id){
 
@@ -118,11 +127,14 @@ public class RestaurantService {
 
         Restaurant temp = restaurantRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
 
+        String duplicates="";
         if(userDetailRepository.findUserByEmail(updateRestaurantDTO.getEmail())!=null)
-            throw new DuplicateEmailException();
+            duplicates+="email";
 
         if(locationRepository.findLocationByStreet(updateRestaurantDTO.getStreet())!=null)
-            throw new DuplicateLocationException();
+            duplicates+="location";
+        if(duplicates!="")
+            throw new DuplicateFieldException(duplicates);
 
         // Update User Details
         String firstName = updateRestaurantDTO.getFirstName();
@@ -163,9 +175,9 @@ public class RestaurantService {
         if(priceRating!= null)
             temp.setPriceRating(priceRating);
 
-//        //delete old categories
-//        if(!temp.getCategories().isEmpty())
-//            restaurantCategoryRepository.deleteByRestaurantID(id);
+        //delete old categories
+        if(!temp.getCategories().isEmpty())
+            restaurantCategoryRepository.deleteByRestaurantID(id);
 
         //replace with new ones
         List<Category> newCategories = updateRestaurantDTO.getCategories();
@@ -173,7 +185,7 @@ public class RestaurantService {
 
         if(newCategories!= null && !newCategories.isEmpty()) {
             newCategories.forEach(category -> {
-                categoryRepository.save(category);
+                restaurantCategoryRepository.insertRestaurantCategory(category.getName(),temp.getId());
 
                 RestaurantCategoryID resCatID = RestaurantCategoryID.builder()
                         .restaurantId(temp.getId())
@@ -188,12 +200,9 @@ public class RestaurantService {
                         .build();
 
                 restaurantCategories.add(resCat);
-
             });
+            temp.setCategories(restaurantCategories);
         }
-        temp.setCategories(restaurantCategories);
-
-
 
         return restaurantRepository.save(temp);
     }
