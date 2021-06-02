@@ -41,7 +41,7 @@ public class MainController {
         Page<Restaurant> restaurants = restaurantSearchService.getRestaurants(pageRequest)
                 .orElseThrow();
         if (filter != null && filter.length > 0)
-            restaurants = restaurantSearchService.filterResults(filter, pageRequest);
+            restaurants = restaurantSearchService.filterRestaurantResults(null, filter, pageRequest);
 
         return new ResponseEntity<>(restaurants, HttpStatus.OK);
     }
@@ -54,11 +54,12 @@ public class MainController {
             @RequestParam(defaultValue = "asc") String order,
             @RequestParam(required = false) String[] filter
     ){
+
         PageRequest pageRequest = restaurantSearchService.getPageRequest(page, 5, sortBy, order);
         Page<Restaurant> restaurants = restaurantSearchService.getRestaurants(query, pageRequest)
                 .orElseThrow();
         if (filter != null && filter.length > 0)
-            restaurants = restaurantSearchService.filterResults(filter, pageRequest);
+            restaurants = restaurantSearchService.filterRestaurantResults(query, filter, pageRequest);
 
         return new ResponseEntity<>(restaurants, HttpStatus.OK);
     }
@@ -86,12 +87,13 @@ public class MainController {
             @RequestParam(required = false) String[] filter
 
     ){
+
         PageRequest pageRequest = restaurantSearchService.getPageRequest(page, 5, sortBy, order);
         Page<Restaurant> restaurants = restaurantSearchService.getMenuItems(query, pageRequest)
                 .orElseThrow();
 
         if (filter != null && filter.length > 0)
-            restaurants = restaurantSearchService.filterResults(filter, pageRequest);
+            restaurants = restaurantSearchService.filterMenuRestaurantResults(query, filter, pageRequest);
 
         return new ResponseEntity<>(restaurants, HttpStatus.OK);
     }
