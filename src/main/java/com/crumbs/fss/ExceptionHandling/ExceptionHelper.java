@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
@@ -73,6 +74,11 @@ public class ExceptionHelper extends ResponseEntityExceptionHandler {
         body.put("timestamp", LocalDateTime.now());
         body.put("message", " This location already exists in database. Please enter new location.");
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<Object> handleException(NoSuchElementException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(value = { Exception.class })

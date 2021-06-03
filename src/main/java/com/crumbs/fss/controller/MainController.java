@@ -29,6 +29,12 @@ public class MainController {
     @Autowired
     RestaurantSearchService restaurantSearchService;
 
+    @GetMapping("/restaurants/{restaurantId}")
+    public ResponseEntity<Restaurant> getRestaurant(@PathVariable Long restaurantId){
+        Restaurant restaurant = restaurantSearchService.findRestaurant(restaurantId).orElseThrow();
+        return new ResponseEntity<>(restaurant, HttpStatus.OK);
+    }
+
     @GetMapping("/restaurants")
     public ResponseEntity<Page<Restaurant>> getRestaurants(
             @RequestParam(defaultValue = "0") Integer page,

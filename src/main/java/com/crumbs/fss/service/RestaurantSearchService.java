@@ -71,6 +71,15 @@ public class RestaurantSearchService {
         }
     }
 
+    public Optional<Restaurant> findRestaurant(Long restaurantId){
+        try{
+            return Optional.of(restaurantRepository.findById(restaurantId).orElseThrow());
+        } catch(Exception e){
+            e.printStackTrace();
+            return Optional.empty();
+        }
+    }
+
     public Optional<List<Category>> getCategories(){
         try{
             return Optional.of(categoryRepository.findAll());
