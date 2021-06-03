@@ -118,8 +118,10 @@ class RestaurantServiceTest {
                 .thenReturn(null);
         Mockito.when(locationRepository.findLocationByStreet(anyString()))
                 .thenReturn(null);
+        Mockito.when(restaurantRepository.save(ArgumentMatchers.any(Restaurant.class))).
+                thenReturn(MockUtil.getRestaurant());
         restaurantService.updateRestaurant(MockUtil.getRestaurant().getId(), MockUtil.getUpdateRestaurantDTO());
-        verify(restaurantRepository).save(MockUtil.getRestaurant());
+        verify(restaurantRepository).save(any(Restaurant.class));
         verify(restaurantRepository).findById(MockUtil.getRestaurant().getId());
     }
     @Test

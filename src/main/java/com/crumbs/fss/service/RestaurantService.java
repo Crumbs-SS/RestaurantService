@@ -3,23 +3,16 @@ package com.crumbs.fss.service;
 import com.crumbs.fss.DTO.addRestaurantDTO;
 import com.crumbs.fss.DTO.updateRestaurantDTO;
 import com.crumbs.fss.ExceptionHandling.DuplicateEmailException;
-import com.crumbs.fss.ExceptionHandling.DuplicateFieldException;
 import com.crumbs.fss.ExceptionHandling.DuplicateLocationException;
 import com.crumbs.fss.entity.*;
-import com.crumbs.fss.entity.MenuItem;
 import com.crumbs.fss.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(rollbackFor = { Exception.class })
@@ -43,14 +36,11 @@ public class RestaurantService {
 
     public Restaurant addRestaurant(addRestaurantDTO a) {
 
-        String duplicates="";
          if(userDetailRepository.findUserByEmail(a.getEmail())!=null)
-            duplicates+="email";
+            throw new DuplicateEmailException();
 
         if(locationRepository.findLocationByStreet(a.getStreet())!=null)
-            duplicates+="location";
-        if(duplicates!="")
-            throw new DuplicateFieldException(duplicates);
+            throw new DuplicateLocationException();
 
         UserDetail userDetail = UserDetail.builder()
                 .firstName(a.getFirstName())
@@ -83,33 +73,14 @@ public class RestaurantService {
                 .build();
 
         Restaurant restaurant = restaurantRepository.save(temp);
-        Long restaurantID = restaurant.getId();
-
-        restaurantCategoryRepository.deleteByRestaurantID(restaurantID);
 
         List<Category> categories = a.getCategories();
-        List<RestaurantCategory> restaurantCategories = new ArrayList<>();
-
         if(categories!= null && !categories.isEmpty()) {
             categories.forEach(category -> {
-
-                RestaurantCategoryID resCatID = RestaurantCategoryID.builder()
-                        .restaurantId(restaurantID)
-                        .categoryId(category.getName())
-                        .build();
-
-                //create restaurant category
-                RestaurantCategory resCat = RestaurantCategory.builder()
-                        .id(resCatID)
-                        .restaurant(restaurant)
-                        .category(category)
-                        .build();
-
-                restaurantCategories.add(resCat);
+                restaurantCategoryRepository.insertRestaurantCategory(category.getName(), restaurant.getId());
             });
-            restaurant.setCategories(restaurantCategories);
         }
-        return restaurantRepository.save(temp);
+        return restaurant;
     }
     public Restaurant deleteRestaurant(Long id){
 
@@ -127,14 +98,11 @@ public class RestaurantService {
 
         Restaurant temp = restaurantRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
 
-        String duplicates="";
         if(userDetailRepository.findUserByEmail(updateRestaurantDTO.getEmail())!=null)
-            duplicates+="email";
+            throw new DuplicateEmailException();
 
         if(locationRepository.findLocationByStreet(updateRestaurantDTO.getStreet())!=null)
-            duplicates+="location";
-        if(duplicates!="")
-            throw new DuplicateFieldException(duplicates);
+            throw new DuplicateLocationException();
 
         // Update User Details
         String firstName = updateRestaurantDTO.getFirstName();
@@ -181,29 +149,11 @@ public class RestaurantService {
 
         //replace with new ones
         List<Category> newCategories = updateRestaurantDTO.getCategories();
-        List<RestaurantCategory> restaurantCategories = new ArrayList<>();
-
         if(newCategories!= null && !newCategories.isEmpty()) {
             newCategories.forEach(category -> {
                 restaurantCategoryRepository.insertRestaurantCategory(category.getName(),temp.getId());
-
-                RestaurantCategoryID resCatID = RestaurantCategoryID.builder()
-                        .restaurantId(temp.getId())
-                        .categoryId(category.getName())
-                        .build();
-
-                //create restaurant category
-                RestaurantCategory resCat = RestaurantCategory.builder()
-                        .id(resCatID)
-                        .restaurant(temp)
-                        .category(category)
-                        .build();
-
-                restaurantCategories.add(resCat);
             });
-            temp.setCategories(restaurantCategories);
         }
-
         return restaurantRepository.save(temp);
     }
 
