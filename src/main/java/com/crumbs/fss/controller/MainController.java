@@ -101,7 +101,8 @@ public class MainController {
     public List<Restaurant> getAllRestaurants(){
         return restaurantService.getAllRestaurants();
     }
-    @GetMapping("/restaurants/{id}")
+
+    @GetMapping("/owner/{id}/restaurants")
     public List<Restaurant> getRestaurantOwnerRestaurants(@PathVariable Long id){
         return restaurantService.getRestaurantOwnerRestaurants(id);
     }
