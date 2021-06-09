@@ -102,10 +102,6 @@ public class MainController {
         return restaurantService.getAllRestaurants();
     }
 
-    @GetMapping("/owner/{id}/restaurants")
-    public List<Restaurant> getRestaurantOwnerRestaurants(@PathVariable Long id){
-        return restaurantService.getRestaurantOwnerRestaurants(id);
-    }
     @GetMapping("/categories")
     public ResponseEntity<List<Category>> getCategories(){
         List<Category> categories = restaurantSearchService.getCategories().orElseThrow();
@@ -124,7 +120,9 @@ public class MainController {
     public Restaurant deleteRestaurant(@PathVariable Long id){
         return restaurantService.deleteRestaurant(id);
     }
+    @GetMapping("/owner/{id}/restaurants")
+    public List<Restaurant> getRestaurantOwnerRestaurants(@PathVariable Long id){
+        return restaurantService.getRestaurantOwnerRestaurants(id);
+    }
 
-    @DeleteMapping("/restaurantOwnerRestaurant/{id}")
-    public Restaurant deleteRestaurantOwnerRestaurant(@PathVariable Long id){return restaurantService.deleteRestaurantOwnerRestaurant(id);}
 }

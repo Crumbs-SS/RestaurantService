@@ -87,23 +87,12 @@ public class RestaurantService {
         Restaurant temp = restaurantRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
         restaurantRepository.deleteById(id);
         locationRepository.deleteById(temp.getLocation().getId());
-        restaurantOwnerRepository.deleteById(temp.getRestaurantOwner().getId());
-        userDetailRepository.deleteById(temp.getRestaurantOwner().getUserDetail().getId());
         if(menuItemRepository.findById(id).isPresent())
             menuItemRepository.deleteById(id);
 
         return temp;
     }
-    public Restaurant deleteRestaurantOwnerRestaurant(Long id){
-        Restaurant temp = restaurantRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
-        restaurantRepository.deleteById(id);
-        locationRepository.deleteById(temp.getLocation().getId());
-        if(menuItemRepository.findById(id).isPresent())
-            menuItemRepository.deleteById(id);
 
-        return temp;
-
-    }
     public Restaurant updateRestaurant(Long id, updateRestaurantDTO updateRestaurantDTO){
 
         Restaurant temp = restaurantRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
