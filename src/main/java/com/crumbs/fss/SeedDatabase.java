@@ -2,12 +2,10 @@ package com.crumbs.fss;
 
 import com.crumbs.fss.entity.*;
 import com.crumbs.fss.repository.*;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
@@ -20,17 +18,20 @@ public class SeedDatabase implements ApplicationRunner {
     private final LocationRepository locationRepository;
     private final MenuItemRepository menuItemRepository;
     private final RestaurantCategoryRepository restaurantCategoryRepository;
+    private final CategoryRepository categoryRepository;
 
     @Autowired
     SeedDatabase(RestaurantRepository restaurantRepository, UserDetailRepository userDetailRepository,
                  RestaurantOwnerRepository ownerRepository, LocationRepository locationRepository,
-                 MenuItemRepository menuItemRepository, RestaurantCategoryRepository restaurantCategoryRepository){
+                 MenuItemRepository menuItemRepository, RestaurantCategoryRepository restaurantCategoryRepository,
+                 CategoryRepository categoryRepository){
         this.restaurantRepository = restaurantRepository;
         this.userDetailRepository = userDetailRepository;
         this.ownerRepository = ownerRepository;
         this.locationRepository = locationRepository;
         this.menuItemRepository = menuItemRepository;
         this.restaurantCategoryRepository = restaurantCategoryRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
@@ -41,6 +42,28 @@ public class SeedDatabase implements ApplicationRunner {
         RestaurantOwner restaurantOwner;
         Location location;
         Location location2;
+        Category cat;
+
+        cat = Category.builder().name("American").build();
+        categoryRepository.save(cat);
+        cat = Category.builder().name("Burger").build();
+        categoryRepository.save(cat);
+        cat = Category.builder().name("Japanese").build();
+        categoryRepository.save(cat);
+        cat = Category.builder().name("French").build();
+        categoryRepository.save(cat);
+        cat = Category.builder().name("Italian").build();
+        categoryRepository.save(cat);
+        cat = Category.builder().name("Pizza").build();
+        categoryRepository.save(cat);
+        cat = Category.builder().name("Chicken").build();
+        categoryRepository.save(cat);
+        cat = Category.builder().name("Burger").build();
+        categoryRepository.save(cat);
+        cat = Category.builder().name("Healthy").build();
+        categoryRepository.save(cat);
+        cat = Category.builder().name("Fine Dining").build();
+        categoryRepository.save(cat);
 
         userDetail = UserDetail.builder()
                 .firstName("Jonathan")

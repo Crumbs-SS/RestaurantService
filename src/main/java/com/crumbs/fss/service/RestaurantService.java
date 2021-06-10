@@ -9,9 +9,7 @@ import com.crumbs.fss.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,7 +18,6 @@ public class RestaurantService {
 
     @Autowired RestaurantRepository restaurantRepository;
     @Autowired MenuItemRepository menuItemRepository;
-    @Autowired CategoryRepository categoryRepository;
     @Autowired LocationRepository locationRepository;
     @Autowired RestaurantCategoryRepository restaurantCategoryRepository;
     @Autowired RestaurantOwnerRepository restaurantOwnerRepository;
@@ -74,17 +71,15 @@ public class RestaurantService {
 
         Restaurant restaurant = restaurantRepository.save(temp);
 
-        List<Category> categories = a.getCategories();
+        List<String> categories = a.getCategories();
         if(categories!= null && !categories.isEmpty()) {
-            categories.forEach(category -> {
-                restaurantCategoryRepository.insertRestaurantCategory(category.getName(), restaurant.getId());
-            });
+            categories.forEach(category -> restaurantCategoryRepository.insertRestaurantCategory(category, restaurant.getId()));
         }
         return restaurant;
     }
     public Restaurant deleteRestaurant(Long id){
 
-        Restaurant temp = restaurantRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+        Restaurant temp = restaurantRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         restaurantRepository.deleteById(id);
         locationRepository.deleteById(temp.getLocation().getId());
         if(menuItemRepository.findById(id).isPresent())
@@ -95,7 +90,7 @@ public class RestaurantService {
 
     public Restaurant updateRestaurant(Long id, updateRestaurantDTO updateRestaurantDTO){
 
-        Restaurant temp = restaurantRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+        Restaurant temp = restaurantRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 
         if(userDetailRepository.findUserByEmail(updateRestaurantDTO.getEmail())!=null)
             throw new DuplicateEmailException();
@@ -147,12 +142,17 @@ public class RestaurantService {
             restaurantCategoryRepository.deleteByRestaurantID(id);
 
         //replace with new ones
-        List<Category> newCategories = updateRestaurantDTO.getCategories();
+        List<String> newCategories = updateRestaurantDTO.getCategories();
         if(newCategories!= null && !newCategories.isEmpty()) {
             newCategories.forEach(category -> {
-                restaurantCategoryRepository.insertRestaurantCategory(category.getName(),temp.getId());
+            restaurantCategoryRepository.insertRestaurantCategory(category,temp.getId());
             });
         }
+
+        //update menu items
+        if(!temp.getMenuItems().isEmpty())
+            temp.setMenuItems(updateRestaurantDTO.getMenu());
+
         return restaurantRepository.save(temp);
     }
 
