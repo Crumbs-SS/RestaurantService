@@ -5,12 +5,18 @@ import com.crumbs.fss.DTO.updateRestaurantDTO;
 import com.crumbs.fss.ExceptionHandling.DuplicateEmailException;
 import com.crumbs.fss.ExceptionHandling.DuplicateLocationException;
 import com.crumbs.fss.entity.*;
+import com.crumbs.fss.entity.MenuItem;
 import com.crumbs.fss.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.CollectionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+
 import javax.persistence.EntityNotFoundException;
+import java.awt.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional(rollbackFor = { Exception.class })
@@ -92,10 +98,10 @@ public class RestaurantService {
 
         Restaurant temp = restaurantRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 
-        if(userDetailRepository.findUserByEmail(updateRestaurantDTO.getEmail())!=null)
+        if(updateRestaurantDTO.getEmail() != null && !updateRestaurantDTO.getEmail().equals(temp.getRestaurantOwner().getUserDetail().getEmail()) && userDetailRepository.findUserByEmail(updateRestaurantDTO.getEmail())!=null)
             throw new DuplicateEmailException();
 
-        if(locationRepository.findLocationByStreet(updateRestaurantDTO.getStreet())!=null)
+        if(updateRestaurantDTO.getStreet() != null && !updateRestaurantDTO.getStreet().equals(temp.getLocation().getStreet()) && locationRepository.findLocationByStreet(updateRestaurantDTO.getStreet())!=null)
             throw new DuplicateLocationException();
 
         // Update User Details
@@ -149,9 +155,22 @@ public class RestaurantService {
             });
         }
 
-        //update menu items
-        if(!temp.getMenuItems().isEmpty())
-            temp.setMenuItems(updateRestaurantDTO.getMenu());
+//        //update menu items
+        List<MenuItem> oldMenu = temp.getMenuItems();
+        List<MenuItem> newMenu = updateRestaurantDTO.getMenu();
+//
+        newMenu.forEach(item -> {
+            if(item.getId() == null)
+                item.setRestaurant(temp);
+
+        });
+        oldMenu.forEach( item ->{
+            if(!newMenu.contains(item))
+                menuItemRepository.delete(item);
+        });
+
+        temp.setMenuItems(newMenu);
+
 
         return restaurantRepository.save(temp);
     }

@@ -36,6 +36,16 @@ public class SeedDatabase implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
+
+        menuItemRepository.deleteAll();
+        restaurantCategoryRepository.deleteAll();
+        categoryRepository.deleteAll();
+        restaurantRepository.deleteAll();
+        locationRepository.deleteAll();
+        ownerRepository.deleteAll();
+        userDetailRepository.deleteAll();
+
+
         Restaurant restaurant;
         Restaurant restaurant2;
         UserDetail userDetail;
@@ -106,6 +116,7 @@ public class SeedDatabase implements ApplicationRunner {
                 .build();
 
         restaurant2 = Restaurant.builder()
+                .id(1L)
                 .restaurantOwner(restaurantOwner)
                 .location(location2)
                 .priceRating(2)
