@@ -38,6 +38,6 @@ public class updateRestaurantDTO {
     @Max(value = 3, message = "Price Rating is between 1 and 3")
     private Integer priceRating;
 
-    private List<Category> categories;
+    private List<String> categories;
     private List<MenuItem> menu;
 }

@@ -23,7 +23,6 @@ public class Restaurant {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonIgnoreProperties("restaurant")
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
     private List<MenuItem> menuItems = new ArrayList<>();
 
