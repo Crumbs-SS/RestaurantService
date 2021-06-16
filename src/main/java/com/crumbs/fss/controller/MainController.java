@@ -126,9 +126,15 @@ public class MainController {
     public Restaurant deleteRestaurant(@PathVariable Long id){
         return restaurantService.deleteRestaurant(id);
     }
+
     @GetMapping("/owner/{id}/restaurants")
     public List<Restaurant> getRestaurantOwnerRestaurants(@PathVariable Long id){
         return restaurantService.getRestaurantOwnerRestaurants(id);
+    }
+
+    @PutMapping("owner/requestDeleteRestaurant/{id}")
+    public void requestDeleteRestaurant(@PathVariable Long id){
+        restaurantService.requestDeleteRestaurant(id);
     }
 
 }

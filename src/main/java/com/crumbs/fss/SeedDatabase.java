@@ -113,6 +113,7 @@ public class SeedDatabase implements ApplicationRunner {
                 .priceRating(1)
                 .rating(5)
                 .name("KFC")
+                .status("is_active")
                 .build();
 
         restaurant2 = Restaurant.builder()
@@ -122,6 +123,7 @@ public class SeedDatabase implements ApplicationRunner {
                 .priceRating(2)
                 .rating(3)
                 .name("MCDonald's")
+                .status("is_active")
                 .build();
 
         restaurant = restaurantRepository.save(restaurant);

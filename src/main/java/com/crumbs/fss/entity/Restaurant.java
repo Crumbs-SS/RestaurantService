@@ -32,10 +32,10 @@ public class Restaurant {
 
     @ManyToOne
     private Location location;
-
     private String name;
     private Integer rating;
     private Integer priceRating;
+    private String status;
 
     @ManyToOne
     @JsonIgnoreProperties("restaurants")

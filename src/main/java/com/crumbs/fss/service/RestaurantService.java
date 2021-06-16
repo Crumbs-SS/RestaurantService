@@ -158,21 +158,32 @@ public class RestaurantService {
 //        //update menu items
         List<MenuItem> oldMenu = temp.getMenuItems();
         List<MenuItem> newMenu = updateRestaurantDTO.getMenu();
-//
-        newMenu.forEach(item -> {
-            if(item.getId() == null)
-                item.setRestaurant(temp);
 
-        });
-        oldMenu.forEach( item ->{
-            if(!newMenu.contains(item))
-                menuItemRepository.delete(item);
-        });
+        //only update menu if there were changes
+        if(newMenu != null && !newMenu.isEmpty()) {
 
-        temp.setMenuItems(newMenu);
+            //for newly added menu items, set restaurant to restaurant (otherwise restaurant_ID stays null on save)
+            newMenu.forEach(item -> {
+                if (item.getId() == null)
+                    item.setRestaurant(temp);
+            });
+            temp.setMenuItems(newMenu);
 
+            //for old menu items that are now deleted, delete them (they don't automatically delete on save)
+            if(oldMenu != null && !oldMenu.isEmpty()) {
+                oldMenu.forEach(item -> {
+                    if (!newMenu.contains(item))
+                        menuItemRepository.delete(item);
+                });
+            }
+        }
 
         return restaurantRepository.save(temp);
+    }
+    public void requestDeleteRestaurant(Long id){
+        Restaurant temp = restaurantRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        temp.setStatus("pending_delete");
+        restaurantRepository.save(temp);
     }
 
 
