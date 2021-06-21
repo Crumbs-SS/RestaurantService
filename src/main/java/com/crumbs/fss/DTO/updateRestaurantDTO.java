@@ -1,7 +1,6 @@
 package com.crumbs.fss.DTO;
 
-import com.crumbs.fss.entity.Category;
-import com.crumbs.fss.entity.MenuItem;
+import com.crumbs.lib.entity.MenuItem;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

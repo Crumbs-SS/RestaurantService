@@ -1,13 +1,13 @@
 package com.crumbs.fss;
 
-import com.crumbs.fss.entity.Category;
-import com.crumbs.fss.entity.MenuItem;
-import com.crumbs.fss.entity.Restaurant;
-import com.crumbs.fss.entity.RestaurantCategory;
-import com.crumbs.fss.repository.CategoryRepository;
-import com.crumbs.fss.repository.MenuItemRepository;
-import com.crumbs.fss.repository.RestaurantCategoryRepository;
-import com.crumbs.fss.repository.RestaurantRepository;
+import com.crumbs.lib.entity.Category;
+import com.crumbs.lib.entity.MenuItem;
+import com.crumbs.lib.entity.Restaurant;
+import com.crumbs.lib.entity.RestaurantCategory;
+import com.crumbs.lib.repository.CategoryRepository;
+import com.crumbs.lib.repository.MenuItemRepository;
+import com.crumbs.lib.repository.RestaurantCategoryRepository;
+import com.crumbs.lib.repository.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +18,14 @@ import java.util.Random;
 
 @Service
 public class ServiceUtil {
-    @Autowired CategoryRepository categoryRepository;
-    @Autowired RestaurantRepository restaurantRepository;
-    @Autowired MenuItemRepository menuItemRepository;
-    @Autowired RestaurantCategoryRepository restaurantCategoryRepository;
+    @Autowired
+    CategoryRepository categoryRepository;
+    @Autowired
+    RestaurantRepository restaurantRepository;
+    @Autowired
+    MenuItemRepository menuItemRepository;
+    @Autowired
+    RestaurantCategoryRepository restaurantCategoryRepository;
 
     public void makeRestaurants(){
         makeCategories();

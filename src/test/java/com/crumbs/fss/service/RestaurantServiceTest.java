@@ -3,8 +3,8 @@ package com.crumbs.fss.service;
 import com.crumbs.fss.ExceptionHandling.DuplicateEmailException;
 import com.crumbs.fss.ExceptionHandling.DuplicateLocationException;
 import com.crumbs.fss.MockUtil;
-import com.crumbs.fss.entity.*;
-import com.crumbs.fss.repository.*;
+import com.crumbs.lib.entity.*;
+import com.crumbs.lib.repository.*;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
@@ -33,11 +33,16 @@ class RestaurantServiceTest {
     @Autowired
     RestaurantService restaurantService;
 
-    @MockBean RestaurantRepository restaurantRepository;
-    @MockBean MenuItemRepository menuItemRepository;
-    @MockBean UserDetailRepository userDetailRepository;
-    @MockBean RestaurantOwnerRepository restaurantOwnerRepository;
-    @MockBean LocationRepository locationRepository;
+    @MockBean
+    RestaurantRepository restaurantRepository;
+    @MockBean
+    MenuItemRepository menuItemRepository;
+    @MockBean
+    UserDetailsRepository userDetailRepository;
+    @MockBean
+    RestaurantOwnerRepository restaurantOwnerRepository;
+    @MockBean
+    LocationRepository locationRepository;
     @MockBean CategoryRepository categoryRepository;
     @MockBean RestaurantCategoryRepository restaurantCategoryRepository;
 
@@ -60,9 +65,9 @@ class RestaurantServiceTest {
 
         Mockito.when(restaurantRepository.save(ArgumentMatchers.any(Restaurant.class))).
                 thenReturn(MockUtil.getRestaurant());
-        Mockito.when(userDetailRepository.save(ArgumentMatchers.any(UserDetail.class))).
+        Mockito.when(userDetailRepository.save(ArgumentMatchers.any(UserDetails.class))).
                 thenReturn(MockUtil.getUserDetail());
-        Mockito.when(restaurantOwnerRepository.save(ArgumentMatchers.any(RestaurantOwner.class))).
+        Mockito.when(restaurantOwnerRepository.save(ArgumentMatchers.any(Owner.class))).
                 thenReturn(MockUtil.getRestaurantOwner());
         Mockito.when(categoryRepository.save(ArgumentMatchers.any(Category.class))).
                 thenReturn(MockUtil.getCategory());

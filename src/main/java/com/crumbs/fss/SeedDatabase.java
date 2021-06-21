@@ -1,7 +1,8 @@
 package com.crumbs.fss;
 
-import com.crumbs.fss.entity.*;
-import com.crumbs.fss.repository.*;
+
+import com.crumbs.lib.entity.*;
+import com.crumbs.lib.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -14,14 +15,14 @@ public class SeedDatabase implements ApplicationRunner {
 
     private final RestaurantRepository restaurantRepository;
     private final RestaurantOwnerRepository ownerRepository;
-    private final UserDetailRepository userDetailRepository;
+    private final UserDetailsRepository userDetailRepository;
     private final LocationRepository locationRepository;
     private final MenuItemRepository menuItemRepository;
     private final RestaurantCategoryRepository restaurantCategoryRepository;
     private final CategoryRepository categoryRepository;
 
     @Autowired
-    SeedDatabase(RestaurantRepository restaurantRepository, UserDetailRepository userDetailRepository,
+    SeedDatabase(RestaurantRepository restaurantRepository, UserDetailsRepository userDetailRepository,
                  RestaurantOwnerRepository ownerRepository, LocationRepository locationRepository,
                  MenuItemRepository menuItemRepository, RestaurantCategoryRepository restaurantCategoryRepository,
                  CategoryRepository categoryRepository){
@@ -48,8 +49,8 @@ public class SeedDatabase implements ApplicationRunner {
 
         Restaurant restaurant;
         Restaurant restaurant2;
-        UserDetail userDetail;
-        RestaurantOwner restaurantOwner;
+        UserDetails userDetail;
+        Owner restaurantOwner;
         Location location;
         Location location2;
         Category cat;
@@ -75,7 +76,7 @@ public class SeedDatabase implements ApplicationRunner {
         cat = Category.builder().name("Fine Dining").build();
         categoryRepository.save(cat);
 
-        userDetail = UserDetail.builder()
+        userDetail = UserDetails.builder()
                 .firstName("Jonathan")
                 .lastName("Frey")
                 .email("jfrey2704@smoothstack.com")
@@ -83,8 +84,8 @@ public class SeedDatabase implements ApplicationRunner {
 
         userDetailRepository.save(userDetail);
 
-        restaurantOwner = RestaurantOwner.builder()
-                .userDetail(userDetail)
+        restaurantOwner = Owner.builder()
+                .userDetails(userDetail)
                 .build();
 
         ownerRepository.save(restaurantOwner);
@@ -107,13 +108,16 @@ public class SeedDatabase implements ApplicationRunner {
 
         locationRepository.save(location2);
 
+        RestaurantStatus status = new RestaurantStatus();
+        status.setStatus("active");
+
         restaurant = Restaurant.builder()
                 .restaurantOwner(restaurantOwner)
                 .location(location)
                 .priceRating(1)
                 .rating(5)
                 .name("KFC")
-                .status("is_active")
+                .restaurantStatus(status)
                 .build();
 
         restaurant2 = Restaurant.builder()
@@ -123,7 +127,7 @@ public class SeedDatabase implements ApplicationRunner {
                 .priceRating(2)
                 .rating(3)
                 .name("MCDonald's")
-                .status("is_active")
+                .restaurantStatus(status)
                 .build();
 
         restaurant = restaurantRepository.save(restaurant);

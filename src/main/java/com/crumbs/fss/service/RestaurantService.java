@@ -1,33 +1,32 @@
 package com.crumbs.fss.service;
-
 import com.crumbs.fss.DTO.addRestaurantDTO;
 import com.crumbs.fss.DTO.updateRestaurantDTO;
 import com.crumbs.fss.ExceptionHandling.DuplicateEmailException;
 import com.crumbs.fss.ExceptionHandling.DuplicateLocationException;
-import com.crumbs.fss.entity.*;
-import com.crumbs.fss.entity.MenuItem;
-import com.crumbs.fss.repository.*;
+import com.crumbs.lib.entity.*;
+import com.crumbs.lib.entity.MenuItem;
+import com.crumbs.lib.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.CollectionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-
 import javax.persistence.EntityNotFoundException;
-import java.awt.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional(rollbackFor = { Exception.class })
 public class RestaurantService {
 
-    @Autowired RestaurantRepository restaurantRepository;
-    @Autowired MenuItemRepository menuItemRepository;
-    @Autowired LocationRepository locationRepository;
-    @Autowired RestaurantCategoryRepository restaurantCategoryRepository;
-    @Autowired RestaurantOwnerRepository restaurantOwnerRepository;
-    @Autowired UserDetailRepository userDetailRepository;
+    @Autowired
+    RestaurantRepository restaurantRepository;
+    @Autowired
+    MenuItemRepository menuItemRepository;
+    @Autowired
+    LocationRepository locationRepository;
+    @Autowired
+    RestaurantCategoryRepository restaurantCategoryRepository;
+    @Autowired
+    RestaurantOwnerRepository restaurantOwnerRepository;
+    @Autowired UserDetailsRepository userDetailRepository;
 
     public List<Restaurant> getAllRestaurants(){
         return restaurantRepository.findAll();
@@ -45,7 +44,7 @@ public class RestaurantService {
         if(locationRepository.findLocationByStreet(a.getStreet())!=null)
             throw new DuplicateLocationException();
 
-        UserDetail userDetail = UserDetail.builder()
+        UserDetails userDetail = UserDetails.builder()
                 .firstName(a.getFirstName())
                 .lastName(a.getLastName())
                 .email(a.getEmail())
@@ -53,8 +52,8 @@ public class RestaurantService {
 
         userDetailRepository.save(userDetail);
 
-        RestaurantOwner restaurantOwner = RestaurantOwner.builder()
-                .userDetail(userDetail)
+        Owner restaurantOwner = Owner.builder()
+                .userDetails(userDetail)
                 .build();
 
         restaurantOwnerRepository.save(restaurantOwner);
@@ -98,7 +97,7 @@ public class RestaurantService {
 
         Restaurant temp = restaurantRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 
-        if(updateRestaurantDTO.getEmail() != null && !updateRestaurantDTO.getEmail().equals(temp.getRestaurantOwner().getUserDetail().getEmail()) && userDetailRepository.findUserByEmail(updateRestaurantDTO.getEmail())!=null)
+        if(updateRestaurantDTO.getEmail() != null && !updateRestaurantDTO.getEmail().equals(temp.getRestaurantOwner().getUserDetails().getEmail()) && userDetailRepository.findUserByEmail(updateRestaurantDTO.getEmail())!=null)
             throw new DuplicateEmailException();
 
         if(updateRestaurantDTO.getStreet() != null && !updateRestaurantDTO.getStreet().equals(temp.getLocation().getStreet()) && locationRepository.findLocationByStreet(updateRestaurantDTO.getStreet())!=null)
@@ -107,15 +106,15 @@ public class RestaurantService {
         // Update User Details
         String firstName = updateRestaurantDTO.getFirstName();
         if(firstName!= null && !firstName.isEmpty())
-            temp.getRestaurantOwner().getUserDetail().setFirstName(firstName);
+            temp.getRestaurantOwner().getUserDetails().setFirstName(firstName);
 
         String lastName = updateRestaurantDTO.getLastName();
         if(firstName!= null && !firstName.isEmpty())
-            temp.getRestaurantOwner().getUserDetail().setLastName(lastName);
+            temp.getRestaurantOwner().getUserDetails().setLastName(lastName);
 
         String email = updateRestaurantDTO.getEmail();
         if(email!= null && !email.isEmpty())
-            temp.getRestaurantOwner().getUserDetail().setEmail(email);
+            temp.getRestaurantOwner().getUserDetails().setEmail(email);
 
         //Update Restaurant Location
         String street = updateRestaurantDTO.getStreet();
@@ -150,9 +149,7 @@ public class RestaurantService {
         //replace with new ones
         List<String> newCategories = updateRestaurantDTO.getCategories();
         if(newCategories!= null && !newCategories.isEmpty()) {
-            newCategories.forEach(category -> {
-            restaurantCategoryRepository.insertRestaurantCategory(category,temp.getId());
-            });
+            newCategories.forEach(category -> restaurantCategoryRepository.insertRestaurantCategory(category,temp.getId()));
         }
 
 //        //update menu items
@@ -182,7 +179,9 @@ public class RestaurantService {
     }
     public void requestDeleteRestaurant(Long id){
         Restaurant temp = restaurantRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        temp.setStatus("pending_delete");
+        RestaurantStatus status = new RestaurantStatus();
+        status.setStatus("pending_delete");
+        temp.setRestaurantStatus(status);
         restaurantRepository.save(temp);
     }
 
