@@ -6,7 +6,7 @@ pipeline{
 
       stage("checkout"){
         steps{
-          git 'https://github.com/Crumbs-SS/RestaurantService'
+          git branch: 'tests-and-small-mods', url: 'https://github.com/Crumbs-SS/RestaurantService'
           }
       }
       stage("testing"){
@@ -16,8 +16,6 @@ pipeline{
             junit '**/target/*.xml'
         }
       }
-
-
       stage("build"){
         steps{
           sh 'mvn clean package'
