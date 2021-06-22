@@ -11,9 +11,12 @@ pipeline{
       }
       stage("testing"){
         steps{
-            echo("testing")
-            sh 'make check || true'
-            junit '**/target/*.xml'
+            sh '.mvnw test'
+        }
+        post{
+            always {
+                junit '**/target/surefire-reports/TEST-*.xml'
+            }
         }
       }
       stage("build"){
