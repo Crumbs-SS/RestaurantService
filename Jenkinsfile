@@ -12,7 +12,7 @@ pipeline{
       stage("testing"){
         steps{
             sh 'make check || true'
-            junit '**/target/*.xml'
+            junit '**/target/surefire-reports/TEST-*.xml'
         }
       }
       stage("build"){
