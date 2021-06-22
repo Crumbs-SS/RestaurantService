@@ -1,0 +1,16 @@
+-------------------------------------------------------------------------------
+Test set: com.crumbs.fss.controller.MainControllerTest
+-------------------------------------------------------------------------------
+Tests run: 7, Failures: 3, Errors: 0, Skipped: 0, Time elapsed: 1.65 s <<< FAILURE! - in com.crumbs.fss.controller.MainControllerTest
+getRestaurantOwnerRestaurants  Time elapsed: 0.235 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<404>
+	at com.crumbs.fss.controller.MainControllerTest.getRestaurantOwnerRestaurants(MainControllerTest.java:63)
+
+getMenuItems  Time elapsed: 0.015 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<404>
+	at com.crumbs.fss.controller.MainControllerTest.getMenuItems(MainControllerTest.java:48)
+
+getRestaurants  Time elapsed: 0.017 s  <<< FAILURE!
+java.lang.AssertionError: Status expected:<200> but was:<404>
+	at com.crumbs.fss.controller.MainControllerTest.getRestaurants(MainControllerTest.java:41)
+

@@ -1,0 +1,29 @@
+# Created at 2021-06-21T17:13:30.745
+TestSet has not finished before stream error has appeared >> initializing exit by non-null configuration: null
+java.io.EOFException
+	at java.base/java.io.DataInputStream.readInt(DataInputStream.java:398)
+	at org.apache.maven.surefire.booter.MasterProcessCommand.decode(MasterProcessCommand.java:115)
+	at org.apache.maven.surefire.booter.CommandReader$CommandRunnable.run(CommandReader.java:391)
+	at java.base/java.lang.Thread.run(Thread.java:831)
+
+
+# Created at 2021-06-21T17:13:31.782
+Unexpected IOException with stream: 2021-06-21 17:13:31.782  INFO 10679 --- [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+
+
+# Created at 2021-06-21T17:13:31.783
+Unexpected IOException with stream: 2021-06-21 17:13:31.783  INFO 10679 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+
+
+# Created at 2021-06-21T17:13:31.786
+Unexpected IOException with stream: 2021-06-21 17:13:31.785  INFO 10679 --- [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+
+
+# Created at 2021-06-21T17:13:32.164
+Unexpected IOException with stream: 2021-06-21 17:13:32.163  INFO 10679 --- [           main] c.c.fss.controller.MainControllerTest    : Started MainControllerTest in 3.95 seconds (JVM running for 20.039)
+
+
+# Created at 2021-06-21T17:13:32.165
+Unexpected IOException with stream: 2021-06-21 17:13:32.164  INFO 10679 --- [extShutdownHook] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+
+

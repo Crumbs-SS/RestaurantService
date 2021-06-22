@@ -1,0 +1,8 @@
+-------------------------------------------------------------------------------
+Test set: com.crumbs.fss.service.RestaurantServiceTest
+-------------------------------------------------------------------------------
+Tests run: 9, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 4.294 s <<< FAILURE! - in com.crumbs.fss.service.RestaurantServiceTest
+UpdateRestaurantShouldThrowDuplicateEmailException  Time elapsed: 0.02 s  <<< FAILURE!
+org.opentest4j.AssertionFailedError: Expected com.crumbs.fss.ExceptionHandling.DuplicateEmailException to be thrown, but nothing was thrown.
+	at com.crumbs.fss.service.RestaurantServiceTest.UpdateRestaurantShouldThrowDuplicateEmailException(RestaurantServiceTest.java:145)
+
