@@ -1,6 +1,7 @@
 pipeline{
 
-  agent any
+  agent {dockerfile true}
+
   tools {
           maven 'Apache Maven'
       }

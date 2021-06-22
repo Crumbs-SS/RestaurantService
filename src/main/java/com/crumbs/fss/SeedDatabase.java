@@ -20,12 +20,14 @@
 //    private final MenuItemRepository menuItemRepository;
 //    private final RestaurantCategoryRepository restaurantCategoryRepository;
 //    private final CategoryRepository categoryRepository;
+//    private final UserStatusRepository userStatusRepository;
+//    private final RestaurantStatusRepository restaurantStatusRepository;
 //
 //    @Autowired
 //    SeedDatabase(RestaurantRepository restaurantRepository, UserDetailsRepository userDetailRepository,
 //                 RestaurantOwnerRepository ownerRepository, LocationRepository locationRepository,
 //                 MenuItemRepository menuItemRepository, RestaurantCategoryRepository restaurantCategoryRepository,
-//                 CategoryRepository categoryRepository){
+//                 CategoryRepository categoryRepository, UserStatusRepository userStatusRepository, RestaurantStatusRepository restaurantStatusRepository){
 //        this.restaurantRepository = restaurantRepository;
 //        this.userDetailRepository = userDetailRepository;
 //        this.ownerRepository = ownerRepository;
@@ -33,18 +35,20 @@
 //        this.menuItemRepository = menuItemRepository;
 //        this.restaurantCategoryRepository = restaurantCategoryRepository;
 //        this.categoryRepository = categoryRepository;
+//        this.userStatusRepository = userStatusRepository;
+//        this.restaurantStatusRepository = restaurantStatusRepository;
 //    }
 //
 //    @Override
 //    public void run(ApplicationArguments args) throws Exception {
-//
-//        menuItemRepository.deleteAll();
-//        restaurantCategoryRepository.deleteAll();
-//        categoryRepository.deleteAll();
-//        restaurantRepository.deleteAll();
-//        locationRepository.deleteAll();
-//        ownerRepository.deleteAll();
-//        userDetailRepository.deleteAll();
+////
+////        menuItemRepository.deleteAll();
+////        restaurantCategoryRepository.deleteAll();
+////        categoryRepository.deleteAll();
+////        restaurantRepository.deleteAll();
+//////        locationRepository.deleteAll();
+////        ownerRepository.deleteAll();
+////        userDetailRepository.deleteAll();
 //
 //
 //        Restaurant restaurant;
@@ -76,19 +80,28 @@
 //        cat = Category.builder().name("Fine Dining").build();
 //        categoryRepository.save(cat);
 //
+//        UserStatus status = new UserStatus();
+//        status.setStatus("active");
+//        userStatusRepository.save(status);
+//
 //        userDetail = UserDetails.builder()
 //                .firstName("Jonathan")
 //                .lastName("Frey")
 //                .email("jfrey2704@smoothstack.com")
+//                .password("aaaaaa")
+//                .username("a")
+//                .phone("1111111111")
 //                .build();
 //
-//        userDetailRepository.save(userDetail);
 //
 //        restaurantOwner = Owner.builder()
 //                .userDetails(userDetail)
+//                .userStatus(status)
 //                .build();
 //
-//        ownerRepository.save(restaurantOwner);
+//        userDetail.setOwner(restaurantOwner);
+//        userDetailRepository.save(userDetail);
+////        ownerRepository.save(restaurantOwner);
 //
 //        location = Location.builder()
 //                .state("CA")
@@ -108,8 +121,9 @@
 //
 //        locationRepository.save(location2);
 //
-//        RestaurantStatus status = new RestaurantStatus();
-//        status.setStatus("active");
+//        RestaurantStatus resStatus = new RestaurantStatus();
+//        resStatus.setStatus("active");
+//        restaurantStatusRepository.save(resStatus);
 //
 //        restaurant = Restaurant.builder()
 //                .restaurantOwner(restaurantOwner)
@@ -117,7 +131,7 @@
 //                .priceRating(1)
 //                .rating(5)
 //                .name("KFC")
-//                .restaurantStatus(status)
+//                .restaurantStatus(resStatus)
 //                .build();
 //
 //        restaurant2 = Restaurant.builder()
@@ -127,11 +141,11 @@
 //                .priceRating(2)
 //                .rating(3)
 //                .name("MCDonald's")
-//                .restaurantStatus(status)
+//                .restaurantStatus(resStatus)
 //                .build();
 //
 //        restaurant = restaurantRepository.save(restaurant);
-//        restaurant2 = restaurantRepository.save(restaurant2);
+////        restaurant2 = restaurantRepository.save(restaurant2);
 //
 ////        restaurantCategoryRepository.insertRestaurantCategory("Burger",restaurant.getId());
 ////        restaurantCategoryRepository.insertRestaurantCategory("American",restaurant.getId());
