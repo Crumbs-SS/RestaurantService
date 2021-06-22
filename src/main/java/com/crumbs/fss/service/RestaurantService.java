@@ -125,9 +125,9 @@ public class RestaurantService {
         if(city!= null && !city.isEmpty())
             temp.getLocation().setCity(city);
 
-        Integer zip = updateRestaurantDTO.getZip();
+        String zip = updateRestaurantDTO.getZip();
         if(zip!= null)
-            temp.getLocation().setZipCode(zip);
+           temp.getLocation().setZipCode(zip);
 
         String state = updateRestaurantDTO.getState();
         if(state!= null && !state.isEmpty())
