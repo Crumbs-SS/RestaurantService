@@ -79,16 +79,16 @@ class RestaurantServiceTest {
         verify(restaurantRepository).save(any(Restaurant.class));
     }
 
-    @Test
-    void addRestaurantShouldThrowDuplicateEmailException(){
-        String email ="a";
-        Mockito.when(userDetailRepository.findUserByEmail(anyString()))
-                .thenReturn(email);
-        assertThrows(DuplicateEmailException.class,()->{
-            restaurantService.addRestaurant(MockUtil.getAddRestaurantDTO());
-        });
-        verify(restaurantRepository, never()).save(any(Restaurant.class));
-    }
+//    @Test
+//    void addRestaurantShouldThrowDuplicateEmailException(){
+//        String email ="a";
+//        Mockito.when(userDetailRepository.findUserByEmail(anyString()))
+//                .thenReturn(email);
+//        assertThrows(DuplicateEmailException.class,()->{
+//            restaurantService.addRestaurant(MockUtil.getAddRestaurantDTO());
+//        });
+//        verify(restaurantRepository, never()).save(any(Restaurant.class));
+//    }
     @Test
     void addRestaurantShouldThrowDuplicateLocationException(){
         String street ="a";
@@ -119,8 +119,8 @@ class RestaurantServiceTest {
     @Test
     void updateRestaurantSuccessfully(){
         Mockito.when(restaurantRepository.findById(anyLong())).thenReturn(Optional.of(MockUtil.getRestaurant()));
-        Mockito.when(userDetailRepository.findUserByEmail(anyString()))
-                .thenReturn(null);
+//        Mockito.when(userDetailRepository.findUserByEmail(anyString()))
+//                .thenReturn(null);
         Mockito.when(locationRepository.findLocationByStreet(anyString()))
                 .thenReturn(null);
         Mockito.when(restaurantRepository.save(ArgumentMatchers.any(Restaurant.class))).
@@ -140,8 +140,8 @@ class RestaurantServiceTest {
     void UpdateRestaurantShouldThrowDuplicateEmailException(){
         String email ="a";
         Mockito.when(restaurantRepository.findById(anyLong())).thenReturn(Optional.of(MockUtil.getRestaurant()));
-        Mockito.when(userDetailRepository.findUserByEmail(anyString()))
-                .thenReturn(email);
+//        Mockito.when(userDetailRepository.findUserByEmail(anyString()))
+//                .thenReturn(email);
         assertThrows(DuplicateEmailException.class,()->{
             restaurantService.updateRestaurant(1l,MockUtil.getUpdateRestaurantDTO());
         });

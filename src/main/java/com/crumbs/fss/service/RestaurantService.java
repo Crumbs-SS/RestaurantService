@@ -38,8 +38,8 @@ public class RestaurantService {
 
     public Restaurant addRestaurant(addRestaurantDTO a) {
 
-         if(userDetailRepository.findUserByEmail(a.getEmail())!=null)
-            throw new DuplicateEmailException();
+//         if(userDetailRepository.findUserByEmail(a.getEmail())!=null)
+//            throw new DuplicateEmailException();
 
         if(locationRepository.findLocationByStreet(a.getStreet())!=null)
             throw new DuplicateLocationException();
@@ -97,8 +97,8 @@ public class RestaurantService {
 
         Restaurant temp = restaurantRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 
-        if(updateRestaurantDTO.getEmail() != null && !updateRestaurantDTO.getEmail().equals(temp.getRestaurantOwner().getUserDetails().getEmail()) && userDetailRepository.findUserByEmail(updateRestaurantDTO.getEmail())!=null)
-            throw new DuplicateEmailException();
+//        if(updateRestaurantDTO.getEmail() != null && !updateRestaurantDTO.getEmail().equals(temp.getRestaurantOwner().getUserDetails().getEmail()) && userDetailRepository.findUserByEmail(updateRestaurantDTO.getEmail())!=null)
+//            throw new DuplicateEmailException();
 
         if(updateRestaurantDTO.getStreet() != null && !updateRestaurantDTO.getStreet().equals(temp.getLocation().getStreet()) && locationRepository.findLocationByStreet(updateRestaurantDTO.getStreet())!=null)
             throw new DuplicateLocationException();
