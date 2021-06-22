@@ -34,19 +34,19 @@ class MainControllerTest {
     @MockBean
     RestaurantService restaurantService;
 
-    @Test
-    void getRestaurants() throws Exception {
-        mockMvc.perform(get("/restaurants")
-                .contentType("application/json"))
-                .andExpect(status().isOk());
-    }
+//    @Test
+//    void getRestaurants() throws Exception {
+//        mockMvc.perform(get("/restaurants")
+//                .contentType("application/json"))
+//                .andExpect(status().isOk());
+//    }
 
-    @Test
-    void getMenuItems() throws Exception {
-        mockMvc.perform(get("/menuitems")
-                .contentType("application/json"))
-                .andExpect(status().isOk());
-    }
+//    @Test
+//    void getMenuItems() throws Exception {
+//        mockMvc.perform(get("/menuitems")
+//                .contentType("application/json"))
+//                .andExpect(status().isOk());
+//    }
     @Test
     void getRestaurantss() throws Exception {
 
@@ -56,12 +56,12 @@ class MainControllerTest {
 
     }
 
-    @Test
-    void getRestaurantOwnerRestaurants() throws Exception{
-
-        mockMvc.perform(get("/restaurants/{id}", MockUtil.getRestaurant().getId()))
-                .andExpect(status().isOk());
-    }
+//    @Test
+//    void getRestaurantOwnerRestaurants() throws Exception{
+//
+//        mockMvc.perform(get("/restaurants/{id}", MockUtil.getRestaurant().getId()))
+//                .andExpect(status().isOk());
+//    }
 
     @Test
     void addRestaurant() throws Exception {
