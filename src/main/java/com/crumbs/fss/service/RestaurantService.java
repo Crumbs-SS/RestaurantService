@@ -99,8 +99,6 @@ public class RestaurantService {
     public Restaurant updateRestaurant(Long id, updateRestaurantDTO updateRestaurantDTO){
 
         Restaurant temp = restaurantRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        System.out.println(temp.getId());
-
 
 //        if(updateRestaurantDTO.getEmail() != null && !updateRestaurantDTO.getEmail().equals(temp.getRestaurantOwner().getUserDetails().getEmail()) && userDetailRepository.findUserByEmail(updateRestaurantDTO.getEmail())!=null)
 //            throw new DuplicateEmailException();
@@ -157,7 +155,7 @@ public class RestaurantService {
             newCategories.forEach(category -> restaurantCategoryRepository.insertRestaurantCategory(temp.getId(), category));
         }
 
-//        //update menu items
+        //update menu items
         List<MenuItem> oldMenu = temp.getMenuItems();
         List<MenuItem> newMenu = updateRestaurantDTO.getMenu();
 
