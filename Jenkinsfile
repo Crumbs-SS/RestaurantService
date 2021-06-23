@@ -8,11 +8,6 @@ pipeline{
 
   stages{
 
-//       stage("checkout"){
-//         steps{
-//           git branch: 'tests-and-small-mods', url: 'https://github.com/Crumbs-SS/RestaurantService'
-//           }
-//       }
       stage("testing"){
         steps{
              sh 'mvn test'
