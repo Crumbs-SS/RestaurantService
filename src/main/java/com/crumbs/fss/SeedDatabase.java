@@ -1,7 +1,8 @@
 package com.crumbs.fss;
 
-import com.crumbs.fss.entity.*;
-import com.crumbs.fss.repository.*;
+
+import com.crumbs.lib.entity.*;
+import com.crumbs.lib.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -14,17 +15,19 @@ public class SeedDatabase implements ApplicationRunner {
 
     private final RestaurantRepository restaurantRepository;
     private final RestaurantOwnerRepository ownerRepository;
-    private final UserDetailRepository userDetailRepository;
+    private final UserDetailsRepository userDetailRepository;
     private final LocationRepository locationRepository;
     private final MenuItemRepository menuItemRepository;
     private final RestaurantCategoryRepository restaurantCategoryRepository;
     private final CategoryRepository categoryRepository;
+    private final UserStatusRepository userStatusRepository;
+    private final RestaurantStatusRepository restaurantStatusRepository;
 
     @Autowired
-    SeedDatabase(RestaurantRepository restaurantRepository, UserDetailRepository userDetailRepository,
+    SeedDatabase(RestaurantRepository restaurantRepository, UserDetailsRepository userDetailRepository,
                  RestaurantOwnerRepository ownerRepository, LocationRepository locationRepository,
                  MenuItemRepository menuItemRepository, RestaurantCategoryRepository restaurantCategoryRepository,
-                 CategoryRepository categoryRepository){
+                 CategoryRepository categoryRepository, UserStatusRepository userStatusRepository, RestaurantStatusRepository restaurantStatusRepository){
         this.restaurantRepository = restaurantRepository;
         this.userDetailRepository = userDetailRepository;
         this.ownerRepository = ownerRepository;
@@ -32,24 +35,27 @@ public class SeedDatabase implements ApplicationRunner {
         this.menuItemRepository = menuItemRepository;
         this.restaurantCategoryRepository = restaurantCategoryRepository;
         this.categoryRepository = categoryRepository;
+        this.userStatusRepository = userStatusRepository;
+        this.restaurantStatusRepository = restaurantStatusRepository;
     }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        menuItemRepository.deleteAll();
-        restaurantCategoryRepository.deleteAll();
-        categoryRepository.deleteAll();
-        restaurantRepository.deleteAll();
-        locationRepository.deleteAll();
-        ownerRepository.deleteAll();
-        userDetailRepository.deleteAll();
+        String password = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
 
+//        menuItemRepository.deleteAll();
+//        restaurantCategoryRepository.deleteAll();
+//        restaurantRepository.deleteAll();
+//        locationRepository.deleteAll();
+//        ownerRepository.deleteAll();
+//        userDetailRepository.deleteAll();
+//
 
         Restaurant restaurant;
         Restaurant restaurant2;
-        UserDetail userDetail;
-        RestaurantOwner restaurantOwner;
+        UserDetails userDetail;
+        Owner restaurantOwner;
         Location location;
         Location location2;
         Category cat;
@@ -75,91 +81,103 @@ public class SeedDatabase implements ApplicationRunner {
         cat = Category.builder().name("Fine Dining").build();
         categoryRepository.save(cat);
 
-        userDetail = UserDetail.builder()
-                .firstName("Jonathan")
-                .lastName("Frey")
-                .email("jfrey2704@smoothstack.com")
-                .build();
-
-        userDetailRepository.save(userDetail);
-
-        restaurantOwner = RestaurantOwner.builder()
-                .userDetail(userDetail)
-                .build();
-
-        ownerRepository.save(restaurantOwner);
-
-        location = Location.builder()
-                .state("CA")
-                .street("1111 Street A")
-                .city("Los Angeles")
-                .zipCode(12345)
-                .build();
-
-        locationRepository.save(location);
-
-        location2 = Location.builder()
-                .state("CA")
-                .street("2222 Street B")
-                .city("Los Angeles")
-                .zipCode(12345)
-                .build();
-
-        locationRepository.save(location2);
-
-        restaurant = Restaurant.builder()
-                .restaurantOwner(restaurantOwner)
-                .location(location)
-                .priceRating(1)
-                .rating(5)
-                .name("KFC")
-                .build();
-
-        restaurant2 = Restaurant.builder()
-                .id(1L)
-                .restaurantOwner(restaurantOwner)
-                .location(location2)
-                .priceRating(2)
-                .rating(3)
-                .name("MCDonald's")
-                .build();
-
-        restaurant = restaurantRepository.save(restaurant);
-        restaurant2 = restaurantRepository.save(restaurant2);
-
-//        restaurantCategoryRepository.insertRestaurantCategory("Burger",restaurant.getId());
-//        restaurantCategoryRepository.insertRestaurantCategory("American",restaurant.getId());
-//        restaurantCategoryRepository.insertRestaurantCategory("Japanes",restaurant2.getId());
-//        restaurantCategoryRepository.insertRestaurantCategory("Sushi",restaurant2.getId());
-
-        for (int i = 0; i < 10; i++){
-            BigDecimal bd = BigDecimal.valueOf((i + 1F) * (float) Math.random() + 3)
-                    .setScale(2, RoundingMode.HALF_UP);
-            Float price = bd.floatValue();
-
-            MenuItem menuItem = MenuItem.builder()
-                    .name("MenuItem-"+i)
-                    .price(price)
-                    .description("Menu Item for a restaurant")
-                    .build();
-
-            menuItem.setRestaurant(restaurant);
-            menuItemRepository.save(menuItem);
-        }
-        for (int i = 0; i < 10; i++){
-            BigDecimal bd = BigDecimal.valueOf((i + 1F) * (float) Math.random() + 3)
-                    .setScale(2, RoundingMode.HALF_UP);
-            Float price = bd.floatValue();
-
-            MenuItem menuItem = MenuItem.builder()
-                    .name("MenuItem-"+i)
-                    .price(price)
-                    .description("Menu Item for a restaurant")
-                    .build();
-
-            menuItem.setRestaurant(restaurant2);
-            menuItemRepository.save(menuItem);
-        }
+//        UserStatus status = new UserStatus();
+//        status.setStatus("ACTIVE");
+//        userStatusRepository.save(status);
+//
+//        userDetail = UserDetails.builder()
+//                .firstName("Jonathan")
+//                .lastName("Frey")
+//                .email("jfrey2704@smoothstack.com")
+//                .password(password)
+//                .username("a")
+//                .phone("1111111111")
+//                .build();
+//
+//
+//        restaurantOwner = Owner.builder()
+//                .userDetails(userDetail)
+//                .userStatus(status)
+//                .build();
+//
+//        userDetail.setOwner(restaurantOwner);
+//        userDetailRepository.save(userDetail);
+////      ownerRepository.save(restaurantOwner);
+//
+//        location = Location.builder()
+//                .state("CA")
+//                .street("1111 Street A")
+//                .city("Los Angeles")
+//                .zipCode("12345")
+//                .build();
+//
+//        locationRepository.save(location);
+//
+//        location2 = Location.builder()
+//                .state("CA")
+//                .street("2222 Street B")
+//                .city("Los Angeles")
+//                .zipCode("12345")
+//                .build();
+//
+//        locationRepository.save(location2);
+//
+//        RestaurantStatus resStatus = restaurantStatusRepository.findById("ACTIVE").get();
+//
+//        restaurant = Restaurant.builder()
+//                .restaurantOwner(restaurantOwner)
+//                .location(location)
+//                .priceRating(1)
+//                .rating(5)
+//                .name("KFC")
+//                .restaurantStatus(resStatus)
+//                .build();
+//
+//        restaurant2 = Restaurant.builder()
+//                .restaurantOwner(restaurantOwner)
+//                .location(location2)
+//                .priceRating(2)
+//                .rating(3)
+//                .name("MCDonald's")
+//                .restaurantStatus(resStatus)
+//                .build();
+//
+//        restaurant = restaurantRepository.save(restaurant);
+//        restaurant2 = restaurantRepository.save(restaurant2);
+//
+////        restaurantCategoryRepository.insertRestaurantCategory("Burger",restaurant.getId());
+////        restaurantCategoryRepository.insertRestaurantCategory("American",restaurant.getId());
+////        restaurantCategoryRepository.insertRestaurantCategory("Japanes",restaurant2.getId());
+////        restaurantCategoryRepository.insertRestaurantCategory("Sushi",restaurant2.getId());
+//
+//        for (int i = 0; i < 5; i++){
+//            BigDecimal bd = BigDecimal.valueOf((i + 1F) * (float) Math.random() + 3)
+//                    .setScale(2, RoundingMode.HALF_UP);
+//            Float price = bd.floatValue();
+//
+//            MenuItem menuItem = MenuItem.builder()
+//                    .name("MenuItem-"+i)
+//                    .price(price)
+//                    .description("Menu Item for a restaurant")
+//                    .build();
+//
+//            menuItem.setRestaurant(restaurant);
+//            menuItemRepository.save(menuItem);
+//        }
+//        for (int i = 0; i < 5; i++){
+//            BigDecimal bd = BigDecimal.valueOf((i + 1F) * (float) Math.random() + 3)
+//                    .setScale(2, RoundingMode.HALF_UP);
+//            Float price = bd.floatValue();
+//
+//            MenuItem menuItem = MenuItem.builder()
+//                    .name("MenuItem-"+i)
+//                    .price(price)
+//                    .description("Menu Item for a restaurant")
+//                    .build();
+//
+//            menuItem.setRestaurant(restaurant2);
+//            menuItemRepository.save(menuItem);
+//        }
     }
 
 

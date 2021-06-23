@@ -2,7 +2,7 @@ package com.crumbs.fss;
 
 import com.crumbs.fss.DTO.addRestaurantDTO;
 import com.crumbs.fss.DTO.updateRestaurantDTO;
-import com.crumbs.fss.entity.*;
+import com.crumbs.lib.entity.*;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
@@ -77,7 +77,7 @@ public class MockUtil {
                 .email("test@gmail.com")
                 .street("test")
                 .city("test")
-                .zip(00000)
+                .zip("00000")
                 .state("AA")
                 .name("test")
                 .priceRating(1)
@@ -97,7 +97,7 @@ public class MockUtil {
                 .email("test@gmail.com")
                 .street("test")
                 .city("test")
-                .zip(00000)
+                .zip("00000")
                 .state("AA")
                 .name("test")
                 .priceRating(1)
@@ -113,7 +113,7 @@ public class MockUtil {
                 .email("test@gmail.com")
                 .street("test")
                 .city("test")
-                .zip(1111111)
+                .zip("11111")
                 .state("AA")
                 .name("test")
                 .priceRating(1)
@@ -127,16 +127,16 @@ public class MockUtil {
         temp.setId(1L);
         temp.setLocation(new Location());
         temp.getLocation().setId(1l);
-        temp.setRestaurantOwner(new RestaurantOwner());
+        temp.setRestaurantOwner(new Owner());
         temp.getRestaurantOwner().setId(1l);
-        temp.getRestaurantOwner().setUserDetail(new UserDetail());
-        temp.getRestaurantOwner().getUserDetail().setId(1l);
+        temp.getRestaurantOwner().setUserDetails(new UserDetails());
+        temp.getRestaurantOwner().getUserDetails().setId(1l);
         return temp;
     }
-    public static UserDetail getUserDetail() {
+    public static UserDetails getUserDetail() {
         return null;
     }
-    public static RestaurantOwner getRestaurantOwner(){
+    public static Owner getRestaurantOwner(){
         return null;
     }
     public static Category getCategory(){

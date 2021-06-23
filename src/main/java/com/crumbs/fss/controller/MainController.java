@@ -1,12 +1,12 @@
 package com.crumbs.fss.controller;
 
 import com.crumbs.fss.DTO.addRestaurantDTO;
-import com.crumbs.fss.entity.Category;
 import com.crumbs.fss.DTO.updateRestaurantDTO;
-import com.crumbs.fss.entity.MenuItem;
-import com.crumbs.fss.entity.Restaurant;
 import com.crumbs.fss.service.RestaurantSearchService;
 import com.crumbs.fss.service.RestaurantService;
+import com.crumbs.lib.entity.Category;
+import com.crumbs.lib.entity.MenuItem;
+import com.crumbs.lib.entity.Restaurant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -126,9 +126,15 @@ public class MainController {
     public Restaurant deleteRestaurant(@PathVariable Long id){
         return restaurantService.deleteRestaurant(id);
     }
+
     @GetMapping("/owner/{id}/restaurants")
     public List<Restaurant> getRestaurantOwnerRestaurants(@PathVariable Long id){
         return restaurantService.getRestaurantOwnerRestaurants(id);
+    }
+
+    @PutMapping("owner/requestDeleteRestaurant/{id}")
+    public void requestDeleteRestaurant(@PathVariable Long id){
+        restaurantService.requestDeleteRestaurant(id);
     }
 
 }

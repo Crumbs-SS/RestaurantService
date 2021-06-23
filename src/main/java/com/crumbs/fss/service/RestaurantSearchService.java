@@ -1,11 +1,11 @@
 package com.crumbs.fss.service;
 
-import com.crumbs.fss.entity.Category;
-import com.crumbs.fss.entity.MenuItem;
-import com.crumbs.fss.entity.Restaurant;
-import com.crumbs.fss.repository.CategoryRepository;
-import com.crumbs.fss.repository.MenuItemRepository;
-import com.crumbs.fss.repository.RestaurantRepository;
+import com.crumbs.lib.entity.Category;
+import com.crumbs.lib.entity.MenuItem;
+import com.crumbs.lib.entity.Restaurant;
+import com.crumbs.lib.repository.CategoryRepository;
+import com.crumbs.lib.repository.MenuItemRepository;
+import com.crumbs.lib.repository.RestaurantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
