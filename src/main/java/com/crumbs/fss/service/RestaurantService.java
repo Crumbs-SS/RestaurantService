@@ -31,18 +31,11 @@ public class RestaurantService {
     @Autowired
      UserStatusRepository userStatusRepository;
 
-    public List<Restaurant> getAllRestaurants(){
-        return restaurantRepository.findAll();
-    }
-
-    public List<Restaurant> getRestaurantOwnerRestaurants(Long id){
+    public List<Restaurant> getOwnerRestaurants(Long id){
         return restaurantRepository.findRestaurantByOwnerID(id);
     }
 
     public Restaurant addRestaurant(addRestaurantDTO a) {
-
-//         if(userDetailRepository.findUserByEmail(a.getEmail())!=null)
-//            throw new DuplicateEmailException();
 
         if(locationRepository.findLocationByStreet(a.getStreet())!=null)
             throw new DuplicateLocationException();
@@ -89,7 +82,6 @@ public class RestaurantService {
 
         Restaurant temp = restaurantRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         restaurantRepository.deleteById(id);
-        locationRepository.deleteById(temp.getLocation().getId());
         if(menuItemRepository.findById(id).isPresent())
             menuItemRepository.deleteById(id);
 
@@ -99,9 +91,6 @@ public class RestaurantService {
     public Restaurant updateRestaurant(Long id, updateRestaurantDTO updateRestaurantDTO){
 
         Restaurant temp = restaurantRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-
-//        if(updateRestaurantDTO.getEmail() != null && !updateRestaurantDTO.getEmail().equals(temp.getRestaurantOwner().getUserDetails().getEmail()) && userDetailRepository.findUserByEmail(updateRestaurantDTO.getEmail())!=null)
-//            throw new DuplicateEmailException();
 
         if(updateRestaurantDTO.getStreet() != null && !updateRestaurantDTO.getStreet().equals(temp.getLocation().getStreet()) && locationRepository.findLocationByStreet(updateRestaurantDTO.getStreet())!=null)
             throw new DuplicateLocationException();

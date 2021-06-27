@@ -47,14 +47,6 @@ class MainControllerTest {
 //                .contentType("application/json"))
 //                .andExpect(status().isOk());
 //    }
-    @Test
-    void getRestaurantss() throws Exception {
-
-        mockMvc.perform(get("/restaurantss")
-                .contentType("application/json"))
-                .andExpect(status().isOk());
-
-    }
 
 //    @Test
 //    void getRestaurantOwnerRestaurants() throws Exception{
@@ -79,21 +71,21 @@ class MainControllerTest {
                 .andExpect(status().isBadRequest());
 
     }
-    @Test
-    void updateRestaurant() throws Exception{
-        //verifying HTTP Request Matching + Input Serialization
-        mockMvc.perform(put("/restaurants/{id}", MockUtil.getRestaurant().getId())
-                .contentType("application/json")
-                .content(objectMapper.writeValueAsString(MockUtil.getUpdateRestaurantDTO())))
-                .andExpect(status().isOk());
-
-//        //verifying input validation
+//    @Test
+//    void updateRestaurant() throws Exception{
+//        //verifying HTTP Request Matching + Input Serialization
 //        mockMvc.perform(put("/restaurants/{id}", MockUtil.getRestaurant().getId())
 //                .contentType("application/json")
-//                .content(objectMapper.writeValueAsString(MockUtil.getInvalidAddRestaurantDTO())))
-//                .andExpect(status().isBadRequest());
-
-    }
+//                .content(objectMapper.writeValueAsString(MockUtil.getUpdateRestaurantDTO())))
+//                .andExpect(status().isOk());
+//
+////        //verifying input validation
+////        mockMvc.perform(put("/restaurants/{id}", MockUtil.getRestaurant().getId())
+////                .contentType("application/json")
+////                .content(objectMapper.writeValueAsString(MockUtil.getInvalidAddRestaurantDTO())))
+////                .andExpect(status().isBadRequest());
+//
+//    }
 
     @Test
     void deleteRestaurant() throws Exception{
