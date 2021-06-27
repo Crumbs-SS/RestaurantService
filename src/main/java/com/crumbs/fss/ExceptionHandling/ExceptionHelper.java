@@ -74,7 +74,7 @@ public class ExceptionHelper extends ResponseEntityExceptionHandler {
     public ResponseEntity<Object> handleSQL(){
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
-        body.put("message", "This email already exists in database. Please enter new location.");
+        body.put("message", "Restaurant owner with this e-mail already exists. Please enter new -email");
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 
