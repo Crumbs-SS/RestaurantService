@@ -7,7 +7,7 @@ pipeline{
       }
   environment {
           COMMIT_HASH = "${sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()}"
-          IMAGE_NAME = "RestaurantService"
+          IMG_NAME = "RestaurantService"
       }
 
   stages{
