@@ -82,6 +82,7 @@ public class RestaurantService {
 
         Restaurant temp = restaurantRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         restaurantRepository.deleteById(id);
+        locationRepository.deleteById(temp.getLocation().getId());
         if(menuItemRepository.findById(id).isPresent())
             menuItemRepository.deleteById(id);
 
