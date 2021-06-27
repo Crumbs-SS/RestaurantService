@@ -1,6 +1,7 @@
 package com.crumbs.fss.ExceptionHandling;
 
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,8 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.persistence.EntityNotFoundException;
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.LinkedHashMap;
@@ -60,19 +63,18 @@ public class ExceptionHelper extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
-
-    @ExceptionHandler(DuplicateEmailException.class)
-    public ResponseEntity<Object> handleDuplicateEmail(){
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("message", "Restaurant owner with this email was already found in database. Please enter new e-mail address.");
-        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
-    }
     @ExceptionHandler(DuplicateLocationException.class)
     public ResponseEntity<Object> handleDuplicateLocation(){
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("message", "This location already exists in database. Please enter new location.");
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+    }
+    @ExceptionHandler({DataIntegrityViolationException.class})
+    public ResponseEntity<Object> handleSQL(){
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("message", "This email already exists in database. Please enter new location.");
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 
