@@ -1,10 +1,7 @@
 pipeline{
 
-  agent any
+  agent { dockerfile true }
 
-  tools {
-          maven 'Apache Maven'
-      }
   environment {
           COMMIT_HASH = "${sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()}"
           IMG_NAME = "RestaurantService"
