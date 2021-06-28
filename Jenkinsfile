@@ -2,9 +2,9 @@ pipeline{
 
   agent any
 
-//   tools {
-//           maven 'Apache Maven'
-//       }
+  tools {
+          maven 'Apache Maven'
+      }
   environment {
           COMMIT_HASH = "${sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()}"
           IMG_NAME = "RestaurantService"
