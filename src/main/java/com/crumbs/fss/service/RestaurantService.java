@@ -1,4 +1,5 @@
 package com.crumbs.fss.service;
+import com.crumbs.fss.DTO.OwnerRegistration;
 import com.crumbs.fss.DTO.addRestaurantDTO;
 import com.crumbs.fss.DTO.updateRestaurantDTO;
 import com.crumbs.fss.ExceptionHandling.DuplicateLocationException;
@@ -6,8 +7,14 @@ import com.crumbs.lib.entity.*;
 import com.crumbs.lib.entity.MenuItem;
 import com.crumbs.lib.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
+
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
@@ -25,10 +32,20 @@ public class RestaurantService {
     RestaurantCategoryRepository restaurantCategoryRepository;
     @Autowired
     RestaurantOwnerRepository restaurantOwnerRepository;
-    @Autowired UserDetailsRepository userDetailRepository;
-    @Autowired RestaurantStatusRepository restaurantStatusRepository;
+    @Autowired
+    UserDetailsRepository userDetailRepository;
+    @Autowired
+    RestaurantStatusRepository restaurantStatusRepository;
     @Autowired
      UserStatusRepository userStatusRepository;
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
 
     public List<Restaurant> getOwnerRestaurants(Long id){
         return restaurantRepository.findRestaurantByOwnerID(id);
@@ -36,22 +53,24 @@ public class RestaurantService {
 
     public Restaurant addRestaurant(addRestaurantDTO a) {
 
+        final String uri = "http://localhost:8090/owners/register";
+
+        Owner owner;
+
+        if(a.isNewOwner()){
+            //register customer
+            OwnerRegistration ownerRegistration = new OwnerRegistration(a.getUsername(), a.getPassword(), a.getEmail(), a.getFirstName(), a.getLastName(), a.getPhone());
+            HttpEntity<OwnerRegistration> request = new HttpEntity<>(ownerRegistration);
+            ResponseEntity<OwnerRegistration> response = restTemplate.exchange(uri, HttpMethod.POST, request, OwnerRegistration.class );
+            //check http status created, else exception handle
+//            assertThat(response.getStatusCode(), is(HttpStatus.CREATED));
+        }
+        UserDetails ownerDetails = userDetailRepository.findByUsername(a.getUsername()).orElseThrow(EntityNotFoundException::new);
+        owner = ownerDetails.getOwner();
+        //if username not associated with an owner exception handle
+
         if(locationRepository.findLocationByStreet(a.getStreet())!=null)
             throw new DuplicateLocationException();
-
-        UserDetails userDetail = UserDetails.builder()
-                .firstName(a.getFirstName())
-                .lastName(a.getLastName())
-                .email(a.getEmail())
-                .build();
-
-        userDetailRepository.save(userDetail);
-
-        Owner restaurantOwner = Owner.builder()
-                .userDetails(userDetail)
-                .build();
-
-        restaurantOwnerRepository.save(restaurantOwner);
 
         Location location = Location.builder()
                 .street(a.getStreet())
@@ -62,11 +81,14 @@ public class RestaurantService {
 
         locationRepository.save(location);
 
+        RestaurantStatus restaurantStatus = restaurantStatusRepository.findById("REGISTERED").get();
+
         Restaurant temp = Restaurant.builder()
                 .name(a.getName())
                 .priceRating(a.getPriceRating())
                 .location(location)
-                .restaurantOwner(restaurantOwner)
+                .restaurantOwner(owner)
+                .restaurantStatus(restaurantStatus)
                 .build();
 
         Restaurant restaurant = restaurantRepository.save(temp);
