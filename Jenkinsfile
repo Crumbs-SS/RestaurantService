@@ -10,6 +10,9 @@ pipeline{
           COMMIT_HASH = "${sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()}"
           IMG_NAME = "RestaurantService"
       }
+      tools {
+            maven 'Apache Maven'
+      }
 
   stages{
 
