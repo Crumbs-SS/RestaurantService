@@ -11,7 +11,7 @@ pipeline{
           IMG_NAME = "RestaurantService"
       }
       tools {
-            maven 'Apache Maven'
+            maven 'maven'
       }
 
   stages{
