@@ -1,10 +1,9 @@
 pipeline{
 
   agent {
-    any
-//                 dockerfile {
-//                     args '--entrypoint=\'\''
-//                 }
+                dockerfile {
+                    args '--entrypoint=\'\''
+                }
    }
 
   environment {
