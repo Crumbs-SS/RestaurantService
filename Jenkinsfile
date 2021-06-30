@@ -8,7 +8,7 @@ pipeline{
     agent any
   environment {
           COMMIT_HASH = "${sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()}"
-          IMG_NAME = "RestaurantService"
+          IMG_NAME = "restaurant_service"
       }
       tools {
             maven 'maven'
