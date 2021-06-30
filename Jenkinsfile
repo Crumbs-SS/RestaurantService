@@ -1,10 +1,10 @@
 pipeline{
 
-//   agent {
-//                 dockerfile {
-//                     args '--entrypoint=\'\''
-//                 }
-//    }
+  agent {
+                dockerfile {
+                    args '--entrypoint=\'\''
+                }
+   }
     agent any
   environment {
           COMMIT_HASH = "${sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()}"
