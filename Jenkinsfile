@@ -5,7 +5,7 @@ pipeline{
                     args '--entrypoint=\'\''
                 }
    }
-    agent any
+
   environment {
           COMMIT_HASH = "${sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()}"
           IMG_NAME = "restaurant_service"
