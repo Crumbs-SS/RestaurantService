@@ -1,18 +1,18 @@
 pipeline{
 
   agent {
-                dockerfile {
-                    args '--entrypoint=\'\''
-                }
+//                 dockerfile {
+//                     args '--entrypoint=\'\''
+//                 }
    }
 
   environment {
           COMMIT_HASH = "${sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()}"
           IMG_NAME = "restaurant_service"
-      }
-      tools {
+  }
+  tools {
             maven 'maven'
-      }
+  }
 
   stages{
 
@@ -59,6 +59,6 @@ pipeline{
               sh 'mvn clean'
               sh "docker system prune -f"
           }
-      }
+  }
 
 }
