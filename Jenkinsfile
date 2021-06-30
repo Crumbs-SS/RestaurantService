@@ -7,7 +7,7 @@ pipeline
    }
 
   environment {
-        COMMIT_HASH = {sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()}
+        COMMIT_HASH = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
         IMG_NAME = "crumbs"
         AWS_ID = "592634872061"
   }
