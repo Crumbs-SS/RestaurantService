@@ -1,10 +1,10 @@
 pipeline{
 
-//   agent {
-//                 dockerfile {
-//                     args '--entrypoint=\'\''
-//                 }
-//    }
+  agent {
+                dockerfile {
+                    args '--entrypoint=\'\''
+                }
+   }
     agent any
 
   environment {
@@ -64,7 +64,7 @@ pipeline{
   post {
           always {
               sh 'mvn clean'
-//               sh "docker system prune -f"
+              sh "docker system prune -f"
           }
   }
 
