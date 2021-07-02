@@ -5,19 +5,21 @@ pipeline{
 //    }
      agent any
 
-  environment {
+  environment
+  {
           COMMIT_HASH = "${sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()}"
           IMG_NAME = "crumbs"
           AWS_ID = "592634872061"
           CREDENTIALS_ID = "0ac17b2c-68f4-4820-8057-cae23d95825a"
   }
-  tools {
+  tools
+  {
             maven 'maven'
             jdk 'java'
   }
 
-  stages{
-
+  stages
+  {
         stage("Test")
         {
                 steps
@@ -32,7 +34,8 @@ pipeline{
                     }
                 }
         }
-//       stage('Code Analysis: Sonarqube') {
+//       stage('Code Analysis: Sonarqube')
+//       {
 //                   steps {
 //                       withSonarQubeEnv('SonarQube') {
 //                           sh 'mvn sonar:sonar'
@@ -64,21 +67,13 @@ pipeline{
                sh "docker push ${AWS_ID}.dkr.ecr.us-east-2.amazonaws.com/${IMG_NAME}:${COMMIT_HASH}"
           }
       }
-//       stage("Push")
-//       {
-//             steps
-//             {
-//                 echo "Docker Push..."
-//                 sh "docker push ${AWS_ID}.dkr.ecr.us-east-2.amazonaws.com/${IMG_NAME}:${COMMIT_HASH}"
-//             }
-//       }
     }
   post
   {
           always
           {
               sh 'mvn clean'
-//               sh "docker system prune -f"
+              sh "docker system prune -f"
           }
   }
 
