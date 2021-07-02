@@ -1,20 +1,21 @@
-pipeline
-{
+pipeline{
+//
 //   agent {
-//         dockerfile {
-//             args '--entrypoint=\'\''
-//         }
+//                 dockerfile true
 //    }
-    agent any
+     agent any
+
   environment {
-//         COMMIT_HASH = sh(script: "git rev-parse --short HEAD", returnStdout: true).trim()
-        COMMIT_HASH = "${sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()}"
-        IMG_NAME = "crumbs"
-        AWS_ID = "592634872061"
+          COMMIT_HASH = "${sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()}"
+          IMG_NAME = "crumbs"
+          AWS_ID = "592634872061"
+          CREDENTIALS_ID = "0ac17b2c-68f4-4820-8057-cae23d95825a"
   }
   tools {
-        maven 'maven'
+            maven 'maven'
+            jdk 'java'
   }
+
   stages{
 
         stage("Test")
@@ -50,15 +51,18 @@ pipeline
                 sh 'mvn clean package'
             }
       }
-      stage("Build")
-      {
-            steps
-            {
-                echo "Docker Build...."
-//                 sh "aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin ${AWS_ID}.dkr.ecr.us-east-2.amazonaws.com"
-                sh "docker build --tag ${IMG_NAME}:${COMMIT_HASH} ."
-//                 sh "docker tag ${IMG_NAME}:${COMMIT_HASH} ${AWS_ID}.dkr.ecr.us-east-2.amazonaws.com/${IMG_NAME}:${COMMIT_HASH}"
-            }
+      stage("Docker Build") {
+
+          steps {
+              echo "Docker Build...."
+              withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: '${CREDENTIALS_ID}', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+                        sh "aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin ${AWS_ID}.dkr.ecr.us-east-2.amazonaws.com"
+              }
+              sh "docker build --tag ${IMG_NAME}:${COMMIT_HASH} ."
+               sh "docker tag ${IMG_NAME}:${COMMIT_HASH} ${AWS_ID}.dkr.ecr.us-east-2.amazonaws.com/${IMG_NAME}:${COMMIT_HASH}"
+              echo "Docker Push..."
+               sh "docker push ${AWS_ID}.dkr.ecr.us-east-2.amazonaws.com/${IMG_NAME}:${COMMIT_HASH}"
+          }
       }
 //       stage("Push")
 //       {
