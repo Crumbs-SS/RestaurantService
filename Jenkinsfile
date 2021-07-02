@@ -10,7 +10,6 @@ pipeline{
           COMMIT_HASH = "${sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()}"
           IMG_NAME = "crumbs"
           AWS_ID = "592634872061"
-          CREDENTIALS_ID = "0ac17b2c-68f4-4820-8057-cae23d95825a"
   }
   tools
   {
@@ -58,7 +57,7 @@ pipeline{
 
           steps {
               echo "Docker Build...."
-              withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'CREDENTIALS_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
+              withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: '0ac17b2c-68f4-4820-8057-cae23d95825a', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                         sh "aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin ${AWS_ID}.dkr.ecr.us-east-2.amazonaws.com"
               }
               sh "docker build --tag ${IMG_NAME}:${COMMIT_HASH} ."
