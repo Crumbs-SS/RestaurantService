@@ -122,6 +122,14 @@ public class MockUtil {
 
         return temp;
     }
+
+    public static List<Category> getCategories(){
+        return List.of(
+                Category.builder().name("Rando").build(),
+                Category.builder().name("Rando").build(),
+                Category.builder().name("Rando").build());
+    }
+
     public static Restaurant getRestaurant(){
         Restaurant temp = new Restaurant();
         temp.setId(1L);

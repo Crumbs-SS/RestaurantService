@@ -40,7 +40,7 @@ public class RestaurantSearchService {
                 .orElseThrow();
     }
 
-    public Page<Restaurant> getMenuItems(String query, PageRequest pageRequest){
+    public Page<Restaurant> getMenuItems(String query, PageRequest pageRequest) {
         return Optional.of(restaurantRepository.findRestaurantsByMenuItem(query, pageRequest))
                 .orElseThrow();
     }
@@ -63,7 +63,7 @@ public class RestaurantSearchService {
     }
 
     public PageRequest getPageRequest(Integer pageNumber, Integer elements, String sortBy, String order){
-        Sort by = (order.equals("asc")) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Sort by = ("asc".equals(order)) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         return sortBy!=null ? PageRequest.of(pageNumber, elements, by) : PageRequest.of(pageNumber, elements);
     }
 

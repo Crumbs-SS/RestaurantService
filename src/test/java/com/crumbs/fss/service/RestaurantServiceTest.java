@@ -55,13 +55,6 @@ class RestaurantServiceTest {
     }
 
     @Test
-    void getMenuItems() {
-        PageRequest pageRequest = PageRequest.of(0, 20);
-        Mockito.when(menuItemRepository.findAll(pageRequest)).thenReturn(MockUtil.getMenuItemsPage());
-        assertEquals(restaurantSearchService.getMenuItems("" ,pageRequest).getNumberOfElements(), MockUtil.getMenuItems().size());
-    }
-
-    @Test
     void addRestaurantSuccessfully() {
 
         Mockito.when(restaurantRepository.save(ArgumentMatchers.any(Restaurant.class))).
