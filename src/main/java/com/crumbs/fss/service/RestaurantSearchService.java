@@ -19,74 +19,47 @@ import java.util.stream.Collectors;
 @Service
 @Transactional(rollbackFor = { Exception.class })
 public class RestaurantSearchService {
-    @Autowired
-    RestaurantRepository restaurantRepository;
-    @Autowired
-    MenuItemRepository menuItemRepository;
-    @Autowired
-    CategoryRepository categoryRepository;
 
-    public Optional<Page<MenuItem>> getMenuItems(PageRequest pageRequest){
-        try{
-            return Optional.of(menuItemRepository.findAll(pageRequest));
-        } catch(Exception e){
-            e.printStackTrace();
-            return Optional.empty();
-        }
+    private final RestaurantRepository restaurantRepository;
+    private final MenuItemRepository menuItemRepository;
+    private final CategoryRepository categoryRepository;
+
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+    RestaurantSearchService(
+            RestaurantRepository restaurantRepository,
+            MenuItemRepository menuItemRepository,
+            CategoryRepository categoryRepository
+    ){
+        this.restaurantRepository = restaurantRepository;
+        this.menuItemRepository = menuItemRepository;
+        this.categoryRepository = categoryRepository;
     }
 
-    public Optional<Page<MenuItem>> getMenuItems(PageRequest pageRequest, Long restaurantId){
-        try{
-            return Optional.of(menuItemRepository.findAllByRestaurantId(restaurantId, pageRequest));
-        } catch(Exception e){
-            e.printStackTrace();
-            return Optional.empty();
-        }
+    public Page<MenuItem> getMenuItems(PageRequest pageRequest, Long restaurantId){
+        return Optional.of(menuItemRepository.findAllByRestaurantId(restaurantId, pageRequest))
+                .orElseThrow();
     }
 
-    public Optional<Page<Restaurant>> getMenuItems(String query, PageRequest pageRequest){
-        try{
-            return Optional.of(restaurantRepository.findRestaurantsByMenuItem(query, pageRequest));
-        } catch (Exception e){
-            e.printStackTrace();
-            return Optional.empty();
-        }
+    public Page<Restaurant> getMenuItems(String query, PageRequest pageRequest){
+        return Optional.of(restaurantRepository.findRestaurantsByMenuItem(query, pageRequest))
+                .orElseThrow();
     }
 
-    public Optional<Page<Restaurant>> getRestaurants(PageRequest pageRequest){
-        try{
-            return Optional.of(restaurantRepository.findAll(pageRequest));
-        }catch(Exception e){
-            e.printStackTrace();
-            return Optional.empty();
-        }
+    public Page<Restaurant> getRestaurants(PageRequest pageRequest){
+        return Optional.of(restaurantRepository.findAll(pageRequest)).orElseThrow();
     }
 
-    public Optional<Page<Restaurant>> getRestaurants(String query, PageRequest pageRequest) {
-        try {
-            return Optional.of(restaurantRepository.findAll(getRestaurantExample(query), pageRequest));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Optional.empty();
-        }
+    public Page<Restaurant> getRestaurants(String query, PageRequest pageRequest) {
+        return Optional.of(restaurantRepository.findAll(getRestaurantExample(query), pageRequest))
+                .orElseThrow();
     }
 
-    public Optional<Restaurant> findRestaurant(Long restaurantId){
-        try{
-            return Optional.of(restaurantRepository.findById(restaurantId).orElseThrow());
-        } catch(Exception e){
-            e.printStackTrace();
-            return Optional.empty();
-        }
+    public Restaurant findRestaurant(Long restaurantId){
+        return restaurantRepository.findById(restaurantId).orElseThrow();
     }
 
-    public Optional<List<Category>> getCategories(){
-        try{
-            return Optional.of(categoryRepository.findAll());
-        }catch(Exception e){
-            e.printStackTrace();
-            return Optional.empty();
-        }
+    public List<Category> getCategories(){
+        return categoryRepository.findAll();
     }
 
     public PageRequest getPageRequest(Integer pageNumber, Integer elements, String sortBy, String order){

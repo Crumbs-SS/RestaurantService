@@ -1,9 +1,7 @@
 package com.crumbs.fss.controller;
 
-import com.crumbs.fss.DTO.addRestaurantDTO;
-import com.crumbs.fss.DTO.updateRestaurantDTO;
+
 import com.crumbs.fss.service.RestaurantSearchService;
-import com.crumbs.fss.service.RestaurantService;
 import com.crumbs.lib.entity.Category;
 import com.crumbs.lib.entity.MenuItem;
 import com.crumbs.lib.entity.Restaurant;
@@ -15,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -23,15 +20,13 @@ import java.util.List;
 @Validated
 public class MainController {
 
-    @Autowired
-    RestaurantService restaurantService;
 
     @Autowired
     RestaurantSearchService restaurantSearchService;
 
     @GetMapping("/restaurants/{restaurantId}")
-    public ResponseEntity<Restaurant> getRestaurant(@PathVariable Long restaurantId){
-        Restaurant restaurant = restaurantSearchService.findRestaurant(restaurantId).orElseThrow();
+    public ResponseEntity<Restaurant> getRestaurant(@PathVariable Long restaurantId) {
+        Restaurant restaurant = restaurantSearchService.findRestaurant(restaurantId);
         return new ResponseEntity<>(restaurant, HttpStatus.OK);
     }
 
@@ -41,11 +36,10 @@ public class MainController {
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "asc") String order,
             @RequestParam(required = false) String[] filter
-    ){
+    ) {
 
         PageRequest pageRequest = restaurantSearchService.getPageRequest(page, 5, sortBy, order);
-        Page<Restaurant> restaurants = restaurantSearchService.getRestaurants(pageRequest)
-                .orElseThrow();
+        Page<Restaurant> restaurants = restaurantSearchService.getRestaurants(pageRequest);
         if (filter != null && filter.length > 0)
             restaurants = restaurantSearchService.filterRestaurantResults(null, filter, pageRequest);
 
@@ -59,11 +53,10 @@ public class MainController {
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "asc") String order,
             @RequestParam(required = false) String[] filter
-    ){
+    ) {
 
         PageRequest pageRequest = restaurantSearchService.getPageRequest(page, 5, sortBy, order);
-        Page<Restaurant> restaurants = restaurantSearchService.getRestaurants(query, pageRequest)
-                .orElseThrow();
+        Page<Restaurant> restaurants = restaurantSearchService.getRestaurants(query, pageRequest);
         if (filter != null && filter.length > 0)
             restaurants = restaurantSearchService.filterRestaurantResults(query, filter, pageRequest);
 
@@ -78,8 +71,7 @@ public class MainController {
             @PathVariable Long restaurantId
     ) {
         PageRequest pageRequest = restaurantSearchService.getPageRequest(page, 10, sortBy, order);
-        Page<MenuItem> menuItems = restaurantSearchService.getMenuItems(pageRequest, restaurantId)
-                .orElseThrow();
+        Page<MenuItem> menuItems = restaurantSearchService.getMenuItems(pageRequest, restaurantId);
 
         return new ResponseEntity<>(menuItems, HttpStatus.OK);
     }
@@ -92,49 +84,20 @@ public class MainController {
             @RequestParam(defaultValue = "asc") String order,
             @RequestParam(required = false) String[] filter
 
-    ){
+    ) {
 
         PageRequest pageRequest = restaurantSearchService.getPageRequest(page, 5, sortBy, order);
-        Page<Restaurant> restaurants = restaurantSearchService.getMenuItems(query, pageRequest)
-                .orElseThrow();
+        Page<Restaurant> restaurants = restaurantSearchService.getMenuItems(query, pageRequest);
 
         if (filter != null && filter.length > 0)
             restaurants = restaurantSearchService.filterMenuRestaurantResults(query, filter, pageRequest);
 
         return new ResponseEntity<>(restaurants, HttpStatus.OK);
     }
-    @GetMapping("/restaurantss")
-    public List<Restaurant> getAllRestaurants(){
-        return restaurantService.getAllRestaurants();
-    }
 
     @GetMapping("/categories")
-    public ResponseEntity<List<Category>> getCategories(){
-        List<Category> categories = restaurantSearchService.getCategories().orElseThrow();
+    public ResponseEntity<List<Category>> getCategories() {
+        List<Category> categories = restaurantSearchService.getCategories();
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
-
-    @PostMapping("/restaurants")
-    public Restaurant addRestaurant(@Valid @RequestBody addRestaurantDTO aAddRestaurantDTO)  {
-        return restaurantService.addRestaurant(aAddRestaurantDTO);
-    }
-    @PutMapping("/restaurants/{id}")
-    public Restaurant updateRestaurant(@PathVariable Long id, @Valid @RequestBody updateRestaurantDTO restaurantDTO){
-        return restaurantService.updateRestaurant(id, restaurantDTO);
-    }
-    @DeleteMapping("/restaurants/{id}")
-    public Restaurant deleteRestaurant(@PathVariable Long id){
-        return restaurantService.deleteRestaurant(id);
-    }
-
-    @GetMapping("/owner/{id}/restaurants")
-    public List<Restaurant> getRestaurantOwnerRestaurants(@PathVariable Long id){
-        return restaurantService.getRestaurantOwnerRestaurants(id);
-    }
-
-    @PutMapping("owner/requestDeleteRestaurant/{id}")
-    public void requestDeleteRestaurant(@PathVariable Long id){
-        restaurantService.requestDeleteRestaurant(id);
-    }
-
 }
