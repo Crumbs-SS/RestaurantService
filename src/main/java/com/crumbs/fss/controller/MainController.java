@@ -1,7 +1,10 @@
 package com.crumbs.fss.controller;
 
 
+import com.crumbs.fss.DTO.addRestaurantDTO;
+import com.crumbs.fss.DTO.updateRestaurantDTO;
 import com.crumbs.fss.service.RestaurantSearchService;
+import com.crumbs.fss.service.RestaurantService;
 import com.crumbs.lib.entity.Category;
 import com.crumbs.lib.entity.MenuItem;
 import com.crumbs.lib.entity.Restaurant;
@@ -13,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -21,8 +25,16 @@ import java.util.List;
 public class MainController {
 
 
-    @Autowired
-    RestaurantSearchService restaurantSearchService;
+    private final RestaurantSearchService restaurantSearchService;
+    private final RestaurantService restaurantService;
+
+    MainController(
+            RestaurantSearchService restaurantSearchService,
+            RestaurantService restaurantService
+    ){
+        this.restaurantSearchService =  restaurantSearchService;
+        this.restaurantService = restaurantService;
+    }
 
     @GetMapping("/restaurants/{restaurantId}")
     public ResponseEntity<Restaurant> getRestaurant(@PathVariable Long restaurantId) {
@@ -100,4 +112,29 @@ public class MainController {
         List<Category> categories = restaurantSearchService.getCategories();
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
+
+
+    @PostMapping("/restaurants")
+    public Restaurant addRestaurant(@Valid @RequestBody addRestaurantDTO aAddRestaurantDTO)  {
+        return restaurantService.addRestaurant(aAddRestaurantDTO);
+    }
+    @PutMapping("/restaurants/{id}")
+    public Restaurant updateRestaurant(@PathVariable Long id, @Valid @RequestBody updateRestaurantDTO restaurantDTO){
+        return restaurantService.updateRestaurant(id, restaurantDTO);
+    }
+    @DeleteMapping("/restaurants/{id}")
+    public Restaurant deleteRestaurant(@PathVariable Long id){
+        return restaurantService.deleteRestaurant(id);
+    }
+
+    @GetMapping("/owner/{id}/restaurants")
+    public List<Restaurant> getOwnerRestaurants(@PathVariable Long id){
+        return restaurantService.getOwnerRestaurants(id);
+    }
+
+    @DeleteMapping("owner/restaurant/{id}")
+    public void requestDeleteRestaurant(@PathVariable Long id){
+        restaurantService.requestDeleteRestaurant(id);
+    }
+
 }
