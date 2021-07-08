@@ -1,5 +1,4 @@
 package com.crumbs.fss.service;
-import com.crumbs.fss.DTO.OwnerRegistration;
 import com.crumbs.fss.DTO.addRestaurantDTO;
 import com.crumbs.fss.DTO.updateRestaurantDTO;
 import com.crumbs.fss.ExceptionHandling.DuplicateLocationException;
@@ -39,35 +38,12 @@ public class RestaurantService {
     @Autowired
      UserStatusRepository userStatusRepository;
 
-    @Autowired
-    private RestTemplate restTemplate;
-
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
 
     public List<Restaurant> getOwnerRestaurants(Long id){
         return restaurantRepository.findRestaurantByOwnerID(id);
     }
 
     public Restaurant addRestaurant(addRestaurantDTO a) {
-
-        final String uri = "http://localhost:8090/owners/register";
-
-        Owner owner;
-
-        if(a.isNewOwner()){
-            //register customer
-            OwnerRegistration ownerRegistration = new OwnerRegistration(a.getUsername(), a.getPassword(), a.getEmail(), a.getFirstName(), a.getLastName(), a.getPhone());
-            HttpEntity<OwnerRegistration> request = new HttpEntity<>(ownerRegistration);
-            ResponseEntity<OwnerRegistration> response = restTemplate.exchange(uri, HttpMethod.POST, request, OwnerRegistration.class );
-            //check http status created, else exception handle
-//            assertThat(response.getStatusCode(), is(HttpStatus.CREATED));
-        }
-        UserDetails ownerDetails = userDetailRepository.findByUsername(a.getUsername()).orElseThrow(EntityNotFoundException::new);
-        owner = ownerDetails.getOwner();
-        //if username not associated with an owner exception handle
 
         if(locationRepository.findLocationByStreet(a.getStreet())!=null)
             throw new DuplicateLocationException();
@@ -82,6 +58,7 @@ public class RestaurantService {
         locationRepository.save(location);
 
         RestaurantStatus restaurantStatus = restaurantStatusRepository.findById("REGISTERED").get();
+        Owner owner = userDetailRepository.findById(a.getOwnerId()).orElseThrow(EntityNotFoundException::new).getOwner();
 
         Restaurant temp = Restaurant.builder()
                 .name(a.getName())
@@ -123,7 +100,7 @@ public class RestaurantService {
             temp.getRestaurantOwner().getUserDetails().setFirstName(firstName);
 
         String lastName = updateRestaurantDTO.getLastName();
-        if(firstName!= null && !firstName.isEmpty())
+        if(lastName!= null && !lastName.isEmpty())
             temp.getRestaurantOwner().getUserDetails().setLastName(lastName);
 
         String email = updateRestaurantDTO.getEmail();
@@ -167,11 +144,12 @@ public class RestaurantService {
         }
 
         //update menu items
-        List<MenuItem> oldMenu = temp.getMenuItems();
         List<MenuItem> newMenu = updateRestaurantDTO.getMenu();
 
         //only update menu if there were changes
         if(newMenu != null && !newMenu.isEmpty()) {
+
+            List<MenuItem> oldMenu = temp.getMenuItems();
 
             //for newly added menu items, set restaurant to restaurant (otherwise restaurant_ID stays null on save)
             newMenu.forEach(item -> {

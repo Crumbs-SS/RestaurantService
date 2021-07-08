@@ -14,21 +14,8 @@ import java.util.List;
 @Builder
 public class addRestaurantDTO {
 
-    @NotNull @NotBlank @Size(min = 3, max = 20)
-    @Pattern(regexp = "^[A-Za-z0-9]*$", message = "Username can only contain letters and numbers")
-    String username;
-
-    String password;
-
-    String email;
-
-    String firstName;
-
-    String lastName;
-
-    String phone;
-
-    private boolean newOwner;
+    @NotNull(message = "owner_id is mandatory")
+    private Long ownerId;
 
     @NotBlank(message = "Street is Mandatory")
     private String street;
