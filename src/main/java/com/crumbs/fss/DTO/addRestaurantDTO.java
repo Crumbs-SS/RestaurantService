@@ -14,15 +14,8 @@ import java.util.List;
 @Builder
 public class addRestaurantDTO {
 
-    @NotBlank(message = "First Name is Mandatory")
-    private String firstName;
-
-    @NotBlank(message = "Last Name is Mandatory")
-    private String lastName;
-
-    @Email(message = "Email should be valid")
-    @NotBlank(message = "Email is Mandatory")
-    private String email;
+    @NotNull(message = "owner_id is mandatory")
+    private Long ownerId;
 
     @NotBlank(message = "Street is Mandatory")
     private String street;

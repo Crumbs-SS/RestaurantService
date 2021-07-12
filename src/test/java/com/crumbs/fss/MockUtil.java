@@ -72,9 +72,6 @@ public class MockUtil {
         categories.add(cat);
 
         addRestaurantDTO temp = addRestaurantDTO.builder()
-                .firstName("test")
-                .lastName("test")
-                .email("test@gmail.com")
                 .street("test")
                 .city("test")
                 .zip("00000")
@@ -108,9 +105,6 @@ public class MockUtil {
     }
     public static addRestaurantDTO getInvalidAddRestaurantDTO(){
         addRestaurantDTO temp = addRestaurantDTO.builder()
-                .firstName(null)
-                .lastName("test")
-                .email("test@gmail.com")
                 .street("test")
                 .city("test")
                 .zip("11111")
