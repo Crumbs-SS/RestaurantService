@@ -73,7 +73,7 @@ public class RestaurantService {
 
         List<String> categories = a.getCategories();
         if(categories!= null && !categories.isEmpty()) {
-            categories.forEach(category -> restaurantCategoryRepository.insertRestaurantCategory(category, restaurant.getId()));
+            categories.forEach(category -> restaurantCategoryRepository.insertRestaurantCategory(restaurant.getId(), category));
         }
         return restaurant;
     }
@@ -141,7 +141,7 @@ public class RestaurantService {
         //replace with new ones
         List<String> newCategories = updateRestaurantDTO.getCategories();
         if(newCategories!= null && !newCategories.isEmpty()) {
-            newCategories.forEach(category -> restaurantCategoryRepository.insertRestaurantCategory(category, temp.getId()));
+            newCategories.forEach(category -> restaurantCategoryRepository.insertRestaurantCategory(temp.getId(), category));
         }
 
         //update menu items
