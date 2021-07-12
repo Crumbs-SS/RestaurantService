@@ -54,36 +54,35 @@ class RestaurantServiceTest {
         assertEquals(restaurantSearchService.getRestaurants(pageRequest).getNumberOfElements(), MockUtil.getRestaurants().size());
     }
 
-    @Test
-    void addRestaurantSuccessfully() {
+//    @Test
+//    void addRestaurantSuccessfully(){
+//
+//        Mockito.when(restaurantRepository.save(ArgumentMatchers.any(Restaurant.class))).
+//                thenReturn(MockUtil.getRestaurant());
+//        Mockito.when(userDetailRepository.save(ArgumentMatchers.any(UserDetails.class))).
+//                thenReturn(MockUtil.getUserDetail());
+//        Mockito.when(restaurantOwnerRepository.save(ArgumentMatchers.any(Owner.class))).
+//                thenReturn(MockUtil.getRestaurantOwner());
+//        Mockito.when(categoryRepository.save(ArgumentMatchers.any(Category.class))).
+//                thenReturn(MockUtil.getCategory());
+//        Mockito.when(restaurantCategoryRepository.save(ArgumentMatchers.any(RestaurantCategory.class))).
+//                thenReturn(MockUtil.getRestaurantCategory());
+//
+//        Restaurant temp = restaurantService.addRestaurant(MockUtil.getAddRestaurantDTO());
+//        assertThat(temp).isNotNull();
+//        verify(restaurantRepository).save(any(Restaurant.class));
+//    }
 
-        Mockito.when(restaurantRepository.save(ArgumentMatchers.any(Restaurant.class))).
-                thenReturn(MockUtil.getRestaurant());
-        Mockito.when(userDetailRepository.save(ArgumentMatchers.any(UserDetails.class))).
-                thenReturn(MockUtil.getUserDetail());
-        Mockito.when(restaurantOwnerRepository.save(ArgumentMatchers.any(Owner.class))).
-                thenReturn(MockUtil.getRestaurantOwner());
-        Mockito.when(categoryRepository.save(ArgumentMatchers.any(Category.class))).
-                thenReturn(MockUtil.getCategory());
-        Mockito.when(restaurantCategoryRepository.save(ArgumentMatchers.any(RestaurantCategory.class))).
-                thenReturn(MockUtil.getRestaurantCategory());
-
-        Restaurant temp = restaurantService.addRestaurant(MockUtil.getAddRestaurantDTO());
-        assertThat(temp).isNotNull();
-        verify(restaurantRepository).save(any(Restaurant.class));
-    }
-
-    @Test
-    void addRestaurantShouldThrowDuplicateLocationException() {
-        String street = "a";
-        Mockito.when(locationRepository.findLocationByStreet(anyString()))
-                .thenReturn(street);
-        assertThrows(DuplicateLocationException.class, () -> {
-            restaurantService.addRestaurant(MockUtil.getAddRestaurantDTO());
-        });
-        verify(restaurantRepository, never()).save(any(Restaurant.class));
-    }
-
+//    @Test
+//    void addRestaurantShouldThrowDuplicateLocationException(){
+//        String street ="a";
+//        Mockito.when(locationRepository.findLocationByStreet(anyString()))
+//                .thenReturn(street);
+//        assertThrows(DuplicateLocationException.class,()->{
+//            restaurantService.addRestaurant(MockUtil.getAddRestaurantDTO());
+//        });
+//        verify(restaurantRepository, never()).save(any(Restaurant.class));
+//    }
     @Test
     void deleteRestaurantSuccessfully() {
         Mockito.when(restaurantRepository.findById(MockUtil.getRestaurant().getId()))

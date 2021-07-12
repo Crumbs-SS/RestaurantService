@@ -1,3 +1,4 @@
+
 package com.crumbs.fss.DTO;
 
 
@@ -14,15 +15,8 @@ import java.util.List;
 @Builder
 public class addRestaurantDTO {
 
-    @NotBlank(message = "First Name is Mandatory")
-    private String firstName;
-
-    @NotBlank(message = "Last Name is Mandatory")
-    private String lastName;
-
-    @Email(message = "Email should be valid")
-    @NotBlank(message = "Email is Mandatory")
-    private String email;
+    @NotNull(message = "owner_id is mandatory")
+    private Long ownerId;
 
     @NotBlank(message = "Street is Mandatory")
     private String street;
@@ -31,11 +25,11 @@ public class addRestaurantDTO {
     private String city;
 
     @NotBlank(message = "Zip code is Mandatory")
-    @Size(min=5, max=5, message="zip must be of length 5")
+    @Size(min = 5, max = 5, message = "zip must be of length 5")
     private String zip;
 
     @NotBlank(message = "State is Mandatory")
-    @Size(min =2, max =2, message= "State must consist of only 2 characters.")
+    @Size(min = 2, max = 2, message = "State must consist of only 2 characters.")
     private String state;
 
     @NotBlank(message = "Restaurant Name is Mandatory")
@@ -46,5 +40,4 @@ public class addRestaurantDTO {
     private Integer priceRating;
 
     private List<String> categories;
-
 }

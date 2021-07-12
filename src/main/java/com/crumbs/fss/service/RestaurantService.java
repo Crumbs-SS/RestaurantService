@@ -6,8 +6,14 @@ import com.crumbs.lib.entity.*;
 import com.crumbs.lib.entity.MenuItem;
 import com.crumbs.lib.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
+
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
@@ -25,10 +31,13 @@ public class RestaurantService {
     RestaurantCategoryRepository restaurantCategoryRepository;
     @Autowired
     RestaurantOwnerRepository restaurantOwnerRepository;
-    @Autowired UserDetailsRepository userDetailRepository;
-    @Autowired RestaurantStatusRepository restaurantStatusRepository;
+    @Autowired
+    UserDetailsRepository userDetailRepository;
+    @Autowired
+    RestaurantStatusRepository restaurantStatusRepository;
     @Autowired
      UserStatusRepository userStatusRepository;
+
 
     public List<Restaurant> getOwnerRestaurants(Long id){
         return restaurantRepository.findRestaurantByOwnerID(id);
@@ -39,20 +48,6 @@ public class RestaurantService {
         if(locationRepository.findLocationByStreet(a.getStreet())!=null)
             throw new DuplicateLocationException();
 
-        UserDetails userDetail = UserDetails.builder()
-                .firstName(a.getFirstName())
-                .lastName(a.getLastName())
-                .email(a.getEmail())
-                .build();
-
-        userDetailRepository.save(userDetail);
-
-        Owner restaurantOwner = Owner.builder()
-                .userDetails(userDetail)
-                .build();
-
-        restaurantOwnerRepository.save(restaurantOwner);
-
         Location location = Location.builder()
                 .street(a.getStreet())
                 .city(a.getCity())
@@ -62,11 +57,15 @@ public class RestaurantService {
 
         locationRepository.save(location);
 
+        RestaurantStatus restaurantStatus = restaurantStatusRepository.findById("REGISTERED").get();
+        Owner owner = userDetailRepository.findById(a.getOwnerId()).orElseThrow(EntityNotFoundException::new).getOwner();
+
         Restaurant temp = Restaurant.builder()
                 .name(a.getName())
                 .priceRating(a.getPriceRating())
                 .location(location)
-                .restaurantOwner(restaurantOwner)
+                .restaurantOwner(owner)
+                .restaurantStatus(restaurantStatus)
                 .build();
 
         Restaurant restaurant = restaurantRepository.save(temp);
@@ -101,7 +100,7 @@ public class RestaurantService {
             temp.getRestaurantOwner().getUserDetails().setFirstName(firstName);
 
         String lastName = updateRestaurantDTO.getLastName();
-        if(firstName!= null && !firstName.isEmpty())
+        if(lastName!= null && !lastName.isEmpty())
             temp.getRestaurantOwner().getUserDetails().setLastName(lastName);
 
         String email = updateRestaurantDTO.getEmail();
@@ -145,11 +144,12 @@ public class RestaurantService {
         }
 
         //update menu items
-        List<MenuItem> oldMenu = temp.getMenuItems();
         List<MenuItem> newMenu = updateRestaurantDTO.getMenu();
 
         //only update menu if there were changes
         if(newMenu != null && !newMenu.isEmpty()) {
+
+            List<MenuItem> oldMenu = temp.getMenuItems();
 
             //for newly added menu items, set restaurant to restaurant (otherwise restaurant_ID stays null on save)
             newMenu.forEach(item -> {
