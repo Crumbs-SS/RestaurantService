@@ -41,23 +41,19 @@ class RestaurantServiceTest {
     RestaurantOwnerRepository restaurantOwnerRepository;
     @MockBean
     LocationRepository locationRepository;
-    @MockBean CategoryRepository categoryRepository;
-    @MockBean RestaurantCategoryRepository restaurantCategoryRepository;
+    @MockBean
+    CategoryRepository categoryRepository;
+    @MockBean
+    RestaurantCategoryRepository restaurantCategoryRepository;
 
 
     @Test
     void getRestaurants() {
         PageRequest pageRequest = PageRequest.of(0, 5);
         Mockito.when(restaurantRepository.findAll(pageRequest)).thenReturn(MockUtil.getPageRestaurants());
-        assertEquals(restaurantSearchService.getRestaurants(pageRequest).get().getNumberOfElements(), MockUtil.getRestaurants().size());
+        assertEquals(restaurantSearchService.getRestaurants(pageRequest).getNumberOfElements(), MockUtil.getRestaurants().size());
     }
 
-    @Test
-    void getMenuItems() {
-        PageRequest pageRequest = PageRequest.of(0, 20);
-        Mockito.when(menuItemRepository.findAll(pageRequest)).thenReturn(MockUtil.getMenuItemsPage());
-        assertEquals(restaurantSearchService.getMenuItems(pageRequest).get().getNumberOfElements(), MockUtil.getMenuItems().size());
-    }
 //    @Test
 //    void addRestaurantSuccessfully(){
 //
@@ -88,7 +84,7 @@ class RestaurantServiceTest {
 //        verify(restaurantRepository, never()).save(any(Restaurant.class));
 //    }
     @Test
-    void deleteRestaurantSuccessfully(){
+    void deleteRestaurantSuccessfully() {
         Mockito.when(restaurantRepository.findById(MockUtil.getRestaurant().getId()))
                 .thenReturn(Optional.of(MockUtil.getRestaurant()));
 
@@ -96,16 +92,18 @@ class RestaurantServiceTest {
         verify(restaurantRepository).deleteById(MockUtil.getRestaurant().getId());
 
     }
+
     @Test
-    void deleteRestaurantShouldThrowErrorWhenIDNotFound(){
+    void deleteRestaurantShouldThrowErrorWhenIDNotFound() {
         Mockito.when(restaurantRepository.findById(anyLong())).thenReturn(Optional.ofNullable(null));
-        assertThrows(EntityNotFoundException.class, ()->{
+        assertThrows(EntityNotFoundException.class, () -> {
             restaurantService.deleteRestaurant(MockUtil.getRestaurant().getId());
         });
 
     }
+
     @Test
-    void updateRestaurantSuccessfully(){
+    void updateRestaurantSuccessfully() {
         Mockito.when(restaurantRepository.findById(anyLong())).thenReturn(Optional.of(MockUtil.getRestaurant()));
         Mockito.when(locationRepository.findLocationByStreet(anyString()))
                 .thenReturn(null);
@@ -115,12 +113,14 @@ class RestaurantServiceTest {
         verify(restaurantRepository).save(any(Restaurant.class));
         verify(restaurantRepository).findById(MockUtil.getRestaurant().getId());
     }
+
     @Test
-    void updateRestaurantShouldThrowEntityNotFoundException(){
+    void updateRestaurantShouldThrowEntityNotFoundException() {
         Mockito.when(restaurantRepository.findById(anyLong())).thenReturn(Optional.ofNullable(null));
-        assertThrows(EntityNotFoundException.class,()->{
-            restaurantService.updateRestaurant(1l,MockUtil.getUpdateRestaurantDTO());
+        assertThrows(EntityNotFoundException.class, () -> {
+            restaurantService.updateRestaurant(1l, MockUtil.getUpdateRestaurantDTO());
         });
     }
 
 }
+
