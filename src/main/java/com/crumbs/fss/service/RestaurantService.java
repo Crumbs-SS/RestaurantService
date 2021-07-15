@@ -169,11 +169,11 @@ public class RestaurantService {
 
         return restaurantRepository.save(temp);
     }
-    public void requestDeleteRestaurant(Long id){
+    public Restaurant requestDeleteRestaurant(Long id){
         Restaurant temp = restaurantRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         RestaurantStatus status = restaurantStatusRepository.findById("PENDING_DELETE").get();
         temp.setRestaurantStatus(status);
-        restaurantRepository.save(temp);
+        return restaurantRepository.save(temp);
     }
 
 

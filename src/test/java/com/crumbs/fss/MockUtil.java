@@ -4,7 +4,6 @@ import com.crumbs.fss.DTO.addRestaurantDTO;
 import com.crumbs.fss.DTO.updateRestaurantDTO;
 import com.crumbs.lib.entity.*;
 import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
@@ -72,6 +71,7 @@ public class MockUtil {
         categories.add(cat);
 
         addRestaurantDTO temp = addRestaurantDTO.builder()
+                .ownerId(1l)
                 .street("test")
                 .city("test")
                 .zip("00000")
@@ -84,9 +84,6 @@ public class MockUtil {
         return temp;
     }
     public static updateRestaurantDTO getUpdateRestaurantDTO(){
-//        Category cat = new Category();
-//        List<Category> categories = new ArrayList<>();
-//        categories.add(cat);
 
         updateRestaurantDTO temp = updateRestaurantDTO.builder()
                 .firstName("test")
@@ -103,11 +100,29 @@ public class MockUtil {
 
         return temp;
     }
-    public static addRestaurantDTO getInvalidAddRestaurantDTO(){
-        addRestaurantDTO temp = addRestaurantDTO.builder()
+    public static updateRestaurantDTO getInvalidUpdateRestaurantDTO(){
+        updateRestaurantDTO temp = updateRestaurantDTO.builder()
                 .street("test")
                 .city("test")
                 .zip("11111")
+                .state("AA")
+                .name("test")
+                //email is invalid
+                .email("zzz")
+                .priceRating(1)
+                .categories(null)
+                .build();
+
+        return temp;
+    }
+
+    public static addRestaurantDTO getInvalidAddRestaurantDTO(){
+        addRestaurantDTO temp = addRestaurantDTO.builder()
+                .ownerId(1l)
+                .street("test")
+                .city("test")
+                //zip is invalid
+                .zip("11111a")
                 .state("AA")
                 .name("test")
                 .priceRating(1)
@@ -135,11 +150,55 @@ public class MockUtil {
         temp.getRestaurantOwner().getUserDetails().setId(1l);
         return temp;
     }
+    public static Restaurant getRestaurantWithActiveStatus(){
+        RestaurantStatus status = new RestaurantStatus();
+        status.setStatus("ACTIVE");
+
+        Restaurant temp = new Restaurant();
+        temp.setId(1L);
+        temp.setLocation(new Location());
+        temp.getLocation().setId(1l);
+        temp.setRestaurantOwner(new Owner());
+        temp.getRestaurantOwner().setId(1l);
+        temp.getRestaurantOwner().setUserDetails(new UserDetails());
+        temp.getRestaurantOwner().getUserDetails().setId(1l);
+        temp.setRestaurantStatus(status);
+
+        return temp;
+    }
+    public static Restaurant getRestaurantWithPendingDeleteStatus(){
+        RestaurantStatus status = new RestaurantStatus();
+        status.setStatus("PENDING_DELETE");
+
+        Restaurant temp = new Restaurant();
+        temp.setId(1L);
+        temp.setLocation(new Location());
+        temp.getLocation().setId(1l);
+        temp.setRestaurantOwner(new Owner());
+        temp.getRestaurantOwner().setId(1l);
+        temp.getRestaurantOwner().setUserDetails(new UserDetails());
+        temp.getRestaurantOwner().getUserDetails().setId(1l);
+        temp.setRestaurantStatus(status);
+
+        return temp;
+    }
     public static UserDetails getUserDetail() {
-        return null;
+        UserDetails user =new UserDetails();
+        user.setOwner(new Owner());
+        return user;
+    }
+    public static RestaurantStatus getPendingDeleteStatus(){
+        RestaurantStatus status = new RestaurantStatus();
+        status.setStatus("PENDING_DELETE");
+        return status;
+    }
+    public static RestaurantStatus getRegisteredStatus(){
+        RestaurantStatus status = new RestaurantStatus();
+        status.setStatus("REGISTERED");
+        return status;
     }
     public static Owner getRestaurantOwner(){
-        return null;
+        return new Owner();
     }
     public static Category getCategory(){
         return null;
