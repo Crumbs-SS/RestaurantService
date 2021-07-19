@@ -134,7 +134,7 @@ class RestaurantServiceTest {
 
     @Test
     void requestDeleteRestaurant(){
-        //useless
+
         Mockito.when(restaurantRepository.findById(anyLong())).thenReturn(Optional.of(MockUtil.getRestaurantWithActiveStatus()));
         Mockito.when(restaurantStatusRepository.findById("PENDING_DELETE")).thenReturn(Optional.of(MockUtil.getPendingDeleteStatus()));
         Mockito.when(restaurantRepository.save(ArgumentMatchers.any(Restaurant.class))).thenReturn(MockUtil.getRestaurantWithPendingDeleteStatus());

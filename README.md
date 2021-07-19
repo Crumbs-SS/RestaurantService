@@ -99,7 +99,6 @@ Request Parameters:
 Returns:
 List of menu items.
 
-Errors:
 
 3)
 URL structure: /categories
@@ -111,7 +110,6 @@ Method: GET
 
 Returns: List of Category objects.
 
-Errors:
 
 4)
 URL structure: /owner/{id}/restaurants
@@ -170,7 +168,7 @@ Errors:
 6)
 URL structure: /restaurants/{id}
 
-Description: Update a restaurant's and his owner's details in our service.
+Description: Update an owner's and restaurant details.
 
 Method: PUT
 
