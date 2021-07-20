@@ -112,8 +112,10 @@ public class MainController {
         List<Category> categories = restaurantSearchService.getCategories();
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
-
-
+    @GetMapping("/owner/{id}/restaurants")
+    public List<Restaurant> getOwnerRestaurants(@PathVariable Long id){
+        return restaurantService.getOwnerRestaurants(id);
+    }
     @PostMapping("/restaurants")
     public Restaurant addRestaurant(@Valid @RequestBody addRestaurantDTO aAddRestaurantDTO)  {
         return restaurantService.addRestaurant(aAddRestaurantDTO);
@@ -125,11 +127,6 @@ public class MainController {
     @DeleteMapping("/restaurants/{id}")
     public Restaurant deleteRestaurant(@PathVariable Long id){
         return restaurantService.deleteRestaurant(id);
-    }
-
-    @GetMapping("/owner/{id}/restaurants")
-    public List<Restaurant> getOwnerRestaurants(@PathVariable Long id){
-        return restaurantService.getOwnerRestaurants(id);
     }
 
     @DeleteMapping("owner/restaurant/{id}")

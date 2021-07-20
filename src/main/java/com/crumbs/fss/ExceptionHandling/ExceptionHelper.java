@@ -70,13 +70,6 @@ public class ExceptionHelper extends ResponseEntityExceptionHandler {
         body.put("message", "This location already exists in database. Please enter new location.");
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
-    @ExceptionHandler({DataIntegrityViolationException.class})
-    public ResponseEntity<Object> handleSQL(){
-        Map<String, Object> body = new LinkedHashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("message", "Restaurant owner with this e-mail already exists. Please enter new -email");
-        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
-    }
 
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<Object> handleException(NoSuchElementException ex){

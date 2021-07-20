@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.crumbs.fss.controller.MainControllerTest
 -------------------------------------------------------------------------------
-Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.154 s - in com.crumbs.fss.controller.MainControllerTest
+Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.383 s - in com.crumbs.fss.controller.MainControllerTest
