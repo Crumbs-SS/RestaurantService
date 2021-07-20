@@ -19,7 +19,7 @@ pipeline{
 
   stages
   {
-        stage("Test")
+        /* stage("Test")
         {
                 steps
                 {
@@ -29,10 +29,10 @@ pipeline{
                 {
                     always
                     {
-                        junit '**/target/surefire-reports/TEST-*.xml'
+                        junit '**//* target/surefire-reports/TEST-*.xml'
                     }
                 }
-        }
+        } */
 //       stage('Code Analysis: Sonarqube')
 //       {
 //                   steps {
