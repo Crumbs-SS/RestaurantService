@@ -8,8 +8,8 @@ pipeline{
   environment
   {
           COMMIT_HASH = "${sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()}"
-          IMG_NAME = "RestaurantService"
-          AWS_ID = "592634872061"
+          IMG_NAME = "restaurantservice"
+          AWS_ID = "728482858339"
   }
   tools
   {
