@@ -39,8 +39,13 @@ public class RestaurantService {
      UserStatusRepository userStatusRepository;
 
 
-    public List<Restaurant> getOwnerRestaurants(Long id){
-        return restaurantRepository.findRestaurantByOwnerID(id);
+    public List<Restaurant> getOwnerRestaurants(String username){
+        UserDetails user = userDetailRepository.findByUsername(username).orElseThrow(EntityNotFoundException::new);
+        Owner owner = user.getOwner();
+        if (null == owner) {throw new EntityNotFoundException();}
+        List<Restaurant> restaurants = owner.getRestaurants();
+
+        return restaurants;
     }
 
     public Restaurant addRestaurant(addRestaurantDTO a) {

@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,7 @@ import java.util.List;
 @RestController
 @CrossOrigin
 @Validated
+@PreAuthorize("isAuthenticated()")
 public class MainController {
 
 
@@ -35,13 +37,14 @@ public class MainController {
         this.restaurantSearchService =  restaurantSearchService;
         this.restaurantService = restaurantService;
     }
-
+    @PreAuthorize("permitAll()")
     @GetMapping("/restaurants/{restaurantId}")
     public ResponseEntity<Restaurant> getRestaurant(@PathVariable Long restaurantId) {
         Restaurant restaurant = restaurantSearchService.findRestaurant(restaurantId);
         return new ResponseEntity<>(restaurant, HttpStatus.OK);
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping("/restaurants")
     public ResponseEntity<Page<Restaurant>> getRestaurants(
             @RequestParam(defaultValue = "0") Integer page,
@@ -112,9 +115,10 @@ public class MainController {
         List<Category> categories = restaurantSearchService.getCategories();
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
-    @GetMapping("/owner/{id}/restaurants")
-    public List<Restaurant> getOwnerRestaurants(@PathVariable Long id){
-        return restaurantService.getOwnerRestaurants(id);
+    @PreAuthorize("hasAuthority('OWNER') and #username == authentication.principal")
+    @GetMapping("/owner/{username}/restaurants")
+    public List<Restaurant> getOwnerRestaurants(@PathVariable String username){
+        return restaurantService.getOwnerRestaurants(username);
     }
     @PostMapping("/restaurants")
     public Restaurant addRestaurant(@Valid @RequestBody addRestaurantDTO aAddRestaurantDTO)  {
