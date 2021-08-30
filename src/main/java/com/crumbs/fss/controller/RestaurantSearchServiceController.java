@@ -24,18 +24,15 @@ import java.util.List;
 @CrossOrigin
 @Validated
 @PreAuthorize("isAuthenticated()")
-public class MainController {
+public class RestaurantSearchServiceController {
 
 
     private final RestaurantSearchService restaurantSearchService;
-    private final RestaurantService restaurantService;
 
-    MainController(
-            RestaurantSearchService restaurantSearchService,
-            RestaurantService restaurantService
+    RestaurantSearchServiceController(
+            RestaurantSearchService restaurantSearchService
     ){
         this.restaurantSearchService =  restaurantSearchService;
-        this.restaurantService = restaurantService;
     }
     @PreAuthorize("permitAll()")
     @GetMapping("/restaurants/{restaurantId}")
@@ -61,6 +58,7 @@ public class MainController {
         return new ResponseEntity<>(restaurants, HttpStatus.OK);
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping("/restaurants/search")
     public ResponseEntity<Page<Restaurant>> getRestaurants(
             @RequestParam(required = false) String query,
@@ -78,6 +76,7 @@ public class MainController {
         return new ResponseEntity<>(restaurants, HttpStatus.OK);
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping("/restaurants/{restaurantId}/menuitems")
     public ResponseEntity<Page<MenuItem>> getMenuItems(
             @RequestParam(defaultValue = "0") Integer page,
@@ -91,6 +90,7 @@ public class MainController {
         return new ResponseEntity<>(menuItems, HttpStatus.OK);
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping("/restaurants/menuitems")
     public ResponseEntity<Page<Restaurant>> getMenuItems(
             @RequestParam(required = false) String query,
@@ -110,32 +110,12 @@ public class MainController {
         return new ResponseEntity<>(restaurants, HttpStatus.OK);
     }
 
+    @PreAuthorize("permitAll()")
     @GetMapping("/categories")
     public ResponseEntity<List<Category>> getCategories() {
         List<Category> categories = restaurantSearchService.getCategories();
         return new ResponseEntity<>(categories, HttpStatus.OK);
     }
-    @PreAuthorize("hasAuthority('OWNER') and #username == authentication.principal")
-    @GetMapping("/owner/{username}/restaurants")
-    public List<Restaurant> getOwnerRestaurants(@PathVariable String username){
-        return restaurantService.getOwnerRestaurants(username);
-    }
-    @PostMapping("/restaurants")
-    public Restaurant addRestaurant(@Valid @RequestBody addRestaurantDTO aAddRestaurantDTO)  {
-        return restaurantService.addRestaurant(aAddRestaurantDTO);
-    }
-    @PutMapping("/restaurants/{id}")
-    public Restaurant updateRestaurant(@PathVariable Long id, @Valid @RequestBody updateRestaurantDTO restaurantDTO){
-        return restaurantService.updateRestaurant(id, restaurantDTO);
-    }
-    @DeleteMapping("/restaurants/{id}")
-    public Restaurant deleteRestaurant(@PathVariable Long id){
-        return restaurantService.deleteRestaurant(id);
-    }
 
-    @DeleteMapping("owner/restaurant/{id}")
-    public void requestDeleteRestaurant(@PathVariable Long id){
-        restaurantService.requestDeleteRestaurant(id);
-    }
 
 }

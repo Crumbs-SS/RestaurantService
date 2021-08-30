@@ -71,7 +71,6 @@ public class MockUtil {
         categories.add(cat);
 
         addRestaurantDTO temp = addRestaurantDTO.builder()
-                .ownerId(1l)
                 .street("test")
                 .city("test")
                 .zip("00000")
@@ -118,7 +117,6 @@ public class MockUtil {
 
     public static addRestaurantDTO getInvalidAddRestaurantDTO(){
         addRestaurantDTO temp = addRestaurantDTO.builder()
-                .ownerId(1l)
                 .street("test")
                 .city("test")
                 //zip is invalid
