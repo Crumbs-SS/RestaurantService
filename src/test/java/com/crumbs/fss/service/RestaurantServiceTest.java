@@ -7,14 +7,13 @@ import com.crumbs.lib.repository.*;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.data.domain.PageRequest;
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,8 +27,6 @@ import static org.mockito.Mockito.verify;
 @RunWith(MockitoJUnitRunner.class)
 class RestaurantServiceTest {
 
-    @Autowired
-    RestaurantSearchService restaurantSearchService;
     @Autowired
     RestaurantService restaurantService;
 
@@ -52,6 +49,7 @@ class RestaurantServiceTest {
 
     @Test
     void getOwnerRestaurants(){
+
         Mockito.when(userDetailRepository.findByUsername(ArgumentMatchers.any(String.class))).thenReturn(Optional.of(MockUtil.getUserDetail()) );
         List<Restaurant> restaurants = restaurantService.getOwnerRestaurants("testUsername");
         assertEquals(restaurants.size(), MockUtil.getRestaurants().size());
@@ -76,9 +74,10 @@ class RestaurantServiceTest {
 
     @Test
     void addRestaurantShouldThrowDuplicateLocationException(){
-        String street ="a";
+
         Mockito.when(locationRepository.findLocationByStreet(anyString()))
-                .thenReturn(street);
+                .thenReturn("mockStreet");
+        Mockito.when(userDetailRepository.findByUsername(ArgumentMatchers.any(String.class))).thenReturn(Optional.of(MockUtil.getUserDetail()) );
         assertThrows(DuplicateLocationException.class,()->{
             restaurantService.addRestaurant("testUsername", MockUtil.getAddRestaurantDTO());
         });
@@ -87,11 +86,11 @@ class RestaurantServiceTest {
 
     @Test
     void updateRestaurantSuccessfully() {
+
+        Mockito.when(userDetailRepository.findByUsername(ArgumentMatchers.any(String.class))).thenReturn(Optional.of(MockUtil.getUserDetail()) );
         Mockito.when(restaurantRepository.findById(anyLong())).thenReturn(Optional.of(MockUtil.getRestaurant()));
-        Mockito.when(locationRepository.findLocationByStreet(anyString()))
-                .thenReturn(null);
-        Mockito.when(restaurantRepository.save(ArgumentMatchers.any(Restaurant.class))).
-                thenReturn(MockUtil.getRestaurant());
+        Mockito.when(locationRepository.findLocationByStreet(anyString())).thenReturn(null);
+        Mockito.when(restaurantRepository.save(ArgumentMatchers.any(Restaurant.class))).thenReturn(MockUtil.getRestaurant());
         restaurantService.updateRestaurant("testUsername", MockUtil.getRestaurant().getId(), MockUtil.getUpdateRestaurantDTO());
         verify(restaurantRepository).save(any(Restaurant.class));
         verify(restaurantRepository).findById(MockUtil.getRestaurant().getId());
@@ -99,6 +98,8 @@ class RestaurantServiceTest {
 
     @Test
     void updateRestaurantShouldThrowEntityNotFoundException() {
+
+        Mockito.when(userDetailRepository.findByUsername(ArgumentMatchers.any(String.class))).thenReturn(Optional.of(MockUtil.getUserDetail()) );
         Mockito.when(restaurantRepository.findById(anyLong())).thenReturn(Optional.ofNullable(null));
         assertThrows(EntityNotFoundException.class, () -> {
             restaurantService.updateRestaurant("testUsername", MockUtil.getRestaurant().getId(), MockUtil.getUpdateRestaurantDTO());
@@ -108,9 +109,10 @@ class RestaurantServiceTest {
     @Test
     void requestDeleteRestaurant(){
 
-        Mockito.when(restaurantRepository.findById(anyLong())).thenReturn(Optional.of(MockUtil.getRestaurantWithActiveStatus()));
+        Mockito.when(userDetailRepository.findByUsername(ArgumentMatchers.any(String.class))).thenReturn(Optional.of(MockUtil.getUserDetail()) );
+        Mockito.when(restaurantRepository.findById(anyLong())).thenReturn(Optional.of(MockUtil.getRestaurant()));
         Mockito.when(restaurantStatusRepository.findById("PENDING_DELETE")).thenReturn(Optional.of(MockUtil.getPendingDeleteStatus()));
-        Mockito.when(restaurantRepository.save(ArgumentMatchers.any(Restaurant.class))).thenReturn(MockUtil.getRestaurantWithPendingDeleteStatus());
+        Mockito.when(restaurantRepository.save(ArgumentMatchers.any(Restaurant.class))).thenReturn(MockUtil.getRestaurant());
         assertEquals(restaurantService.requestDeleteRestaurant("testUsername", MockUtil.getRestaurant().getId()).getRestaurantStatus(), MockUtil.getPendingDeleteStatus());
         verify(restaurantRepository).save(any(Restaurant.class));
 
