@@ -71,7 +71,6 @@ public class MockUtil {
         categories.add(cat);
 
         addRestaurantDTO temp = addRestaurantDTO.builder()
-                .ownerId(1l)
                 .street("test")
                 .city("test")
                 .zip("00000")
@@ -118,7 +117,6 @@ public class MockUtil {
 
     public static addRestaurantDTO getInvalidAddRestaurantDTO(){
         addRestaurantDTO temp = addRestaurantDTO.builder()
-                .ownerId(1l)
                 .street("test")
                 .city("test")
                 //zip is invalid
@@ -144,10 +142,10 @@ public class MockUtil {
         temp.setId(1L);
         temp.setLocation(new Location());
         temp.getLocation().setId(1l);
-        temp.setRestaurantOwner(new Owner());
-        temp.getRestaurantOwner().setId(1l);
-        temp.getRestaurantOwner().setUserDetails(new UserDetails());
-        temp.getRestaurantOwner().getUserDetails().setId(1l);
+        temp.setRestaurantOwner(getRestaurantOwner());
+        RestaurantStatus status = new RestaurantStatus();
+        status.setStatus("PENDING_DELETE");
+        temp.setRestaurantStatus(status);
         return temp;
     }
     public static Restaurant getRestaurantWithActiveStatus(){
@@ -184,7 +182,7 @@ public class MockUtil {
     }
     public static UserDetails getUserDetail() {
         UserDetails user =new UserDetails();
-        user.setOwner(new Owner());
+        user.setOwner(getRestaurantOwner());
         return user;
     }
     public static RestaurantStatus getPendingDeleteStatus(){
@@ -198,7 +196,11 @@ public class MockUtil {
         return status;
     }
     public static Owner getRestaurantOwner(){
-        return new Owner();
+        Owner owner = new Owner();
+        owner.setId(1L);
+        owner.setRestaurants(getRestaurants());
+        owner.setUserDetails(new UserDetails());
+        return owner;
     }
     public static Category getCategory(){
         return null;

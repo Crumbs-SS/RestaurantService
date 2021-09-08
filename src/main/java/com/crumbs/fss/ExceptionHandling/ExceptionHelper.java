@@ -70,6 +70,13 @@ public class ExceptionHelper extends ResponseEntityExceptionHandler {
         body.put("message", "This location already exists in database. Please enter new location.");
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
+    @ExceptionHandler(OwnerRestaurantMismatchException.class)
+    public ResponseEntity<Object> handleOwnerRestaurantMismatch(){
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("message", "The given owner and restaurant do not match. Unable to process request.");
+        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
+    }
 
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<Object> handleException(NoSuchElementException ex){

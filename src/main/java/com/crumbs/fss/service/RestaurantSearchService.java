@@ -6,11 +6,9 @@ import com.crumbs.lib.entity.Restaurant;
 import com.crumbs.lib.repository.CategoryRepository;
 import com.crumbs.lib.repository.MenuItemRepository;
 import com.crumbs.lib.repository.RestaurantRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
