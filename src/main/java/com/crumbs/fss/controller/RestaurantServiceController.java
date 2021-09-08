@@ -26,22 +26,22 @@ public class RestaurantServiceController {
         this.restaurantService = restaurantService;
     }
 
-    @PreAuthorize("hasAuthority('OWNER') or hasAuthority('ADMIN') and #username == authentication.principal")
+    @PreAuthorize("hasAuthority('ADMIN') or (hasAuthority('OWNER') and #username == authentication.principal)")
     @GetMapping("/owner/{username}/restaurants")
     public List<Restaurant> getOwnerRestaurants(@PathVariable String username){
         return restaurantService.getOwnerRestaurants(username);
     }
-    @PreAuthorize("hasAuthority('OWNER') or hasAuthority('ADMIN') and #username == authentication.principal")
+    @PreAuthorize("hasAuthority('ADMIN') or (hasAuthority('OWNER') and #username == authentication.principal)")
     @PostMapping("/owner/{username}/restaurant")
     public Restaurant addRestaurant(@PathVariable String username, @Valid @RequestBody addRestaurantDTO aAddRestaurantDTO)  {
         return restaurantService.addRestaurant(username, aAddRestaurantDTO);
     }
-    @PreAuthorize("hasAuthority('OWNER') or hasAuthority('ADMIN') and #username == authentication.principal")
+    @PreAuthorize("hasAuthority('ADMIN') or (hasAuthority('OWNER') and #username == authentication.principal)")
     @PutMapping("/owner/{username}/restaurant/{id}")
     public Restaurant updateRestaurant(@PathVariable String username, @PathVariable Long id, @Valid @RequestBody updateRestaurantDTO restaurantDTO){
         return restaurantService.updateRestaurant(username, id, restaurantDTO);
     }
-    @PreAuthorize("hasAuthority('OWNER') or hasAuthority('ADMIN') and #username == authentication.principal")
+    @PreAuthorize("hasAuthority('ADMIN') or (hasAuthority('OWNER') and #username == authentication.principal)")
     @DeleteMapping("owner/{username}/restaurant/{id}")
     public Restaurant requestDeleteRestaurant(@PathVariable String username, @PathVariable Long id){
         return restaurantService.requestDeleteRestaurant(username, id);

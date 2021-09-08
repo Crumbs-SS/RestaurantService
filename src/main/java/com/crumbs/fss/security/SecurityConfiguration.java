@@ -21,10 +21,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Value("${jwt.secret}")
     private String jwtSecret;
-    @Value("${jwt.issuer}")
-    private String jwtIssuer;
-    @Value("${jwt.audience}")
-    private String jwtAudience;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
