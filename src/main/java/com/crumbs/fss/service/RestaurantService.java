@@ -2,18 +2,12 @@ package com.crumbs.fss.service;
 import com.crumbs.fss.DTO.addRestaurantDTO;
 import com.crumbs.fss.DTO.updateRestaurantDTO;
 import com.crumbs.fss.ExceptionHandling.DuplicateLocationException;
+import com.crumbs.fss.ExceptionHandling.OwnerRestaurantMismatchException;
 import com.crumbs.lib.entity.*;
 import com.crumbs.lib.entity.MenuItem;
 import com.crumbs.lib.repository.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
-
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
@@ -21,29 +15,48 @@ import java.util.List;
 @Transactional(rollbackFor = { Exception.class })
 public class RestaurantService {
 
-    @Autowired
-    RestaurantRepository restaurantRepository;
-    @Autowired
-    MenuItemRepository menuItemRepository;
-    @Autowired
-    LocationRepository locationRepository;
-    @Autowired
-    RestaurantCategoryRepository restaurantCategoryRepository;
-    @Autowired
-    RestaurantOwnerRepository restaurantOwnerRepository;
-    @Autowired
-    UserDetailsRepository userDetailRepository;
-    @Autowired
-    RestaurantStatusRepository restaurantStatusRepository;
-    @Autowired
-     UserStatusRepository userStatusRepository;
+    private final RestaurantRepository restaurantRepository;
+    private final MenuItemRepository menuItemRepository;
+    private final LocationRepository locationRepository;
+    private final RestaurantCategoryRepository restaurantCategoryRepository;
+    private final UserDetailsRepository userDetailRepository;
+    private final RestaurantStatusRepository restaurantStatusRepository;
 
-
-    public List<Restaurant> getOwnerRestaurants(Long id){
-        return restaurantRepository.findRestaurantByOwnerID(id);
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+    RestaurantService(
+            RestaurantRepository restaurantRepository,
+            MenuItemRepository menuItemRepository,
+            LocationRepository locationRepository,
+            RestaurantCategoryRepository restaurantCategoryRepository,
+            UserDetailsRepository userDetailRepository,
+            RestaurantStatusRepository restaurantStatusRepository
+    ){
+        this.restaurantRepository = restaurantRepository;
+        this.menuItemRepository = menuItemRepository;
+        this.locationRepository = locationRepository;
+        this.restaurantCategoryRepository = restaurantCategoryRepository;
+        this.userDetailRepository = userDetailRepository;
+        this.restaurantStatusRepository = restaurantStatusRepository;
     }
 
-    public Restaurant addRestaurant(addRestaurantDTO a) {
+    public Owner checkOwnerExists(String username){
+        UserDetails user = userDetailRepository.findByUsername(username).orElseThrow(EntityNotFoundException::new);
+        Owner owner = user.getOwner();
+        if (null == owner) {throw new EntityNotFoundException();}
+        return owner;
+    }
+    public boolean checkRestaurantBelongsToOwner(Owner owner, Owner restaurantOwner){
+        return owner.getId() == restaurantOwner.getId();
+    }
+
+    public List<Restaurant> getOwnerRestaurants(String username){
+        Owner owner = checkOwnerExists(username);
+        return owner.getRestaurants();
+    }
+
+    public Restaurant addRestaurant(String username, addRestaurantDTO a) {
+
+        Owner owner = checkOwnerExists(username);
 
         if(locationRepository.findLocationByStreet(a.getStreet())!=null)
             throw new DuplicateLocationException();
@@ -57,7 +70,6 @@ public class RestaurantService {
         locationRepository.save(location);
 
         RestaurantStatus restaurantStatus = restaurantStatusRepository.findById("REGISTERED").get();
-        Owner owner = userDetailRepository.findById(a.getOwnerId()).orElseThrow(EntityNotFoundException::new).getOwner();
 
         Restaurant temp = Restaurant.builder()
                 .name(a.getName())
@@ -75,20 +87,15 @@ public class RestaurantService {
         }
         return restaurant;
     }
-    public Restaurant deleteRestaurant(Long id){
 
+
+    public Restaurant updateRestaurant(String username, Long id, updateRestaurantDTO updateRestaurantDTO){
+
+        Owner owner = checkOwnerExists(username);
         Restaurant temp = restaurantRepository.findById(id).orElseThrow(EntityNotFoundException::new);
-        restaurantRepository.deleteById(id);
-        locationRepository.deleteById(temp.getLocation().getId());
-        if(menuItemRepository.findById(id).isPresent())
-            menuItemRepository.deleteById(id);
 
-        return temp;
-    }
-
-    public Restaurant updateRestaurant(Long id, updateRestaurantDTO updateRestaurantDTO){
-
-        Restaurant temp = restaurantRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        if(!checkRestaurantBelongsToOwner(owner, temp.getRestaurantOwner()))
+            throw new OwnerRestaurantMismatchException();
 
         if(updateRestaurantDTO.getStreet() != null && !updateRestaurantDTO.getStreet().equals(temp.getLocation().getStreet()) && locationRepository.findLocationByStreet(updateRestaurantDTO.getStreet())!=null)
             throw new DuplicateLocationException();
@@ -164,10 +171,17 @@ public class RestaurantService {
 
         return restaurantRepository.save(temp);
     }
-    public Restaurant requestDeleteRestaurant(Long id){
+    public Restaurant requestDeleteRestaurant(String username, Long id){
+
+        Owner owner = checkOwnerExists(username);
         Restaurant temp = restaurantRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+
+        if(!checkRestaurantBelongsToOwner(owner, temp.getRestaurantOwner()))
+            throw new OwnerRestaurantMismatchException();
+
         RestaurantStatus status = restaurantStatusRepository.findById("PENDING_DELETE").get();
         temp.setRestaurantStatus(status);
+
         return restaurantRepository.save(temp);
     }
 

@@ -14,9 +14,6 @@ import java.util.List;
 @Builder
 public class addRestaurantDTO {
 
-    @NotNull(message = "owner_id is mandatory")
-    private Long ownerId;
-
     @NotBlank(message = "Street is Mandatory")
     private String street;
 
