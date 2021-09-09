@@ -51,7 +51,6 @@ public class RestaurantService {
         Location location = Location.builder()
                 .street(a.getStreet())
                 .city(a.getCity())
-                .zipCode(a.getZip())
                 .state(a.getState())
                 .build();
 
@@ -115,10 +114,6 @@ public class RestaurantService {
         String city = updateRestaurantDTO.getCity();
         if(city!= null && !city.isEmpty())
             temp.getLocation().setCity(city);
-
-        String zip = updateRestaurantDTO.getZip();
-        if(zip!= null)
-           temp.getLocation().setZipCode(zip);
 
         String state = updateRestaurantDTO.getState();
         if(state!= null && !state.isEmpty())
