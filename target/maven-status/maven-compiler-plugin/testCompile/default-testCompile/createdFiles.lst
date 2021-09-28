@@ -1,4 +1,2 @@
-com/crumbs/fss/MockUtil.class
-com/crumbs/fss/controller/MainControllerTest.class
-com/crumbs/fss/service/RestaurantServiceTest.class
-com/crumbs/fss/FoodSearchServiceApplicationTests.class
+com\crumbs\fss\service\RestaurantServiceTest.class
+com\crumbs\fss\MockUtil.class

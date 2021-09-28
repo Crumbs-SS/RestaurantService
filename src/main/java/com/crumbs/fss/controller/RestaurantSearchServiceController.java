@@ -21,9 +21,9 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@CrossOrigin
 @Validated
 @PreAuthorize("isAuthenticated()")
+@RequestMapping("/restaurant-service")
 public class RestaurantSearchServiceController {
 
 

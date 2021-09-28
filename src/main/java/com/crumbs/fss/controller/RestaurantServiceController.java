@@ -13,8 +13,8 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@CrossOrigin
 @Validated
+@RequestMapping("/restaurant-service")
 @PreAuthorize("isAuthenticated()")
 public class RestaurantServiceController {
 
