@@ -42,7 +42,7 @@ public class RestaurantServiceController {
         return restaurantService.updateRestaurant(username, id, restaurantDTO);
     }
     @PreAuthorize("hasAuthority('ADMIN') or (hasAuthority('OWNER') and #username == authentication.principal)")
-    @DeleteMapping("owner/{username}/restaurant/{id}")
+    @DeleteMapping("/owner/{username}/restaurant/{id}")
     public Restaurant requestDeleteRestaurant(@PathVariable String username, @PathVariable Long id){
         return restaurantService.requestDeleteRestaurant(username, id);
     }
