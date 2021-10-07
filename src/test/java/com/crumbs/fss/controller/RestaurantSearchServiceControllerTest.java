@@ -29,6 +29,7 @@ class RestaurantSearchServiceControllerTest {
     RestaurantSearchService restaurantSearchService;
 
     @Test
+    @WithMockUser()
     void getRestaurant() throws Exception{
 
         //verifying HTTP Request Matching + Input Serialization
@@ -42,6 +43,7 @@ class RestaurantSearchServiceControllerTest {
                 .andExpect(status().isBadRequest());
     }
     @Test
+    @WithMockUser()
     void getRestaurants() throws Exception {
         mockMvc.perform(get("/restaurant-service/restaurants")
                 .contentType("application/json"))
@@ -53,6 +55,7 @@ class RestaurantSearchServiceControllerTest {
     }
 
     @Test
+    @WithMockUser()
     void getMenuItems() throws Exception {
         mockMvc.perform(get("/restaurant-service/restaurants/{restaurantId}/menuitems", MockUtil.getRestaurant().getId())
                 .contentType("application/json"))
@@ -64,6 +67,7 @@ class RestaurantSearchServiceControllerTest {
     }
 
     @Test
+    @WithMockUser()
     void getCategories() throws Exception {
         mockMvc.perform(get("/restaurant-service/categories")
                 .contentType("application/json"))
