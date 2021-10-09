@@ -28,9 +28,9 @@ pipeline
             {
                 withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'jenkins_credentials', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')])
                 {
-                  sh 'echo aws secretsmanager get-secret-value --secret-id arn:aws:secretsmanager:us-east-1:728482858339:secret:prod/crumbs/db/cred-584hNX'
+                  sh ' aws secretsmanager get-secret-value --secret-id arn:aws:secretsmanager:us-east-1:728482858339:secret:prod/crumbs/db/cred-584hNX'
                 }
-                sh 'echo ${username}'
+                sh '${username}'
             }
          }
   }
@@ -94,7 +94,7 @@ pipeline
 //           {
 //               sh 'mvn clean'
 //               sh "docker system prune -f"
-//           } 
+//           }
 //   }
 
 }
