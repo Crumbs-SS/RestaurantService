@@ -30,7 +30,7 @@ pipeline
 //                 {
 //                   sh ' aws secretsmanager get-secret-value --secret-id arn:aws:secretsmanager:us-east-1:728482858339:secret:prod/crumbs/db/cred-584hNX'
 //                 }
-                sh '${username}'
+                sh '${DB_CRED}'
             }
          }
   }
