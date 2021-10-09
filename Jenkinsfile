@@ -26,10 +26,10 @@ pipeline
         {
             steps
             {
-                withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'jenkins_credentials', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')])
-                {
-                  sh ' aws secretsmanager get-secret-value --secret-id arn:aws:secretsmanager:us-east-1:728482858339:secret:prod/crumbs/db/cred-584hNX'
-                }
+//                 withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'jenkins_credentials', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')])
+//                 {
+//                   sh ' aws secretsmanager get-secret-value --secret-id arn:aws:secretsmanager:us-east-1:728482858339:secret:prod/crumbs/db/cred-584hNX'
+//                 }
                 sh '${username}'
             }
          }
