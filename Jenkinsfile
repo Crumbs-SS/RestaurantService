@@ -8,12 +8,12 @@ pipeline
           IMG_NAME = "restaurantservice"
           AWS_ID = "728482858339"
           DB_CRED = credentials('prod/crumbs/db/cred')
-          DB_ENGINE = credentials('engine')
-          DB_HOST = credentials('host')
-          DB_PORT = credentials('port')
-          DB_NAME = credentials('dbname')
-          USERNAME = credentials('username')
-          PASSWORD = credentials('password')
+//           DB_ENGINE = credentials('engine')
+//           DB_HOST = credentials('host')
+//           DB_PORT = credentials('port')
+//           DB_NAME = credentials('dbname')
+//           USERNAME = credentials('username')
+//           PASSWORD = credentials('password')
   }
   tools
   {
@@ -30,7 +30,7 @@ pipeline
                 {
                   sh 'echo aws secretsmanager get-secret-value --secret-id arn:aws:secretsmanager:us-east-1:728482858339:secret:prod/crumbs/db/cred-584hNX'
                   sh 'echo ${DB_CRED}'
-                 sh 'echo ${DB_ENGINE}'
+//                  sh 'echo ${DB_ENGINE}'
 
                 }
             }
