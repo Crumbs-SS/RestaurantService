@@ -7,7 +7,7 @@ pipeline
           COMMIT_HASH = "${sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()}"
           IMG_NAME = "restaurantservice"
           AWS_ID = "728482858339"
-          DB_CRED = credentials('prod/crumbs/jwt')
+          DB_CRED = credentials('username')
 //           DB_ENGINE = credentials('engine')
 //           DB_HOST = credentials('host')
 //           DB_PORT = credentials('port')
@@ -29,10 +29,8 @@ pipeline
                 withCredentials([aws(accessKeyVariable: 'AWS_ACCESS_KEY_ID', credentialsId: 'jenkins_credentials', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY')])
                 {
                   sh 'echo aws secretsmanager get-secret-value --secret-id arn:aws:secretsmanager:us-east-1:728482858339:secret:prod/crumbs/db/cred-584hNX'
-                  sh 'echo ${DB_CRED}'
-//                  sh 'echo ${DB_ENGINE}'
-
                 }
+                sh 'echo ${username}'
             }
          }
   }
