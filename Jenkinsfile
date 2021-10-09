@@ -94,7 +94,7 @@ pipeline
 //           {
 //               sh 'mvn clean'
 //               sh "docker system prune -f"
-//           }
+//           } 
 //   }
 
 }
