@@ -21,13 +21,10 @@ import java.util.List;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    private final String jwtSecret2 = SecretManager.getSecret("prod/crumbs/jwt-RF0MyA");
-private final String jwtSecret = "MfiVzoZ/aO8N4sdd32WKC8qdIag1diSNfiZ4mtKQ8J1oaBxoCsgcXzjeH43rIwjSuKVC9BpeqEV/iUGczehBjyHH2j3ofifbQW9MquNd8mROjloyzzTGdD1iw4d5uxFV88GJcjPRo1BUvhVRbtIvKYjmeSyxA3cvpjPUinp6HMIoh0uHChrM8kUfql1WpmmSM+NyRMlMY7WGbiZ/GRCCdB8s4hzxy9baLp0ENQ==";
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        System.out.println(jwtSecret);
-        System.out.println(jwtSecret2);
+
         http.addFilter(new JwtAuthorizationFilter(authenticationManager(), System.getenv("JWT_SECRET")))
                 .authorizeRequests()
                 .antMatchers("/actuator/**").permitAll()
