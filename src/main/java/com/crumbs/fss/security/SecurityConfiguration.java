@@ -21,8 +21,7 @@ import java.util.List;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    @Value("${jwt.secret}")
-    private String jwtSecret;
+    private final String jwtSecret = SecretManager.getSecret("prod/crumbs/jwt-RF0MyA");
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
