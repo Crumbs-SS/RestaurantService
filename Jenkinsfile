@@ -13,8 +13,6 @@ pipeline
           AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
           AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
           JWT_SECRET = credentials('JWT_SECRET')
-
-
   }
   tools
   {
@@ -28,7 +26,6 @@ pipeline
        {
             steps {
                     sh 'mvn clean install'
-                    sh 'echo ${DB_ENDPOINT}'
             }
        }
 
