@@ -7,7 +7,7 @@ pipeline
           COMMIT_HASH = "${sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()}"
           IMG_NAME = "restaurantservice"
           AWS_ID = "728482858339"
-          DB_ENDPOINT = credentials('arn:aws:secretsmanager:us-east-1:728482858339:secret:prod/crumbs/db/cred-584hNX')
+          DB_ENDPOINT = credentials('DB_ENDPOINT')
   }
   tools
   {
