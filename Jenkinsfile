@@ -29,29 +29,29 @@ pipeline
             }
        }
 
-//        stage("Test")
-//        {
-//                 steps
-//                 {
-//                     sh 'mvn test'
-//                     junit '**/target/surefire-reports/*.xml'
-//                 }
-//        }
-//
-//        stage('Code Analysis: Sonarqube')
-//        {
-//                    steps {
-//                        withSonarQubeEnv('sonarqube') {
-//                            sh 'mvn sonar:sonar'
-//                        }
-//                    }
-//        }
-//        stage('Await Quality Gateway')
-//        {
-//             steps {
-//                 waitForQualityGate abortPipeline: true
-//             }
-//        }
+        stage("Test")
+        {
+                 steps
+                 {
+                     sh 'mvn test'
+                     junit '**/target/surefire-reports/*.xml'
+                 }
+        }
+
+        stage('Code Analysis: Sonarqube')
+        {
+                    steps {
+                        withSonarQubeEnv('sonarqube') {
+                            sh 'mvn sonar:sonar'
+                        }
+                    }
+        }
+        stage('Await Quality Gateway')
+        {
+             steps {
+                 waitForQualityGate abortPipeline: true
+             }
+        }
       stage("Package")
       {
             steps
