@@ -27,7 +27,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
         http.addFilter(new JwtAuthorizationFilter(authenticationManager(), System.getenv("JWT_SECRET")))
                 .authorizeRequests()
-                .antMatchers("/actuator/**").permitAll()
+                .antMatchers(
+                        "/actuator/**",
+                        "/restaurant-service/restaurants**",
+                        "/restaurant-service/restaurants/**",
+                        "/restaurant-service/categories**"
+                        ).permitAll()
                 .anyRequest().authenticated()
                 .and().httpBasic()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -41,7 +46,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         config.setAllowedOrigins(List.of(
                 "http://crumbs-client.s3-website-us-east-1.amazonaws.com",
                 "http://crumbs-admin-bucket-01.s3-website-us-east-1.amazonaws.com",
-                "http://localhost:3000"
+                "http://localhost:3000",
+                "http://localhost:4200"
         ));
         // TODO: Add Admin Origin
 
