@@ -78,7 +78,7 @@ pipeline
           always
           {
               sh 'mvn clean'
-               sh "docker rmi $(docker images --format \'{{.Repository}}:{{.Tag}}\' | grep \'${IMG_NAME}\')"
+               sh "docker rmi \$(docker images --format \'{{.Repository}}:{{.Tag}}\' | grep \'${IMG_NAME}\')"
           }
   }
 
