@@ -28,7 +28,7 @@ private final String jwtSecret = "MfiVzoZ/aO8N4sdd32WKC8qdIag1diSNfiZ4mtKQ8J1oaB
     protected void configure(HttpSecurity http) throws Exception {
         System.out.println(jwtSecret);
         System.out.println(jwtSecret2);
-        http.addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtSecret))
+        http.addFilter(new JwtAuthorizationFilter(authenticationManager(), System.getenv("JWT_SECRET")))
                 .authorizeRequests()
                 .antMatchers("/actuator/**").permitAll()
                 .anyRequest().authenticated()
