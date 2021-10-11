@@ -20,10 +20,6 @@ public class addRestaurantDTO {
     @NotBlank(message = "City is Mandatory")
     private String city;
 
-    @NotBlank(message = "Zip code is Mandatory")
-    @Size(min = 5, max = 5, message = "zip must be of length 5")
-    private String zip;
-
     @NotBlank(message = "State is Mandatory")
     @Size(min = 2, max = 2, message = "State must consist of only 2 characters.")
     private String state;
