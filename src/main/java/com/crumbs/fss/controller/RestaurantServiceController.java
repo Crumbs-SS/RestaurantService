@@ -2,7 +2,6 @@ package com.crumbs.fss.controller;
 
 import com.crumbs.fss.DTO.addRestaurantDTO;
 import com.crumbs.fss.DTO.updateRestaurantDTO;
-import com.crumbs.fss.service.RestaurantSearchService;
 import com.crumbs.fss.service.RestaurantService;
 import com.crumbs.lib.entity.Restaurant;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,8 +12,8 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@CrossOrigin
 @Validated
+@RequestMapping("/restaurant-service")
 @PreAuthorize("isAuthenticated()")
 public class RestaurantServiceController {
 
@@ -42,7 +41,7 @@ public class RestaurantServiceController {
         return restaurantService.updateRestaurant(username, id, restaurantDTO);
     }
     @PreAuthorize("hasAuthority('ADMIN') or (hasAuthority('OWNER') and #username == authentication.principal)")
-    @DeleteMapping("owner/{username}/restaurant/{id}")
+    @DeleteMapping("/owner/{username}/restaurant/{id}")
     public Restaurant requestDeleteRestaurant(@PathVariable String username, @PathVariable Long id){
         return restaurantService.requestDeleteRestaurant(username, id);
     }

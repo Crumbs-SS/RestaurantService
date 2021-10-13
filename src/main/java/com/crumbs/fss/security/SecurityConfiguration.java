@@ -15,17 +15,24 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.List;
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-    @Value("${jwt.secret}")
-    private String jwtSecret;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.addFilter(new JwtAuthorizationFilter(authenticationManager(), jwtSecret))
+
+        http.addFilter(new JwtAuthorizationFilter(authenticationManager(), System.getenv("JWT_SECRET")))
                 .authorizeRequests()
+                .antMatchers(
+                        "/actuator/**",
+                        "/restaurant-service/restaurants**",
+                        "/restaurant-service/restaurants/**",
+                        "/restaurant-service/categories**"
+                        ).permitAll()
                 .anyRequest().authenticated()
                 .and().httpBasic()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -36,6 +43,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     CorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration().applyPermitDefaultValues();
+        config.setAllowedOrigins(List.of(
+                "https://admin.crumbs-ss.link",
+                "https://crumbs-ss.link",
+                "http://localhost:3000",
+                "http://localhost:4200"
+        ));
         config.addAllowedMethod(HttpMethod.PUT);
         config.addAllowedMethod(HttpMethod.DELETE);
         source.registerCorsConfiguration("/**", config);

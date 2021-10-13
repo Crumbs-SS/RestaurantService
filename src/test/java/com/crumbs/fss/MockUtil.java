@@ -1,5 +1,7 @@
 package com.crumbs.fss;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.crumbs.fss.DTO.addRestaurantDTO;
 import com.crumbs.fss.DTO.updateRestaurantDTO;
 import com.crumbs.lib.entity.*;
@@ -10,6 +12,7 @@ import org.springframework.data.domain.PageImpl;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,7 +76,6 @@ public class MockUtil {
         addRestaurantDTO temp = addRestaurantDTO.builder()
                 .street("test")
                 .city("test")
-                .zip("00000")
                 .state("AA")
                 .name("test")
                 .priceRating(1)
@@ -90,7 +92,6 @@ public class MockUtil {
                 .email("test@gmail.com")
                 .street("test")
                 .city("test")
-                .zip("00000")
                 .state("AA")
                 .name("test")
                 .priceRating(1)
@@ -103,7 +104,6 @@ public class MockUtil {
         updateRestaurantDTO temp = updateRestaurantDTO.builder()
                 .street("test")
                 .city("test")
-                .zip("11111")
                 .state("AA")
                 .name("test")
                 //email is invalid
@@ -119,9 +119,7 @@ public class MockUtil {
         addRestaurantDTO temp = addRestaurantDTO.builder()
                 .street("test")
                 .city("test")
-                //zip is invalid
-                .zip("11111a")
-                .state("AA")
+                .state("AAA")
                 .name("test")
                 .priceRating(1)
                 .categories(null)
@@ -201,6 +199,20 @@ public class MockUtil {
         owner.setRestaurants(getRestaurants());
         owner.setUserDetails(new UserDetails());
         return owner;
+    }
+    public  static String createMockJWT(String role){
+        final long EXPIRATION_TIME = 900_000;
+        String token;
+        Algorithm algorithm = Algorithm.HMAC256(System.getenv("JWT_SECRET"));
+        token = JWT.create()
+                .withAudience("crumbs")
+                .withIssuer("Crumbs")
+                .withClaim("role", role)
+                .withSubject("correctUsername")
+                .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .sign(algorithm);
+
+        return token;
     }
     public static Category getCategory(){
         return null;
