@@ -69,7 +69,7 @@ public class RestaurantService {
 
         locationRepository.save(location);
 
-        RestaurantStatus restaurantStatus = restaurantStatusRepository.findById("REGISTERED").get();
+        RestaurantStatus restaurantStatus = restaurantStatusRepository.findById("REGISTERED").orElse(null);
 
         Restaurant temp = Restaurant.builder()
                 .name(a.getName())
@@ -179,7 +179,7 @@ public class RestaurantService {
         if(!checkRestaurantBelongsToOwner(owner, temp.getRestaurantOwner()))
             throw new OwnerRestaurantMismatchException();
 
-        RestaurantStatus status = restaurantStatusRepository.findById("PENDING_DELETE").get();
+        RestaurantStatus status = restaurantStatusRepository.findById("PENDING_DELETE").orElse(null);
         temp.setRestaurantStatus(status);
 
         return restaurantRepository.save(temp);

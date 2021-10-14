@@ -99,7 +99,7 @@ class RestaurantSearchServiceTest {
         Integer pageNumber = 1;
         Integer elements = 5;
 
-        assertEquals(restaurantSearchService.getPageRequest(pageNumber, elements, "id", null).getPageSize(),
-                5);
+        assertEquals(5,
+                restaurantSearchService.getPageRequest(pageNumber, elements, "id", null).getPageSize());
     }
 }
