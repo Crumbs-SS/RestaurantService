@@ -1,4 +1,4 @@
-package com.crumbs.fss.DTO;
+package com.crumbs.fss.dto;
 
 
 import lombok.AllArgsConstructor;
