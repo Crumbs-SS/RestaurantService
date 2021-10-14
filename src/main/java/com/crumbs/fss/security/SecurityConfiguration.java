@@ -31,7 +31,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/actuator/**",
                         "/restaurant-service/restaurants**",
                         "/restaurant-service/restaurants/**",
-                        "/restaurant-service/categories**"
+                        "/restaurant-service/categories**",
+                        "/swagger-resources/**",
+                        "/swagger-ui.html",
+                        "/v2/api-docs"
                         ).permitAll()
                 .anyRequest().authenticated()
                 .and().httpBasic()
