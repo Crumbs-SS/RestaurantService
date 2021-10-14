@@ -2,8 +2,8 @@ package com.crumbs.fss;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.crumbs.fss.dto.addRestaurantDto;
-import com.crumbs.fss.dto.updateRestaurantDto;
+import com.crumbs.fss.dto.AddRestaurantDto;
+import com.crumbs.fss.dto.UpdateRestaurantDto;
 import com.crumbs.lib.entity.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -52,12 +52,12 @@ public class MockUtil {
                 .build();
     }
 
-    public static addRestaurantDto getAddRestaurantDTO(){
+    public static AddRestaurantDto getAddRestaurantDTO(){
         Category cat = new Category();
         List<Category> categories = new ArrayList<>();
         categories.add(cat);
 
-        addRestaurantDto temp = addRestaurantDto.builder()
+        AddRestaurantDto temp = AddRestaurantDto.builder()
                 .street("test")
                 .city("test")
                 .state("AA")
@@ -68,9 +68,9 @@ public class MockUtil {
 
         return temp;
     }
-    public static updateRestaurantDto getUpdateRestaurantDTO(){
+    public static UpdateRestaurantDto getUpdateRestaurantDTO(){
 
-        updateRestaurantDto temp = updateRestaurantDto.builder()
+        UpdateRestaurantDto temp = UpdateRestaurantDto.builder()
                 .firstName("test")
                 .lastName("test")
                 .email("test@gmail.com")
@@ -84,8 +84,8 @@ public class MockUtil {
 
         return temp;
     }
-    public static updateRestaurantDto getInvalidUpdateRestaurantDTO(){
-        updateRestaurantDto temp = updateRestaurantDto.builder()
+    public static UpdateRestaurantDto getInvalidUpdateRestaurantDTO(){
+        UpdateRestaurantDto temp = UpdateRestaurantDto.builder()
                 .street("test")
                 .city("test")
                 .state("AA")
@@ -99,8 +99,8 @@ public class MockUtil {
         return temp;
     }
 
-    public static addRestaurantDto getInvalidAddRestaurantDTO(){
-        addRestaurantDto temp = addRestaurantDto.builder()
+    public static AddRestaurantDto getInvalidAddRestaurantDTO(){
+        AddRestaurantDto temp = AddRestaurantDto.builder()
                 .street("test")
                 .city("test")
                 .state("AAA")

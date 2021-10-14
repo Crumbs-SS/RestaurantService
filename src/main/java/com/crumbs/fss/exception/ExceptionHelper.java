@@ -1,4 +1,5 @@
 package com.crumbs.fss.exception;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +21,8 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class ExceptionHelper extends ResponseEntityExceptionHandler {
 
-    private final static String timestamp = "timestamp";
-    private final static String message = "message";
+    private static final String TIMESTAMP = "timestamp";
+    private final static String MESSAGE = "message";
 
     @ExceptionHandler(value = { MethodArgumentTypeMismatchException.class })
     public ResponseEntity<Object> handleException(MethodArgumentTypeMismatchException ex){
@@ -34,13 +35,13 @@ public class ExceptionHelper extends ResponseEntityExceptionHandler {
             HttpStatus status, WebRequest request) {
 
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put(timestamp, LocalDate.now());
-        body.put(message, status.value());
+        body.put(TIMESTAMP, LocalDate.now());
+        body.put(MESSAGE, status.value());
 
         List<String> errors = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .map(x -> x.getDefaultMessage())
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
                 .collect(Collectors.toList());
 
         body.put("errors", errors);
@@ -49,28 +50,27 @@ public class ExceptionHelper extends ResponseEntityExceptionHandler {
     }
     @ExceptionHandler(EntityNotFoundException.class)
     protected ResponseEntity<Object> handleEntityNotFound(
-            EntityNotFoundException ex, HttpHeaders headers,
-            HttpStatus status, WebRequest request) {
+            EntityNotFoundException ex, HttpStatus status) {
 
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put(timestamp, LocalDate.now());
+        body.put(TIMESTAMP, LocalDate.now());
         body.put("status", status.value());
-        body.put(message, ex.getCause());
+        body.put(MESSAGE, ex.getCause());
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(DuplicateLocationException.class)
     public ResponseEntity<Object> handleDuplicateLocation(){
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put(timestamp, LocalDateTime.now());
-        body.put(message, "This location already exists in database. Please enter new location.");
+        body.put(TIMESTAMP, LocalDateTime.now());
+        body.put(MESSAGE, "This location already exists in database. Please enter new location.");
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
     @ExceptionHandler(OwnerRestaurantMismatchException.class)
     public ResponseEntity<Object> handleOwnerRestaurantMismatch(){
         Map<String, Object> body = new LinkedHashMap<>();
-        body.put(timestamp, LocalDateTime.now());
-        body.put(message, "The given owner and restaurant do not match. Unable to process request.");
+        body.put(TIMESTAMP, LocalDateTime.now());
+        body.put(MESSAGE, "The given owner and restaurant do not match. Unable to process request.");
         return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
     }
 

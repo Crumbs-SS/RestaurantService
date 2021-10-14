@@ -1,7 +1,7 @@
 package com.crumbs.fss.controller;
 
-import com.crumbs.fss.dto.addRestaurantDto;
-import com.crumbs.fss.dto.updateRestaurantDto;
+import com.crumbs.fss.dto.AddRestaurantDto;
+import com.crumbs.fss.dto.UpdateRestaurantDto;
 import com.crumbs.fss.service.RestaurantService;
 import com.crumbs.lib.entity.Restaurant;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -32,12 +32,12 @@ public class RestaurantServiceController {
     }
     @PreAuthorize("hasAuthority('ADMIN') or (hasAuthority('OWNER') and #username == authentication.principal)")
     @PostMapping("/owner/{username}/restaurant")
-    public Restaurant addRestaurant(@PathVariable String username, @Valid @RequestBody addRestaurantDto aAddRestaurantDto)  {
+    public Restaurant addRestaurant(@PathVariable String username, @Valid @RequestBody AddRestaurantDto aAddRestaurantDto)  {
         return restaurantService.addRestaurant(username, aAddRestaurantDto);
     }
     @PreAuthorize("hasAuthority('ADMIN') or (hasAuthority('OWNER') and #username == authentication.principal)")
     @PutMapping("/owner/{username}/restaurant/{id}")
-    public Restaurant updateRestaurant(@PathVariable String username, @PathVariable Long id, @Valid @RequestBody updateRestaurantDto restaurantDTO){
+    public Restaurant updateRestaurant(@PathVariable String username, @PathVariable Long id, @Valid @RequestBody UpdateRestaurantDto restaurantDTO){
         return restaurantService.updateRestaurant(username, id, restaurantDTO);
     }
     @PreAuthorize("hasAuthority('ADMIN') or (hasAuthority('OWNER') and #username == authentication.principal)")

@@ -1,11 +1,12 @@
 package com.crumbs.fss.service;
-import com.crumbs.fss.dto.addRestaurantDto;
-import com.crumbs.fss.dto.updateRestaurantDto;
+import com.crumbs.fss.dto.AddRestaurantDto;
+import com.crumbs.fss.dto.UpdateRestaurantDto;
 import com.crumbs.fss.exception.DuplicateLocationException;
 import com.crumbs.fss.exception.OwnerRestaurantMismatchException;
 import com.crumbs.lib.entity.*;
 import com.crumbs.lib.entity.MenuItem;
 import com.crumbs.lib.repository.*;
+import com.google.common.base.Strings;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
@@ -54,7 +55,7 @@ public class RestaurantService {
         return owner.getRestaurants();
     }
 
-    public Restaurant addRestaurant(String username, addRestaurantDto a) {
+    public Restaurant addRestaurant(String username, AddRestaurantDto a) {
 
         Owner owner = checkOwnerExists(username);
 
@@ -89,7 +90,7 @@ public class RestaurantService {
     }
 
 
-    public Restaurant updateRestaurant(String username, Long id, updateRestaurantDto updateRestaurantDTO){
+    public Restaurant updateRestaurant(String username, Long id, UpdateRestaurantDto updateRestaurantDTO){
 
         Owner owner = checkOwnerExists(username);
         Restaurant temp = restaurantRepository.findById(id).orElseThrow(EntityNotFoundException::new);
@@ -102,33 +103,33 @@ public class RestaurantService {
 
         // Update User Details
         String firstName = updateRestaurantDTO.getFirstName();
-        if(firstName!= null && !firstName.isEmpty())
+        if(Strings.isNullOrEmpty(firstName))
             temp.getRestaurantOwner().getUserDetails().setFirstName(firstName);
 
         String lastName = updateRestaurantDTO.getLastName();
-        if(lastName!= null && !lastName.isEmpty())
+        if(Strings.isNullOrEmpty(lastName))
             temp.getRestaurantOwner().getUserDetails().setLastName(lastName);
 
         String email = updateRestaurantDTO.getEmail();
-        if(email!= null && !email.isEmpty())
+        if(Strings.isNullOrEmpty(email))
             temp.getRestaurantOwner().getUserDetails().setEmail(email);
 
         //Update Restaurant Location
         String street = updateRestaurantDTO.getStreet();
-        if(street!= null && !street.isEmpty())
+        if(Strings.isNullOrEmpty(street))
             temp.getLocation().setStreet(street);
 
         String city = updateRestaurantDTO.getCity();
-        if(city!= null && !city.isEmpty())
+        if(Strings.isNullOrEmpty(city))
             temp.getLocation().setCity(city);
 
         String state = updateRestaurantDTO.getState();
-        if(state!= null && !state.isEmpty())
+        if(Strings.isNullOrEmpty(state))
             temp.getLocation().setState(state);
 
         //Update Restaurant Details
         String name = updateRestaurantDTO.getName();
-        if(name!= null && !name.isEmpty())
+        if(Strings.isNullOrEmpty(name))
             temp.setName(name);
 
         Integer priceRating = updateRestaurantDTO.getPriceRating();
@@ -141,7 +142,7 @@ public class RestaurantService {
 
         //replace with new ones
         List<String> newCategories = updateRestaurantDTO.getCategories();
-        if(newCategories!= null && !newCategories.isEmpty()) {
+        if(newCategories!= null) {
             newCategories.forEach(category -> restaurantCategoryRepository.insertRestaurantCategory(temp.getId(), category));
         }
 
@@ -149,7 +150,7 @@ public class RestaurantService {
         List<MenuItem> newMenu = updateRestaurantDTO.getMenu();
 
         //only update menu if there were changes
-        if(newMenu != null && !newMenu.isEmpty()) {
+        if(newMenu != null) {
 
             List<MenuItem> oldMenu = temp.getMenuItems();
 

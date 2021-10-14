@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class addRestaurantDto {
+public class AddRestaurantDto {
 
     @NotBlank(message = "Street is Mandatory")
     private String street;
