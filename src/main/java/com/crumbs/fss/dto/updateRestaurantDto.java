@@ -14,7 +14,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class updateRestaurantDTO {
+public class updateRestaurantDto {
 
     private String firstName;
     private String lastName;

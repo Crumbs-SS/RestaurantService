@@ -1,4 +1,4 @@
-package com.crumbs.fss.exceptionHelper;
+package com.crumbs.fss.exception;
 
 public class DuplicateLocationException extends RuntimeException{
 }

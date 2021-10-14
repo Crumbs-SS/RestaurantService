@@ -1,6 +1,6 @@
 package com.crumbs.fss.service;
 
-import com.crumbs.fss.exceptionHelper.DuplicateLocationException;
+import com.crumbs.fss.exception.DuplicateLocationException;
 import com.crumbs.fss.MockUtil;
 import com.crumbs.lib.entity.*;
 import com.crumbs.lib.repository.*;

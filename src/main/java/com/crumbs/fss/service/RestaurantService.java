@@ -1,8 +1,8 @@
 package com.crumbs.fss.service;
-import com.crumbs.fss.dto.addRestaurantDTO;
-import com.crumbs.fss.dto.updateRestaurantDTO;
-import com.crumbs.fss.exceptionHelper.DuplicateLocationException;
-import com.crumbs.fss.exceptionHelper.OwnerRestaurantMismatchException;
+import com.crumbs.fss.dto.addRestaurantDto;
+import com.crumbs.fss.dto.updateRestaurantDto;
+import com.crumbs.fss.exception.DuplicateLocationException;
+import com.crumbs.fss.exception.OwnerRestaurantMismatchException;
 import com.crumbs.lib.entity.*;
 import com.crumbs.lib.entity.MenuItem;
 import com.crumbs.lib.repository.*;
@@ -54,7 +54,7 @@ public class RestaurantService {
         return owner.getRestaurants();
     }
 
-    public Restaurant addRestaurant(String username, addRestaurantDTO a) {
+    public Restaurant addRestaurant(String username, addRestaurantDto a) {
 
         Owner owner = checkOwnerExists(username);
 
@@ -89,7 +89,7 @@ public class RestaurantService {
     }
 
 
-    public Restaurant updateRestaurant(String username, Long id, updateRestaurantDTO updateRestaurantDTO){
+    public Restaurant updateRestaurant(String username, Long id, updateRestaurantDto updateRestaurantDTO){
 
         Owner owner = checkOwnerExists(username);
         Restaurant temp = restaurantRepository.findById(id).orElseThrow(EntityNotFoundException::new);

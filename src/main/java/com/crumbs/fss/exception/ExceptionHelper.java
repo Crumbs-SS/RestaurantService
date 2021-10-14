@@ -1,4 +1,4 @@
-package com.crumbs.fss.exceptionHelper;
+package com.crumbs.fss.exception;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class ExceptionHelper extends ResponseEntityExceptionHandler {
 
-    private final String timestamp = "timestamp";
-    private final String message = "message";
+    private final static String timestamp = "timestamp";
+    private final static String message = "message";
 
     @ExceptionHandler(value = { MethodArgumentTypeMismatchException.class })
     public ResponseEntity<Object> handleException(MethodArgumentTypeMismatchException ex){
