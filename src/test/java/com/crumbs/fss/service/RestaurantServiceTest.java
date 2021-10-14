@@ -69,12 +69,9 @@ class RestaurantServiceTest {
     @Test
     void addRestaurantShouldThrowDuplicateLocationException(){
 
-        Mockito.when(locationRepository.findLocationByStreet(anyString()))
-                .thenReturn("mockStreet");
+        Mockito.when(locationRepository.findLocationByStreet(anyString())).thenReturn("mockStreet");
         Mockito.when(userDetailRepository.findByUsername(ArgumentMatchers.any(String.class))).thenReturn(Optional.of(MockUtil.getUserDetail()) );
-        assertThrows(DuplicateLocationException.class,()->{
-            restaurantService.addRestaurant("testUsername", MockUtil.getAddRestaurantDTO());
-        });
+        assertThrows(DuplicateLocationException.class,()-> restaurantService.addRestaurant("testUsername", MockUtil.getAddRestaurantDTO()));
         verify(restaurantRepository, never()).save(any(Restaurant.class));
     }
 
@@ -94,10 +91,8 @@ class RestaurantServiceTest {
     void updateRestaurantShouldThrowEntityNotFoundException() {
 
         Mockito.when(userDetailRepository.findByUsername(ArgumentMatchers.any(String.class))).thenReturn(Optional.of(MockUtil.getUserDetail()) );
-        Mockito.when(restaurantRepository.findById(anyLong())).thenReturn(Optional.ofNullable(null));
-        assertThrows(EntityNotFoundException.class, () -> {
-            restaurantService.updateRestaurant("testUsername", MockUtil.getRestaurant().getId(), MockUtil.getUpdateRestaurantDTO());
-        });
+        Mockito.when(restaurantRepository.findById(anyLong())).thenReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class, () -> restaurantService.updateRestaurant("testUsername", 1l, MockUtil.getUpdateRestaurantDTO()));
     }
 
     @Test

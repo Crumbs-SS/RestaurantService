@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 public class ExceptionHelper extends ResponseEntityExceptionHandler {
 
     private static final String TIMESTAMP = "timestamp";
-    private final static String MESSAGE = "message";
+    private static final String MESSAGE = "message";
 
     @ExceptionHandler(value = { MethodArgumentTypeMismatchException.class })
     public ResponseEntity<Object> handleException(MethodArgumentTypeMismatchException ex){
