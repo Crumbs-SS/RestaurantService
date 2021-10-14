@@ -1,7 +1,7 @@
 package com.crumbs.fss.controller;
 
-import com.crumbs.fss.DTO.addRestaurantDTO;
-import com.crumbs.fss.DTO.updateRestaurantDTO;
+import com.crumbs.fss.dto.addRestaurantDTO;
+import com.crumbs.fss.dto.updateRestaurantDTO;
 import com.crumbs.fss.service.RestaurantService;
 import com.crumbs.lib.entity.Restaurant;
 import org.springframework.security.access.prepost.PreAuthorize;

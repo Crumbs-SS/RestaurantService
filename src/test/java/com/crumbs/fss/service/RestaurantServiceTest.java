@@ -1,6 +1,6 @@
 package com.crumbs.fss.service;
 
-import com.crumbs.fss.ExceptionHandling.DuplicateLocationException;
+import com.crumbs.fss.exceptionHelper.DuplicateLocationException;
 import com.crumbs.fss.MockUtil;
 import com.crumbs.lib.entity.*;
 import com.crumbs.lib.repository.*;
@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import javax.persistence.EntityNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,15 +28,10 @@ class RestaurantServiceTest {
 
     @Autowired
     RestaurantService restaurantService;
-
     @MockBean
     RestaurantRepository restaurantRepository;
     @MockBean
-    MenuItemRepository menuItemRepository;
-    @MockBean
     UserDetailsRepository userDetailRepository;
-    @MockBean
-    RestaurantOwnerRepository restaurantOwnerRepository;
     @MockBean
     LocationRepository locationRepository;
     @MockBean

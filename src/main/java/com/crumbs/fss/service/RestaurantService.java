@@ -1,8 +1,8 @@
 package com.crumbs.fss.service;
-import com.crumbs.fss.DTO.addRestaurantDTO;
-import com.crumbs.fss.DTO.updateRestaurantDTO;
-import com.crumbs.fss.ExceptionHandling.DuplicateLocationException;
-import com.crumbs.fss.ExceptionHandling.OwnerRestaurantMismatchException;
+import com.crumbs.fss.dto.addRestaurantDTO;
+import com.crumbs.fss.dto.updateRestaurantDTO;
+import com.crumbs.fss.exceptionHelper.DuplicateLocationException;
+import com.crumbs.fss.exceptionHelper.OwnerRestaurantMismatchException;
 import com.crumbs.lib.entity.*;
 import com.crumbs.lib.entity.MenuItem;
 import com.crumbs.lib.repository.*;
@@ -46,7 +46,7 @@ public class RestaurantService {
         return owner;
     }
     public boolean checkRestaurantBelongsToOwner(Owner owner, Owner restaurantOwner){
-        return owner.getId() == restaurantOwner.getId();
+        return owner.getId().equals(restaurantOwner.getId());
     }
 
     public List<Restaurant> getOwnerRestaurants(String username){
