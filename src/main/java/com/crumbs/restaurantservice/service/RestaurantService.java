@@ -1,19 +1,15 @@
-package com.crumbs.fss.service;
-
-import com.crumbs.fss.dto.AddRestaurantDto;
-import com.crumbs.fss.dto.UpdateRestaurantDto;
-import com.crumbs.fss.exception.DuplicateLocationException;
-import com.crumbs.fss.exception.OwnerRestaurantMismatchException;
+package com.crumbs.restaurantservice.service;
 import com.crumbs.lib.entity.*;
 import com.crumbs.lib.entity.MenuItem;
 import com.crumbs.lib.repository.*;
+import com.crumbs.restaurantservice.dto.AddRestaurantDto;
+import com.crumbs.restaurantservice.dto.UpdateRestaurantDto;
+import com.crumbs.restaurantservice.exception.ExceptionHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(rollbackFor = {Exception.class})
