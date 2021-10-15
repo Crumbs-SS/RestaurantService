@@ -6,11 +6,11 @@ import com.crumbs.fss.exception.OwnerRestaurantMismatchException;
 import com.crumbs.lib.entity.*;
 import com.crumbs.lib.entity.MenuItem;
 import com.crumbs.lib.repository.*;
-import com.google.common.base.Strings;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(rollbackFor = { Exception.class })
@@ -102,73 +102,60 @@ public class RestaurantService {
             throw new DuplicateLocationException();
 
         // Update User Details
-        String firstName = updateRestaurantDTO.getFirstName();
-        if(Strings.isNullOrEmpty(firstName))
-            temp.getRestaurantOwner().getUserDetails().setFirstName(firstName);
+        Optional<String> firstName = Optional.of(updateRestaurantDTO.getFirstName());
+        firstName.ifPresent(s -> temp.getRestaurantOwner().getUserDetails().setFirstName(s));
 
-        String lastName = updateRestaurantDTO.getLastName();
-        if(Strings.isNullOrEmpty(lastName))
-            temp.getRestaurantOwner().getUserDetails().setLastName(lastName);
+        Optional<String> lastName = Optional.of(updateRestaurantDTO.getLastName());
+        lastName.ifPresent(s -> temp.getRestaurantOwner().getUserDetails().setLastName(s));
 
-        String email = updateRestaurantDTO.getEmail();
-        if(Strings.isNullOrEmpty(email))
-            temp.getRestaurantOwner().getUserDetails().setEmail(email);
+        Optional<String> email = Optional.of(updateRestaurantDTO.getEmail());
+        email.ifPresent(s -> temp.getRestaurantOwner().getUserDetails().setEmail(s));
 
         //Update Restaurant Location
-        String street = updateRestaurantDTO.getStreet();
-        if(Strings.isNullOrEmpty(street))
-            temp.getLocation().setStreet(street);
+        Optional<String> street = Optional.of(updateRestaurantDTO.getStreet());
+        street.ifPresent(s -> temp.getLocation().setStreet(s));
 
-        String city = updateRestaurantDTO.getCity();
-        if(Strings.isNullOrEmpty(city))
-            temp.getLocation().setCity(city);
+        Optional<String> city = Optional.of(updateRestaurantDTO.getCity());
+        city.ifPresent(s -> temp.getLocation().setCity(s));
 
-        String state = updateRestaurantDTO.getState();
-        if(Strings.isNullOrEmpty(state))
-            temp.getLocation().setState(state);
+        Optional<String> state = Optional.of(updateRestaurantDTO.getState());
+        state.ifPresent(s -> temp.getLocation().setState(s));
 
         //Update Restaurant Details
-        String name = updateRestaurantDTO.getName();
-        if(Strings.isNullOrEmpty(name))
-            temp.setName(name);
+        Optional<String> name = Optional.of(updateRestaurantDTO.getName());
+        name.ifPresent(temp::setName);
 
-        Integer priceRating = updateRestaurantDTO.getPriceRating();
-        if(priceRating!= null)
-            temp.setPriceRating(priceRating);
+        Optional<Integer> priceRating = Optional.of(updateRestaurantDTO.getPriceRating());
+        priceRating.ifPresent(temp::setPriceRating);
 
         //delete old categories
-        if(!temp.getCategories().isEmpty())
-            restaurantCategoryRepository.deleteByRestaurantID(id);
+        if(!temp.getCategories().isEmpty()) restaurantCategoryRepository.deleteByRestaurantID(id);
 
         //replace with new ones
-        List<String> newCategories = updateRestaurantDTO.getCategories();
-        if(newCategories!= null) {
-            newCategories.forEach(category -> restaurantCategoryRepository.insertRestaurantCategory(temp.getId(), category));
-        }
+        Optional<List<String>> newCategories = Optional.of(updateRestaurantDTO.getCategories());
+        newCategories.ifPresent(categories -> categories.forEach(category -> restaurantCategoryRepository.insertRestaurantCategory(temp.getId(), category)));
 
         //update menu items
-        List<MenuItem> newMenu = updateRestaurantDTO.getMenu();
-
-        //only update menu if there were changes
-        if(newMenu != null) {
-
-            List<MenuItem> oldMenu = temp.getMenuItems();
-
-            //for newly added menu items, set restaurant to restaurant (otherwise restaurant_ID stays null on save)
-            newMenu.forEach(item -> {
-                if (item.getId() == null)
-                    item.setRestaurant(temp);
-            });
-            temp.setMenuItems(newMenu);
-
-            //for old menu items that are now deleted, delete them (they don't automatically delete on save)
-            if(oldMenu != null && !oldMenu.isEmpty()) {
-                oldMenu.forEach(item -> {
-                    if (!newMenu.contains(item))
+        Optional<List<MenuItem>> newMenu = Optional.of(updateRestaurantDTO.getMenu());
+        newMenu.ifPresent(menu ->
+        {
+            Optional<List<MenuItem>> oldMenu = Optional.of(temp.getMenuItems());
+            //delete items not contained in new menu
+            oldMenu.ifPresent(m ->
+            {
+                m.forEach(item -> {
+                    if (!menu.contains(item))
                         menuItemRepository.delete(item);
                 });
-            }
-        }
+            });
+
+            //for newly added menu items, set restaurant to restaurant (otherwise restaurant_ID stays null on save)
+            menu.forEach(item -> {
+                if (item.getId() == null) item.setRestaurant(temp);
+            });
+            temp.setMenuItems(menu);
+
+        });
 
         return restaurantRepository.save(temp);
     }
