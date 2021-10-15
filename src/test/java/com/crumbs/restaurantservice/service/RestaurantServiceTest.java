@@ -1,9 +1,9 @@
 package com.crumbs.restaurantservice.service;
 
-import com.crumbs.restaurantservice.exception.DuplicateLocationException;
 import com.crumbs.restaurantservice.MockUtil;
 import com.crumbs.lib.entity.*;
 import com.crumbs.lib.repository.*;
+import com.crumbs.restaurantservice.exception.ExceptionHelper;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
@@ -71,7 +71,7 @@ class RestaurantServiceTest {
 
         Mockito.when(locationRepository.findLocationByStreet(anyString())).thenReturn("mockStreet");
         Mockito.when(userDetailRepository.findByUsername(ArgumentMatchers.any(String.class))).thenReturn(Optional.of(MockUtil.getUserDetail()) );
-        assertThrows(DuplicateLocationException.class,()-> restaurantService.addRestaurant("testUsername", MockUtil.getAddRestaurantDTO()));
+        assertThrows(ExceptionHelper.DuplicateLocationException.class,()-> restaurantService.addRestaurant("testUsername", MockUtil.getAddRestaurantDTO()));
         verify(restaurantRepository, never()).save(any(Restaurant.class));
     }
 

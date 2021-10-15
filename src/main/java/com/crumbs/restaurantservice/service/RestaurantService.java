@@ -1,11 +1,10 @@
 package com.crumbs.restaurantservice.service;
 import com.crumbs.restaurantservice.dto.AddRestaurantDto;
 import com.crumbs.restaurantservice.dto.UpdateRestaurantDto;
-import com.crumbs.restaurantservice.exception.DuplicateLocationException;
-import com.crumbs.restaurantservice.exception.OwnerRestaurantMismatchException;
 import com.crumbs.lib.entity.*;
 import com.crumbs.lib.entity.MenuItem;
 import com.crumbs.lib.repository.*;
+import com.crumbs.restaurantservice.exception.ExceptionHelper;
 import com.google.common.base.Strings;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,7 +59,7 @@ public class RestaurantService {
         Owner owner = checkOwnerExists(username);
 
         if(locationRepository.findLocationByStreet(a.getStreet())!=null)
-            throw new DuplicateLocationException();
+            throw new ExceptionHelper.DuplicateLocationException();
 
         Location location = Location.builder()
                 .street(a.getStreet())
@@ -96,10 +95,10 @@ public class RestaurantService {
         Restaurant temp = restaurantRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 
         if(!checkRestaurantBelongsToOwner(owner, temp.getRestaurantOwner()))
-            throw new OwnerRestaurantMismatchException();
+            throw new ExceptionHelper.OwnerRestaurantMismatchException();
 
         if(updateRestaurantDTO.getStreet() != null && !updateRestaurantDTO.getStreet().equals(temp.getLocation().getStreet()) && locationRepository.findLocationByStreet(updateRestaurantDTO.getStreet())!=null)
-            throw new DuplicateLocationException();
+            throw new ExceptionHelper.DuplicateLocationException();
 
         // Update User Details
         String firstName = updateRestaurantDTO.getFirstName();
@@ -178,7 +177,7 @@ public class RestaurantService {
         Restaurant temp = restaurantRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 
         if(!checkRestaurantBelongsToOwner(owner, temp.getRestaurantOwner()))
-            throw new OwnerRestaurantMismatchException();
+            throw new ExceptionHelper.OwnerRestaurantMismatchException();
 
         RestaurantStatus status = restaurantStatusRepository.findById("PENDING_DELETE").orElse(null);
         temp.setRestaurantStatus(status);

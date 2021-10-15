@@ -23,7 +23,9 @@ public class ExceptionHelper extends ResponseEntityExceptionHandler {
 
     private static final String TIMESTAMP = "timestamp";
     private static final String MESSAGE = "message";
-
+    public static class OwnerRestaurantMismatchException extends RuntimeException{ }
+    public static class DuplicateLocationException extends RuntimeException{ }
+    
     @ExceptionHandler(value = { MethodArgumentTypeMismatchException.class })
     public ResponseEntity<Object> handleException(MethodArgumentTypeMismatchException ex){
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
