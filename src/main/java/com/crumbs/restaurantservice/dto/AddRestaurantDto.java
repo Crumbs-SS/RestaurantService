@@ -1,4 +1,4 @@
-package com.crumbs.fss.dto;
+package com.crumbs.restaurantservice.dto;
 
 
 import lombok.AllArgsConstructor;

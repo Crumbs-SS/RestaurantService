@@ -1,7 +1,7 @@
-package com.crumbs.fss.controller;
+package com.crumbs.restaurantservice.controller;
 
 
-import com.crumbs.fss.service.RestaurantSearchService;
+import com.crumbs.restaurantservice.service.RestaurantSearchService;
 import com.crumbs.lib.entity.Category;
 import com.crumbs.lib.entity.MenuItem;
 import com.crumbs.lib.entity.Restaurant;

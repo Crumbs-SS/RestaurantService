@@ -1,4 +1,4 @@
-package com.crumbs.fss.configurations;
+package com.crumbs.restaurantservice.configurations;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,8 +1,8 @@
-package com.crumbs.fss.service;
-import com.crumbs.fss.dto.AddRestaurantDto;
-import com.crumbs.fss.dto.UpdateRestaurantDto;
-import com.crumbs.fss.exception.DuplicateLocationException;
-import com.crumbs.fss.exception.OwnerRestaurantMismatchException;
+package com.crumbs.restaurantservice.service;
+import com.crumbs.restaurantservice.dto.AddRestaurantDto;
+import com.crumbs.restaurantservice.dto.UpdateRestaurantDto;
+import com.crumbs.restaurantservice.exception.DuplicateLocationException;
+import com.crumbs.restaurantservice.exception.OwnerRestaurantMismatchException;
 import com.crumbs.lib.entity.*;
 import com.crumbs.lib.entity.MenuItem;
 import com.crumbs.lib.repository.*;

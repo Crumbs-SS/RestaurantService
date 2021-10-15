@@ -1,4 +1,4 @@
-package com.crumbs.fss.service;
+package com.crumbs.restaurantservice.service;
 
 import com.crumbs.lib.entity.Category;
 import com.crumbs.lib.entity.MenuItem;

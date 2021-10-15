@@ -1,7 +1,7 @@
-package com.crumbs.fss.service;
+package com.crumbs.restaurantservice.service;
 
-import com.crumbs.fss.exception.DuplicateLocationException;
-import com.crumbs.fss.MockUtil;
+import com.crumbs.restaurantservice.exception.DuplicateLocationException;
+import com.crumbs.restaurantservice.MockUtil;
 import com.crumbs.lib.entity.*;
 import com.crumbs.lib.repository.*;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,6 @@
-package com.crumbs.fss.service;
+package com.crumbs.restaurantservice.service;
 
-import com.crumbs.fss.MockUtil;
+import com.crumbs.restaurantservice.MockUtil;
 import com.crumbs.lib.entity.Category;
 import com.crumbs.lib.entity.Restaurant;
 import com.crumbs.lib.repository.CategoryRepository;

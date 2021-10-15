@@ -1,4 +1,4 @@
-package com.crumbs.fss.exception;
+package com.crumbs.restaurantservice.exception;
 
 public class OwnerRestaurantMismatchException extends RuntimeException{
 }

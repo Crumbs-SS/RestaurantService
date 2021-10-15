@@ -1,7 +1,7 @@
-package com.crumbs.fss.controller;
+package com.crumbs.restaurantservice.controller;
 
-import com.crumbs.fss.MockUtil;
-import com.crumbs.fss.service.RestaurantSearchService;
+import com.crumbs.restaurantservice.MockUtil;
+import com.crumbs.restaurantservice.service.RestaurantSearchService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;

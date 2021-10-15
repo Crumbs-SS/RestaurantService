@@ -1,4 +1,4 @@
-package com.crumbs.fss.security;
+package com.crumbs.restaurantservice.security;
 import com.crumbs.AuthLib.security.JwtAuthorizationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

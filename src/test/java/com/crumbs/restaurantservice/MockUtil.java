@@ -1,9 +1,9 @@
-package com.crumbs.fss;
+package com.crumbs.restaurantservice;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.crumbs.fss.dto.AddRestaurantDto;
-import com.crumbs.fss.dto.UpdateRestaurantDto;
+import com.crumbs.restaurantservice.dto.AddRestaurantDto;
+import com.crumbs.restaurantservice.dto.UpdateRestaurantDto;
 import com.crumbs.lib.entity.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

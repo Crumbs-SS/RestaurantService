@@ -1,7 +1,7 @@
-package com.crumbs.fss.controller;
+package com.crumbs.restaurantservice.controller;
 
-import com.crumbs.fss.MockUtil;
-import com.crumbs.fss.service.RestaurantService;
+import com.crumbs.restaurantservice.MockUtil;
+import com.crumbs.restaurantservice.service.RestaurantService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import java.util.Optional;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
