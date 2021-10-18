@@ -185,6 +185,7 @@ public class MockUtil {
         Owner owner = new Owner();
         owner.setId(2L);
         owner.setRestaurants(getRestaurants());
+        owner.setUserDetails(new UserDetails());
         return owner;
     }
     public  static String createMockJWT(String role){
