@@ -99,6 +99,17 @@ class RestaurantServiceTest {
         verify(restaurantRepository).save(any(Restaurant.class));
         verify(restaurantRepository).findById(MockUtil.getRestaurant().getId());
     }
+    @Test
+    void updateRestaurantSuccessfullyWithNull() {
+
+        Mockito.when(userDetailRepository.findByUsername(ArgumentMatchers.any(String.class))).thenReturn(Optional.of(MockUtil.getUserDetail()) );
+        Mockito.when(restaurantRepository.findById(anyLong())).thenReturn(Optional.of(MockUtil.getRestaurant()));
+        Mockito.when(locationRepository.findLocationByStreet(anyString())).thenReturn(null);
+        Mockito.when(restaurantRepository.save(ArgumentMatchers.any(Restaurant.class))).thenReturn(MockUtil.getRestaurant());
+        restaurantService.updateRestaurant("testUsername", MockUtil.getRestaurant().getId(), MockUtil.getUpdateRestaurantDTOwithNullValues());
+        verify(restaurantRepository).save(any(Restaurant.class));
+        verify(restaurantRepository).findById(MockUtil.getRestaurant().getId());
+    }
 
     @Test
     void updateRestaurantShouldThrowEntityNotFoundException() {

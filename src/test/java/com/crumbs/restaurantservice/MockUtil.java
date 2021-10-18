@@ -98,6 +98,22 @@ public class MockUtil {
 
         return temp;
     }
+    public static UpdateRestaurantDto getUpdateRestaurantDTOwithNullValues(){
+        UpdateRestaurantDto temp = UpdateRestaurantDto.builder()
+                .firstName(null)
+                .lastName(null)
+                .email(null)
+                .street(null)
+                .city(null)
+                .state(null)
+                .name(null)
+                .email(null)
+                .priceRating(null)
+                .categories(null)
+                .menu(null)
+                .build();
+        return temp;
+    }
 
     public static AddRestaurantDto getInvalidAddRestaurantDTO(){
         AddRestaurantDto temp = AddRestaurantDto.builder()
