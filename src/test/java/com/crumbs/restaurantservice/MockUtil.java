@@ -101,7 +101,7 @@ public class MockUtil {
 
     public static AddRestaurantDto getInvalidAddRestaurantDTO(){
         AddRestaurantDto temp = AddRestaurantDto.builder()
-                .street("test")
+                .street(null)
                 .city("test")
                 .state("AAA")
                 .name("test")
@@ -167,6 +167,10 @@ public class MockUtil {
         user.setOwner(getRestaurantOwner());
         return user;
     }
+    public static UserDetails getUserDetailsWithoutOwner(){
+        UserDetails user =new UserDetails();
+        return user;
+    }
     public static RestaurantStatus getPendingDeleteStatus(){
         RestaurantStatus status = new RestaurantStatus();
         status.setStatus("PENDING_DELETE");
@@ -179,9 +183,8 @@ public class MockUtil {
     }
     public static Owner getRestaurantOwner(){
         Owner owner = new Owner();
-        owner.setId(1L);
+        owner.setId(2L);
         owner.setRestaurants(getRestaurants());
-        owner.setUserDetails(new UserDetails());
         return owner;
     }
     public  static String createMockJWT(String role){
