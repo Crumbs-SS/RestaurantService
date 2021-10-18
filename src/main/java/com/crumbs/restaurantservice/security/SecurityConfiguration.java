@@ -28,6 +28,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                         "/actuator/**",
                         "/restaurant-service/restaurants/**",
                         "/restaurant-service/categories**",
+                        "/restaurant-service/restaurants**",
+                        "/restaurant-service/search**",
                         "/swagger-resources/**",
                         "/swagger-ui.html",
                         "/v2/api-docs"
