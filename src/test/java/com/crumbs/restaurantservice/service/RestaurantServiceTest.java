@@ -127,18 +127,6 @@ class RestaurantServiceTest {
         assertThrows(ExceptionHelper.OwnerRestaurantMismatchException.class, () -> restaurantService.updateRestaurant("username", 1l, MockUtil.getUpdateRestaurantDTO()));
 
     }
-    @Test
-    void updateShouldThrowOwnerRestaurantMismatchException2(){
-        Mockito.when(userDetailRepository.findByUsername(ArgumentMatchers.any(String.class))).thenReturn(Optional.of(MockUtil.getUserDetail()) );
-        Mockito.when(restaurantRepository.findById(anyLong())).thenReturn(Optional.of(MockUtil.getRestaurantWithActiveStatus()));
-        try{
-            restaurantService.updateRestaurant("username", 1l, MockUtil.getUpdateRestaurantDTO());
-        }
-        catch(Exception e){
-            assertThat(e).isInstanceOf(ExceptionHelper.OwnerRestaurantMismatchException.class)
-                    .hasMessage("This location already exists in database. Please enter new location.");
-        }
-    }
 
     @Test
     void requestDeleteRestaurant(){
