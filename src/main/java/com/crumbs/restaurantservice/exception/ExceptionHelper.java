@@ -58,7 +58,7 @@ public class ExceptionHelper extends ResponseEntityExceptionHandler {
         body.put(TIMESTAMP, LocalDate.now());
         body.put("status", status.value());
         body.put(MESSAGE, ex.getCause());
-        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(DuplicateLocationException.class)
