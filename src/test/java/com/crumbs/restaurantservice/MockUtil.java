@@ -20,7 +20,25 @@ public class MockUtil {
     public static List<Restaurant> getRestaurants(){
         List<Restaurant> restaurants = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            Restaurant restaurant = Restaurant.builder().name("Restaurant-" + i).build();
+            Category category = Category.builder().name("TESTCAT").build();
+            Category category1 = Category.builder().name("TESTCAT2").build();
+
+            RestaurantCategory restaurantCategory = RestaurantCategory
+                    .builder()
+                    .category(category)
+                    .build();
+
+            RestaurantCategory restaurantCategory1 = RestaurantCategory
+                    .builder()
+                    .category(category1)
+                    .build();
+
+            Restaurant restaurant = Restaurant
+                    .builder()
+                    .name("Restaurant-" + i)
+                    .categories(List.of(restaurantCategory1, restaurantCategory))
+                    .build();
+
             restaurants.add(restaurant);
         }
         return restaurants;
