@@ -163,6 +163,7 @@
 						<exclude>com/crumbs/restaurantservice/configurations/**</exclude>
 						<exclude>com/crumbs/restaurantservice/dto/**</exclude>
 						<exclude>com/crumbs/restaurantservice/security/**</exclude>
+						<exclude>com/crumbs/restaurantservice/RestaurantServiceApplication</exclude>
 					</excludes>
 				</configuration>
 				<executions>

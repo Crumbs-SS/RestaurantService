@@ -7,6 +7,7 @@ import com.crumbs.restaurantservice.exception.ExceptionHelper;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,6 +118,14 @@ class RestaurantServiceTest {
         Mockito.when(userDetailRepository.findByUsername(ArgumentMatchers.any(String.class))).thenReturn(Optional.of(MockUtil.getUserDetail()) );
         Mockito.when(restaurantRepository.findById(anyLong())).thenReturn(Optional.empty());
         assertThrows(EntityNotFoundException.class, () -> restaurantService.updateRestaurant("testUsername", 1l, MockUtil.getUpdateRestaurantDTO()));
+    }
+
+    @Test
+    void updateShouldThrowOwnerRestaurantMismatchException(){
+        Mockito.when(userDetailRepository.findByUsername(ArgumentMatchers.any(String.class))).thenReturn(Optional.of(MockUtil.getUserDetail()) );
+        Mockito.when(restaurantRepository.findById(anyLong())).thenReturn(Optional.of(MockUtil.getRestaurantWithActiveStatus()));
+        assertThrows(ExceptionHelper.OwnerRestaurantMismatchException.class, () -> restaurantService.updateRestaurant("username", 1l, MockUtil.getUpdateRestaurantDTO()));
+
     }
 
     @Test

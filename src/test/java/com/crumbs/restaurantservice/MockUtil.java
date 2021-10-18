@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.crumbs.restaurantservice.dto.AddRestaurantDto;
 import com.crumbs.restaurantservice.dto.UpdateRestaurantDto;
 import com.crumbs.lib.entity.*;
+import edu.emory.mathcs.backport.java.util.Arrays;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
@@ -68,7 +69,11 @@ public class MockUtil {
 
         return temp;
     }
+
     public static UpdateRestaurantDto getUpdateRestaurantDTO(){
+
+        List<String> cat = new ArrayList<>();
+        cat.add("Burger");
 
         UpdateRestaurantDto temp = UpdateRestaurantDto.builder()
                 .firstName("test")
@@ -79,7 +84,8 @@ public class MockUtil {
                 .state("AA")
                 .name("test")
                 .priceRating(1)
-                .categories(null)
+                .categories(cat)
+                .menu(getMenuItems())
                 .build();
 
         return temp;
