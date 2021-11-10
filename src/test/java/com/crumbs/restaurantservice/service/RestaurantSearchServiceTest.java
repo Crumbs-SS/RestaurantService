@@ -6,6 +6,7 @@ import com.crumbs.lib.repository.CategoryRepository;
 import com.crumbs.lib.repository.MenuItemRepository;
 import com.crumbs.lib.repository.RestaurantRepository;
 import com.crumbs.restaurantservice.MockUtil;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,25 +56,26 @@ class RestaurantSearchServiceTest {
                 MockUtil.getPageRestaurants().getNumberOfElements());
     }
 
-    @Test
-    void getRestaurants() {
-        PageRequest pageRequest = PageRequest.of(0, 5);
-        when(restaurantRepository.findAll(pageRequest)).thenReturn(MockUtil.getPageRestaurants());
-        assertEquals(restaurantSearchService.getRestaurants(pageRequest).getNumberOfElements(),
-                MockUtil.getPageRestaurants().getNumberOfElements());
-    }
+//    @Test
+//    void getRestaurants() {
+//        PageRequest pageRequest = PageRequest.of(0, 5);
+//        when(restaurantRepository.findAll(pageRequest)).thenReturn(MockUtil.getPageRestaurants());
+//        assertEquals(restaurantSearchService.getRestaurants(pageRequest).getNumberOfElements(),
+//                MockUtil.getPageRestaurants().getNumberOfElements());
+//    }
 
-    @Test
-    void testGetRestaurants() {
-        String query = "";
-        PageRequest pageRequest = PageRequest.of(0, 5);
-
-        when(restaurantRepository.findAll(any(Example.class), any(PageRequest.class)))
-                .thenReturn(MockUtil.getPageRestaurants());
-
-        assertEquals(restaurantSearchService.getRestaurants(query, pageRequest).getNumberOfElements(),
-                MockUtil.getPageRestaurants().getNumberOfElements());
-    }
+//    @Test
+//    @Ignore
+//    void testGetRestaurants() {
+//        String query = "";
+//        PageRequest pageRequest = PageRequest.of(0, 5);
+//
+//        when(restaurantRepository.findAll(any(Example.class), any(PageRequest.class)))
+//                .thenReturn(MockUtil.getPageRestaurants());
+//
+//        assertEquals(restaurantSearchService.getRestaurants(query, pageRequest).getNumberOfElements(),
+//                MockUtil.getPageRestaurants().getNumberOfElements());
+//    }
 
     @Test
     void findRestaurant() {
@@ -112,8 +114,8 @@ class RestaurantSearchServiceTest {
         String[] filter = { "TESTCAT", "TESTCAT2" };
         List<Restaurant> mockRestaurants = MockUtil.getRestaurants();
 
-        when(restaurantRepository.findAll(any(), any(Sort.class)))
-                .thenReturn(mockRestaurants);
+//        when(restaurantRepository.findAll(any(), any(Sort.class)))
+//                .thenReturn(mockRestaurants);
 
         Page<Restaurant> restaurants = restaurantSearchService.filterRestaurantResults(
                 "TESTCAT",

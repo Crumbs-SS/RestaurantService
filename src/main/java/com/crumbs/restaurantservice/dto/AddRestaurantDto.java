@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.validation.constraints.*;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Data
@@ -13,16 +14,10 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class AddRestaurantDto {
-
-    @NotBlank(message = "Street is Mandatory")
-    private String street;
-
-    @NotBlank(message = "City is Mandatory")
-    private String city;
-
-    @NotBlank(message = "State is Mandatory")
-    @Size(min = 2, max = 2, message = "State must consist of only 2 characters.")
-    private String state;
+    @NotBlank(message = "Address is mandatory")
+    private String address;
+    private BigDecimal longitude;
+    private BigDecimal latitude;
 
     @NotBlank(message = "Restaurant Name is Mandatory")
     private String name;

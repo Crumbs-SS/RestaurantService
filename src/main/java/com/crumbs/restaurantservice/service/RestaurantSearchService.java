@@ -6,9 +6,13 @@ import com.crumbs.lib.entity.Restaurant;
 import com.crumbs.lib.repository.CategoryRepository;
 import com.crumbs.lib.repository.MenuItemRepository;
 import com.crumbs.lib.repository.RestaurantRepository;
+import com.crumbs.restaurantservice.dto.DistanceInformation;
+import com.crumbs.restaurantservice.specifications.RestaurantSpecifications;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -16,22 +20,12 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional(rollbackFor = { Exception.class })
+@RequiredArgsConstructor
 public class RestaurantSearchService {
 
     private final RestaurantRepository restaurantRepository;
     private final MenuItemRepository menuItemRepository;
     private final CategoryRepository categoryRepository;
-
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
-    RestaurantSearchService(
-            RestaurantRepository restaurantRepository,
-            MenuItemRepository menuItemRepository,
-            CategoryRepository categoryRepository
-    ){
-        this.restaurantRepository = restaurantRepository;
-        this.menuItemRepository = menuItemRepository;
-        this.categoryRepository = categoryRepository;
-    }
 
     public Page<MenuItem> getMenuItems(PageRequest pageRequest, Long restaurantId){
         return Optional.of(menuItemRepository.findAllByRestaurantId(restaurantId, pageRequest))
@@ -43,13 +37,13 @@ public class RestaurantSearchService {
                 .orElseThrow();
     }
 
-    public Page<Restaurant> getRestaurants(PageRequest pageRequest){
-        return Optional.of(restaurantRepository.findAll(pageRequest)).orElseThrow();
-    }
-
-    public Page<Restaurant> getRestaurants(String query, PageRequest pageRequest) {
-        return Optional.of(restaurantRepository.findAll(getRestaurantExample(query), pageRequest))
-                .orElseThrow();
+    public Page<Restaurant> getRestaurants(DistanceInformation distanceInformation, String query, PageRequest pageRequest) {
+        return restaurantRepository.findRestaurantsByLocation(
+                distanceInformation.getCustomerLat(),
+                distanceInformation.getCustomerLng(),
+                distanceInformation.getMaxDistance(),
+                pageRequest
+        );
     }
 
     public Restaurant findRestaurant(Long restaurantId){
@@ -67,7 +61,8 @@ public class RestaurantSearchService {
 
 
     public Page<Restaurant> filterRestaurantResults(String query, String[] filter, PageRequest pageRequest) {
-        List<Restaurant> restaurants = query != null ? restaurantRepository.findAll(getRestaurantExample(query),
+        List<Restaurant> restaurants = query != null ? restaurantRepository.findAll(
+                RestaurantSpecifications.getRestaurantsByQuery(query),
                 pageRequest.getSort()) : restaurantRepository.findAll(pageRequest.getSort());
 
         List<Restaurant> restaurantContent = getRestaurantFilterResults(restaurants, filter);
@@ -92,14 +87,5 @@ public class RestaurantSearchService {
 
             return state.stream().allMatch(v -> v);
         }).collect(Collectors.toList());
-    }
-
-    private Example<Restaurant> getRestaurantExample(String query){
-        ExampleMatcher customExampleMatcher = ExampleMatcher.matchingAny()
-                .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.contains().ignoreCase())
-                .withIgnorePaths("address");
-
-        return Example.of(Restaurant.builder().name(query).build(),
-                customExampleMatcher);
     }
 }

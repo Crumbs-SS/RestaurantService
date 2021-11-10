@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.*;
+import java.math.BigDecimal;
 import java.util.List;
 
 
@@ -22,8 +23,9 @@ public class UpdateRestaurantDto {
     @Email(message = "Email should be valid")
     private String email;
 
-    private String street;
-    private String city;
+    private String address;
+    private BigDecimal longitude;
+    private BigDecimal latitude;
 
     @Size(min =2, max =2, message= "State must consist of only 2 characters.")
     private String state;

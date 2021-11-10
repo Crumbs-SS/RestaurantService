@@ -4,6 +4,7 @@ import com.crumbs.restaurantservice.dto.AddRestaurantDto;
 import com.crumbs.restaurantservice.dto.UpdateRestaurantDto;
 import com.crumbs.restaurantservice.service.RestaurantService;
 import com.crumbs.lib.entity.Restaurant;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -13,17 +14,13 @@ import java.util.List;
 
 @RestController
 @Validated
+@RequiredArgsConstructor
 @RequestMapping("/restaurant-service")
 @PreAuthorize("isAuthenticated()")
 public class RestaurantServiceController {
 
     private final RestaurantService restaurantService;
 
-    RestaurantServiceController(
-            RestaurantService restaurantService
-    ){
-        this.restaurantService = restaurantService;
-    }
 
     @PreAuthorize("hasAuthority('ADMIN') or (hasAuthority('OWNER') and #username == authentication.principal)")
     @GetMapping("/owner/{username}/restaurants")

@@ -1,6 +1,7 @@
 package com.crumbs.restaurantservice.controller;
 
 
+import com.crumbs.restaurantservice.dto.DistanceInformation;
 import com.crumbs.restaurantservice.service.RestaurantSearchService;
 import com.crumbs.lib.entity.Category;
 import com.crumbs.lib.entity.MenuItem;
@@ -13,6 +14,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -20,7 +22,6 @@ import java.util.List;
 @PreAuthorize("isAuthenticated()")
 @RequestMapping("/restaurant-service")
 public class RestaurantSearchServiceController {
-
 
     private final RestaurantSearchService restaurantSearchService;
 
@@ -42,11 +43,16 @@ public class RestaurantSearchServiceController {
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "asc") String order,
+            @RequestParam(defaultValue = "45") Integer maxDistance,
+            @RequestParam BigDecimal lat,
+            @RequestParam BigDecimal lng,
             @RequestParam(required = false) String[] filter
     ) {
+        DistanceInformation distanceInformation = DistanceInformation.builder()
+                .customerLat(lat).customerLng(lng).maxDistance(maxDistance).build();
 
         PageRequest pageRequest = restaurantSearchService.getPageRequest(page, 5, sortBy, order);
-        Page<Restaurant> restaurants = restaurantSearchService.getRestaurants(pageRequest);
+        Page<Restaurant> restaurants = restaurantSearchService.getRestaurants(distanceInformation, "", pageRequest);
         if (filter != null && filter.length > 0)
             restaurants = restaurantSearchService.filterRestaurantResults(null, filter, pageRequest);
 
@@ -60,11 +66,16 @@ public class RestaurantSearchServiceController {
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "id") String sortBy,
             @RequestParam(defaultValue = "asc") String order,
+            @RequestParam(defaultValue = "45") Integer maxDistance,
+            @RequestParam BigDecimal lat,
+            @RequestParam BigDecimal lng,
             @RequestParam(required = false) String[] filter
     ) {
+        DistanceInformation distanceInformation = DistanceInformation.builder()
+                .customerLat(lat).customerLng(lng).maxDistance(maxDistance).build();
 
         PageRequest pageRequest = restaurantSearchService.getPageRequest(page, 5, sortBy, order);
-        Page<Restaurant> restaurants = restaurantSearchService.getRestaurants(query, pageRequest);
+        Page<Restaurant> restaurants = restaurantSearchService.getRestaurants(distanceInformation, query, pageRequest);
         if (filter != null && filter.length > 0)
             restaurants = restaurantSearchService.filterRestaurantResults(query, filter, pageRequest);
 

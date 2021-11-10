@@ -83,6 +83,7 @@ public class ExceptionHelper extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = { Exception.class })
     public ResponseEntity<Object> handleException(Exception ex) {
+        ex.printStackTrace();
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

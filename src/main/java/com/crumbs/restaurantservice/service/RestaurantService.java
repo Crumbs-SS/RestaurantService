@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -45,13 +46,13 @@ public class RestaurantService {
 
         Owner owner = checkOwnerExists(username);
 
-        if(locationRepository.findLocationByStreet(a.getStreet())!=null)
+        if(locationRepository.findLocationByAddress(a.getAddress()).isPresent())
             throw new ExceptionHelper.DuplicateLocationException();
 
         Location location = Location.builder()
-                .street(a.getStreet())
-                .city(a.getCity())
-                .state(a.getState())
+                .address(a.getAddress())
+                .longitude(a.getLongitude())
+                .latitude(a.getLatitude())
                 .build();
 
         locationRepository.save(location);
@@ -84,7 +85,8 @@ public class RestaurantService {
         if(!checkRestaurantBelongsToOwner(owner, temp.getRestaurantOwner()))
             throw new ExceptionHelper.OwnerRestaurantMismatchException();
 
-        if(updateRestaurantDTO.getStreet() != null && !updateRestaurantDTO.getStreet().equals(temp.getLocation().getStreet()) && locationRepository.findLocationByStreet(updateRestaurantDTO.getStreet())!=null)
+        if(updateRestaurantDTO.getAddress() != null && !updateRestaurantDTO.getAddress().equals(temp.getLocation().getAddress())
+                && locationRepository.findLocationByAddress(updateRestaurantDTO.getAddress()).isPresent())
             throw new ExceptionHelper.DuplicateLocationException();
 
         // Update User Details
@@ -101,17 +103,17 @@ public class RestaurantService {
             temp.getRestaurantOwner().getUserDetails().setEmail(email);
 
         //Update Restaurant Location
-        String street = updateRestaurantDTO.getStreet();
-        if (street != null && !street.isEmpty())
-            temp.getLocation().setStreet(street);
+        String address = updateRestaurantDTO.getAddress();
+        if (address != null && !address.isEmpty())
+            temp.getLocation().setAddress(address);
 
-        String city = updateRestaurantDTO.getCity();
-        if (city != null && !city.isEmpty())
-            temp.getLocation().setCity(city);
+        BigDecimal longitude = updateRestaurantDTO.getLongitude();
+        if (longitude != null)
+            temp.getLocation().setLongitude(longitude);
 
-        String state = updateRestaurantDTO.getState();
-        if (state != null && !state.isEmpty())
-            temp.getLocation().setState(state);
+        BigDecimal latitude = updateRestaurantDTO.getLatitude();
+        if (latitude != null)
+            temp.getLocation().setLatitude(latitude);
 
         //Update Restaurant Details
         String name = updateRestaurantDTO.getName();
